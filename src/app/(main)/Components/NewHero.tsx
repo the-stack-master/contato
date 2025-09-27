@@ -16,28 +16,20 @@ import {
 import { cn } from "@/utils/classNames";
 import PhoneSlideshow from "./PhoneSlideshow";
 import RotatingIcons from "./RotatingIcons";
+import DownloadButtons from "./DownloadAppButton";
+import { HeroData } from "./HeroComponent";
 
-const NewHeroSection = () => {
+interface HeroClientProps {
+  heroData: HeroData | null;
+}
+
+const NewHeroSection = ({ heroData }: HeroClientProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     setIsVisible(true);
   }, []);
-
-  const handleDownload = (platform: string) => {
-    if (platform === "ios") {
-      window.open(
-        "https://apps.apple.com/us/app/contato-ai-powered-networking/id6452725559",
-        "_blank"
-      );
-    } else if (platform === "android") {
-      window.open(
-        "https://play.google.com/store/apps/details?id=com.contactos.contato&pcampaignid=web_share",
-        "_blank"
-      );
-    }
-  };
 
   return (
     <section
@@ -109,7 +101,9 @@ const NewHeroSection = () => {
               <div className="w-12 h-12 bg-gradient-to-br from-[#f15A24] to-orange-500 rounded-2xl flex items-center justify-center shadow-lg">
                 <Users className="w-6 h-6 text-white" />
               </div>
-              <span className="text-2xl font-bold text-gray-900">Contato</span>
+              <span className="text-2xl font-bold text-gray-900">
+                {heroData?.companyName}
+              </span>
             </div>
 
             {/* Main Headline */}
@@ -150,7 +144,7 @@ const NewHeroSection = () => {
             </div>
 
             {/* Download Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4">
+            {/* <div className="flex flex-col sm:flex-row gap-4">
               <Button
                 onClick={() => handleDownload("ios")}
                 className="h-14 px-8 bg-black hover:bg-gray-800 text-white font-medium transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95"
@@ -172,7 +166,10 @@ const NewHeroSection = () => {
                   <div className="text-sm font-semibold">Google Play</div>
                 </div>
               </Button>
-            </div>
+            </div> */}
+            <section>
+              <DownloadButtons />
+            </section>
 
             {/* Secondary CTA */}
             <div className="flex items-center space-x-4 pt-4">
