@@ -66,7 +66,7 @@ export default function ContactUs() {
               className="w-full rounded-2xl px-4 py-3 border border-gray-300 bg-white/85 transition placeholder:text-gray-400 text-base focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
             />
             <span className="block text-xs text-gray-400 mt-1">
-              We'll never share your email.
+              We&apos;ll never share your email.
             </span>
           </div>
 

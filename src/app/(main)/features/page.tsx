@@ -312,6 +312,8 @@
 
 // export default Features;
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -877,7 +879,7 @@ const ModernFeatures = () => {
             </h2>
             <p className="text-xl mb-16 text-white/90 max-w-3xl mx-auto">
               Professionals worldwide are transforming their careers with
-              Connecto's revolutionary approach to networking
+              Connecto&apos;s revolutionary approach to networking
             </p>
 
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">

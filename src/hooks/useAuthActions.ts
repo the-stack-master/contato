@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 
 import { useState } from "react";
@@ -8,41 +10,6 @@ export function useAuthActions() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
-
-  // const login = async (credentials: LoginCredentials) => {
-  //   console.log("useAuthActions: Starting login process");
-  //   console.log(
-  //     "useAuthActions: Current URL before login:",
-  //     window.location.href
-  //   );
-  //   setIsLoading(true);
-  //   setError("");
-
-  //   try {
-  //     const result = await AuthService.login(credentials);
-  //     console.log("useAuthActions: AuthService result:", result);
-  //     console.log(
-  //       "useAuthActions: Current URL after login:",
-  //       window.location.href
-  //     );
-
-  //     if (result.success) {
-  //       console.log("useAuthActions: Login successful, redirecting to /");
-  //       router.push("/blog");
-  //     } else {
-  //       console.log(
-  //         "useAuthActions: Login failed, setting error:",
-  //         result.error
-  //       );
-  //       setError(result.error || "Login failed");
-  //     }
-  //   } catch (err) {
-  //     console.log("useAuthActions: Exception occurred:", err);
-  //     setError("An unexpected error occurred");
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
 
   const login = async (credentials: LoginCredentials) => {
     console.log("useAuthActions: Starting login process");

@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import {
-  Chrome,
   Users,
   Download,
   Star,
@@ -15,10 +14,6 @@ import { Separator } from "../separator";
 import { QRCodeSVG } from "qrcode.react";
 
 const SignupForm = () => {
-  const handleSocialSignup = (provider: string) => {
-    console.log(`Sign up with ${provider}`);
-  };
-
   return (
     <div className="min-h-screen flex flex-col lg:flex-row">
       {/* Left Section - App Download */}
@@ -115,15 +110,6 @@ const SignupForm = () => {
 
           {/* Quick Web Signup */}
           <div className="space-y-4 animate-in fade-in-50 slide-in-from-bottom-3 duration-500 delay-800">
-            {/* <Button
-              variant="outline"
-              onClick={() => handleSocialSignup("google")}
-              className="w-full h-12 border-[#f15A24] text-[#f15A24] bg-white hover:bg-[#f15A24]/10 font-medium transition-all duration-200 hover:shadow-md hover:scale-[1.02] active:scale-[0.98]"
-            >
-              <Chrome className="w-5 h-5 mr-3" />
-              Continue with Google
-            </Button> */}
-
             <p className="text-center text-sm text-gray-600">
               Already have an account?{" "}
               <a

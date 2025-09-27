@@ -8,7 +8,6 @@ import { useAuthActions } from "@/hooks/useAuthActions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
 import { Eye, EyeOff, Users, ChevronDown } from "lucide-react";
 import { cn } from "@/utils/classNames";
 import { client } from "@/lib/sanity";
@@ -63,7 +62,6 @@ const query = `*[_type == "loginPage"][0]{
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const [showScrollIndicator, setShowScrollIndicator] = useState(true);
   const [loginContent, setLoginContent] = useState<LoginPage | null>(null);
   const { login, isLoading, error } = useAuthActions();
 
@@ -77,10 +75,6 @@ export function LoginForm() {
 
   const onSubmit = async (data: LoginFormData) => {
     await login(data);
-  };
-
-  const handleSocialLogin = (provider: string) => {
-    console.log(`Login with ${provider}`);
   };
 
   const fetchData = async () => {
@@ -314,17 +308,13 @@ export function LoginForm() {
         </div>
 
         {/* Scroll Indicator */}
-        {showScrollIndicator && (
-          <div className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center text-[#f15A24] opacity-80">
-            <span className="text-xs font-medium select-none mb-1">
-              Scroll to see more
-            </span>
-            <ChevronDown
-              className="w-5 h-5 animate-bounce"
-              aria-hidden="true"
-            />
-          </div>
-        )}
+
+        <div className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center text-[#f15A24] opacity-80">
+          <span className="text-xs font-medium select-none mb-1">
+            Scroll to see more
+          </span>
+          <ChevronDown className="w-5 h-5 animate-bounce" aria-hidden="true" />
+        </div>
       </div>
     </>
   );

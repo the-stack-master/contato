@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 // app/(main)/blog/[slug]/page.tsx
 import { client, urlFor } from "@/lib/sanity";
 import { notFound } from "next/navigation";
