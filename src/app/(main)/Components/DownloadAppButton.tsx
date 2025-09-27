@@ -3,9 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Apple, Play } from "lucide-react";
 
-interface DownloadButtonsProps {}
-
-export default function DownloadButtons(props: DownloadButtonsProps) {
+export default function DownloadButtons() {
   const handleDownload = (platform: "ios" | "android") => {
     if (platform === "ios") {
       window.open(
