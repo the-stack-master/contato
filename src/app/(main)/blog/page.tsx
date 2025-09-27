@@ -15,20 +15,47 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { PortableTextBlock } from "@portabletext/react";
 
-type BlogPost = {
-  _id: string;
-  title: string;
-  slug: { current: string };
-  description: string;
-  publishedAt: string;
-  author?: string;
-  category?: string;
-  readTime?: string;
-  image?: string;
+export type SanityImage = {
+  asset: {
+    _id: string;
+    url: string;
+  };
+  alt?: string;
+  caption?: string;
 };
 
-const POSTS_PER_PAGE = 1;
+export type Category = {
+  title?: "string";
+  description?: "string";
+};
+
+export type BlogPost = {
+  _id: string;
+  _createdAt: string;
+  _updatedAt: string;
+  title: string;
+  tagline?: string;
+  slug: { current: string };
+  author?: string;
+  publishedDate: string;
+  excerpt?: string;
+  mainImage?: SanityImage;
+  subImages?: SanityImage[];
+  body: PortableTextBlock[];
+  tags?: string[];
+  category?: Category;
+  readingTime?: string;
+  isFeatured?: boolean;
+  seo?: {
+    title?: string;
+    description?: string;
+    keywords?: string[];
+  };
+};
+
+const POSTS_PER_PAGE = 6;
 
 export default function BlogPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
@@ -37,30 +64,23 @@ export default function BlogPage() {
   const [hasMore, setHasMore] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [totalPosts, setTotalPosts] = useState(0);
+  const [featuredPosts, setFeaturedPosts] = useState<BlogPost[]>([]);
 
   const fetchPosts = async (pageNumber: number, replace = false) => {
     setLoading(true);
     const start = (pageNumber - 1) * POSTS_PER_PAGE;
 
-    // Fetch posts
-    const query = `*[_type == "blog" ${
+    const query = `*[_type == "article" ${
       searchQuery
         ? `&& (title match "${searchQuery}*" || description match "${searchQuery}*")`
         : ""
     }] | order(publishedAt desc) [${start}...${start + POSTS_PER_PAGE}]{
-      _id,
-      title,
-      slug,
-      description,
-      publishedAt,
-      "image": mainImage.asset->url,
-      "author": author->name,
-      "category": category->title,
-      readTime
+      _id, _createdAt, _updatedAt, title, tagline, slug, author, publishedDate,
+      excerpt, mainImage{ asset->, alt, caption }, subImages[]{ asset->, alt, caption },
+      body, tags, category, readingTime, isFeatured, seo
     }`;
 
-    // Fetch total count
-    const countQuery = `count(*[_type == "blog" ${
+    const countQuery = `count(*[_type == "article" ${
       searchQuery
         ? `&& (title match "${searchQuery}*" || description match "${searchQuery}*")`
         : ""
@@ -79,9 +99,21 @@ export default function BlogPage() {
     setLoading(false);
   };
 
+  const fetchFeaturedPosts = async () => {
+    const query = `*[_type == "article" && isFeatured == true] | order(publishedDate desc){
+      _id, _createdAt, _updatedAt, title, tagline, slug, author, publishedDate,
+      excerpt, mainImage{ asset->, alt, caption }, subImages[]{ asset->, alt, caption },
+      body, tags, category, readingTime, isFeatured, seo
+    }`;
+
+    const featuredPosts: BlogPost[] = await client.fetch(query);
+    setFeaturedPosts(featuredPosts);
+  };
+
   useEffect(() => {
     setPage(1);
-    fetchPosts(1, true); // replace posts on initial load or search
+    fetchPosts(1, true);
+    fetchFeaturedPosts();
   }, [searchQuery]);
 
   const loadMore = () => {
@@ -102,33 +134,36 @@ export default function BlogPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section
-        className="relative overflow-hidden py-20 lg:py-32 bg-white"
-        style={{
-          background: "linear-gradient(135deg, #fff 75%, #ffe6d9 100%)",
-        }}
-      >
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center max-w-5xl mx-auto">
-            <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-8">
-              Contato{" "}
-              <span
-                style={{
-                  background: "linear-gradient(135deg, #f15A24, #ff7f50)",
-                  WebkitBackgroundClip: "text",
-                  backgroundClip: "text",
-                  color: "transparent",
-                }}
-              >
-                Blog
-              </span>
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-600 mb-12 leading-relaxed max-w-3xl mx-auto">
-              Unlock the power of meaningful connections with expert insights,
-              practical tips, and inspiring stories.
-            </p>
-            <div className="relative max-w-lg mx-auto group">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#f15A24] h-5 w-5" />
+      <section className="relative overflow-hidden py-5 lg:py-10 bg-white">
+        <div className="container mx-auto px-4 text-center max-w-5xl">
+          <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6">
+            Contato{" "}
+            <span
+              style={{
+                background: "linear-gradient(135deg, #f15A24, #ff7f50)",
+                WebkitBackgroundClip: "text",
+                backgroundClip: "text",
+                color: "transparent",
+              }}
+            >
+              Blog
+            </span>
+          </h1>
+          <p className="text-lg md:text-xl text-gray-600 mb-6 leading-relaxed max-w-3xl mx-auto">
+            Unlock the power of meaningful connections with expert insights,
+            practical tips, and inspiring stories.
+          </p>
+        </div>
+      </section>
+
+      {/* Main Section: Search + Categories + Posts + Sidebar */}
+      <section className="py-5 lg:py-5 ">
+        <div className="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-4 gap-12">
+          {/* Left Column: Search + Categories + Posts */}
+          <div className="lg:col-span-3">
+            {/* Search */}
+            <div className="relative max-w-xl mb-8">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#f15A24] h-5 w-5" />
               <Input
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -146,96 +181,127 @@ export default function BlogPage() {
                 Search
               </Button>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Categories */}
-      <section className="py-8 bg-[#FFF4ED]/90 border-b border-[#f15A24]/10">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-wrap gap-3 justify-center">
-            {categories.map((category) => (
-              <Button
-                key={category}
-                variant={category === "All Posts" ? "default" : "outline"}
-                className={`rounded-full px-6 py-2 ${
-                  category === "All Posts"
-                    ? "bg-[#f15A24] text-white"
-                    : "border-[#f15A24]/30 text-[#f15A24]"
-                }`}
-              >
-                {category}
-              </Button>
-            ))}
-          </div>
-        </div>
-      </section>
+            {/* Categories */}
+            {/* <div className="flex flex-wrap gap-3 mb-12">
+              {categories.map((category) => (
+                <Button
+                  key={category}
+                  variant={category === "All Posts" ? "default" : "outline"}
+                  className={`rounded-full px-6 py-2 ${
+                    category === "All Posts"
+                      ? "bg-[#f15A24] text-white"
+                      : "border-[#f15A24]/30 text-[#f15A24]"
+                  }`}
+                >
+                  {category}
+                </Button>
+              ))}
+            </div> */}
 
-      {/* Posts Grid */}
-      <section className="py-16 lg:py-24 bg-[#FFF4ED]">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-wrap justify-center gap-8 max-w-7xl mx-auto">
-            {posts.map((post) => (
-              <Link
-                key={post._id}
-                href={`/blog/${post.slug.current}`}
-                className="group cursor-pointer w-full max-w-sm"
-              >
-                <Card className="overflow-hidden border-0 rounded-3xl">
-                  <div
-                    className="h-52 relative bg-cover bg-center rounded-t-3xl"
-                    style={{
-                      backgroundImage: `url(${
-                        post.image || "/api/placeholder/400/300"
-                      })`,
-                    }}
-                  />
-                  <CardHeader className="pb-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <Badge className="border-[#f15A24]/30 text-[#f15A24] bg-[#f15A24]/5">
-                        {post.category || "General"}
-                      </Badge>
-                      <div className="flex items-center gap-1 text-sm text-gray-500">
-                        <Clock className="h-3 w-3" />
-                        {post.readTime || "5 min read"}
+            {/* Posts */}
+            <div className="grid sm:grid-cols-3 gap-8">
+              {posts.map((post) => (
+                <Link
+                  key={post._id}
+                  href={`/blog/${post.slug.current}`}
+                  className="group cursor-pointer"
+                >
+                  <Card className="overflow-hidden border-0 rounded-2xl">
+                    {/* Reduce hero height */}
+                    <div
+                      className="h-40 relative bg-cover bg-center rounded-t-2xl"
+                      style={{
+                        backgroundImage: `url(${
+                          post.mainImage?.asset?.url ||
+                          "/api/placeholder/400/300"
+                        })`,
+                      }}
+                    />
+                    <CardHeader className="pb-2 px-4 pt-3">
+                      <div className="flex items-center justify-between mb-2">
+                        <Badge className="border-[#f15A24]/30 text-[#f15A24] bg-[#f15A24]/5 text-xs px-2 py-0.5">
+                          {post.category?.title || "General"}
+                        </Badge>
+                        <div className="flex items-center gap-1 text-xs text-gray-500">
+                          <Clock className="h-3 w-3" />
+                          {post.readingTime || "5 min read"}
+                        </div>
                       </div>
-                    </div>
-                    <CardTitle className="text-xl leading-tight">
-                      {post.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-0">
-                    <CardDescription className="mb-6 line-clamp-2 text-gray-700">
-                      {post.description}
-                    </CardDescription>
-                    <div className="flex items-center gap-4 text-sm text-gray-500">
-                      <div className="flex items-center gap-2">
-                        <User className="h-3 w-3 text-[#f15A24]" />
-                        {post.author || "Unknown"}
+                      <CardTitle className="text-lg leading-snug">
+                        {post.title}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="pt-1 px-4">
+                      <CardDescription className="mb-3 line-clamp-2 text-gray-700 text-sm">
+                        {post?.excerpt}
+                      </CardDescription>
+                      <div className="flex items-center gap-3 text-xs text-gray-500">
+                        <div className="flex items-center gap-1">
+                          <User className="h-3 w-3 text-[#f15A24]" />
+                          {post.author || "Unknown"}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Calendar className="h-3 w-3" />
+                          {new Date(post.publishedDate).toDateString()}
+                        </div>
                       </div>
-                      <div className="flex items-center gap-1">
-                        <Calendar className="h-3 w-3" />
-                        {new Date(post.publishedAt).toDateString()}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-          </div>
-
-          {/* Load More */}
-          {hasMore && (
-            <div className="mt-12 text-center">
-              <Button
-                onClick={loadMore}
-                className="rounded-xl px-8 py-3 bg-gradient-to-r from-[#f15A24] to-[#ff7f50] text-white"
-                disabled={loading}
-              >
-                {loading ? "Loading..." : "Load More"}
-              </Button>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
             </div>
-          )}
+
+            {/* Load More */}
+            {hasMore && (
+              <div className="mt-12 text-center">
+                <Button
+                  onClick={loadMore}
+                  className="rounded-xl px-8 py-3 bg-gradient-to-r from-[#f15A24] to-[#ff7f50] text-white"
+                  disabled={loading}
+                >
+                  {loading ? "Loading..." : "Load More"}
+                </Button>
+              </div>
+            )}
+          </div>
+
+          {/* Right Sidebar: Featured Posts */}
+          <aside className="lg:col-span-1">
+            {featuredPosts?.length > 0 && (
+              <div className="sticky top-24">
+                <h2 className="text-xl font-bold text-gray-900 mb-6">
+                  Featured Posts
+                </h2>
+                <div className="space-y-6">
+                  {featuredPosts.map((post) => (
+                    <Link
+                      key={post._id}
+                      href={`/blog/${post.slug.current}`}
+                      className="block group"
+                    >
+                      <Card className="overflow-hidden border  border-transparent rounded-2xl shadow-sm">
+                        <div
+                          className="h-32 bg-cover bg-center"
+                          style={{
+                            backgroundImage: `url(${
+                              post.mainImage?.asset?.url ||
+                              "/api/placeholder/200/150"
+                            })`,
+                          }}
+                        />
+                        <CardHeader className="p-4">
+                          <CardTitle className="text-base line-clamp-2 group-hover:text-[#f15A24] transition-colors">
+                            {post.title}
+                          </CardTitle>
+                        </CardHeader>
+                      </Card>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </aside>
         </div>
       </section>
     </div>

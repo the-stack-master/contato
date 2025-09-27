@@ -4,6 +4,7 @@ import Header from "@/components/ui/Header/Header";
 import { LoginForm } from "@/components/ui/LoginForm";
 import { ReactNode } from "react";
 import { usePathname } from "next/navigation";
+import Footer from "./Components/Footer";
 
 export default function HomeLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
@@ -15,6 +16,7 @@ export default function HomeLayout({ children }: { children: ReactNode }) {
 
       {pathname !== "/signup" && <Header authToken={undefined} />}
       <div className="px-4 sm:px-6 lg:px-8 xl:px-12">{children}</div>
+      {pathname !== "/signup" && <Footer />}
     </main>
   );
 }

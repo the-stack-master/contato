@@ -31,6 +31,21 @@ const NewHeroSection = ({ heroData }: HeroClientProps) => {
     setIsVisible(true);
   }, []);
 
+  const handleDownload = (platform: "appstore" | "googleplay") => {
+    // if (platform === "ios") {
+    window.open(
+      heroData?.downloadButtons?.find((item) => item?.platform === platform)
+        ?.url,
+      "_blank"
+    );
+    // } else {
+    //   window.open(
+    //     "https://play.google.com/store/apps/details?id=com.contactos.contato&pcampaignid=web_share",
+    //     "_blank"
+    //   );
+    // }
+  };
+
   return (
     <section
       id="hero"
@@ -109,44 +124,60 @@ const NewHeroSection = ({ heroData }: HeroClientProps) => {
             {/* Main Headline */}
             <div className="space-y-6">
               <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                Network
+                {heroData?.mainHeadline?.length
+                  ? heroData?.mainHeadline[0]?.text ?? ""
+                  : ""}
                 <br />
                 <span className="bg-gradient-to-r from-[#f15A24] to-orange-500 bg-clip-text text-transparent">
-                  Smarter
+                  {heroData?.mainHeadline?.length
+                    ? heroData?.mainHeadline[1]?.text ?? ""
+                    : ""}
                 </span>
                 <br />
-                Connect Better
+                {heroData?.mainHeadline?.length
+                  ? heroData?.mainHeadline[2]?.text ?? ""
+                  : ""}
               </h1>
               <p className="text-xl text-gray-600 leading-relaxed max-w-lg">
-                Join thousands of professionals building meaningful
-                relationships through strategic networking. Your next
-                opportunity is just one connection away.
+                {heroData?.description}
               </p>
             </div>
 
             {/* Stats */}
             <div className="flex items-center space-x-8 py-6">
               <div className="text-center">
-                <div className="text-3xl font-bold text-[#f15A24]">50K+</div>
-                <div className="text-sm text-gray-600">Active Users</div>
+                <div className="text-3xl font-bold text-[#f15A24]">
+                  {heroData?.statistics[0]?.value}
+                </div>
+                <div className="text-sm text-gray-600">
+                  {heroData?.statistics[0]?.label}
+                </div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-[#f15A24]">1M+</div>
-                <div className="text-sm text-gray-600">Connections Made</div>
+                <div className="text-3xl font-bold text-[#f15A24]">
+                  {heroData?.statistics[1]?.value}
+                </div>
+                <div className="text-sm text-gray-600">
+                  {heroData?.statistics[1]?.label}
+                </div>
               </div>
               <div className="text-center">
                 <div className="flex items-center justify-center space-x-1 mb-1">
-                  <span className="text-3xl font-bold text-[#f15A24]">5</span>
+                  <span className="text-3xl font-bold text-[#f15A24]">
+                    {heroData?.statistics[2]?.value}
+                  </span>
                   <Star className="w-6 h-6 fill-[#f15A24] text-[#f15A24]" />
                 </div>
-                <div className="text-sm text-gray-600">App Rating</div>
+                <div className="text-sm text-gray-600">
+                  {heroData?.statistics[2]?.label}
+                </div>
               </div>
             </div>
 
             {/* Download Buttons */}
-            {/* <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-4">
               <Button
-                onClick={() => handleDownload("ios")}
+                onClick={() => handleDownload("appstore")}
                 className="h-14 px-8 bg-black hover:bg-gray-800 text-white font-medium transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95"
               >
                 <Apple className="w-6 h-6 mr-3" />
@@ -157,7 +188,7 @@ const NewHeroSection = ({ heroData }: HeroClientProps) => {
               </Button>
 
               <Button
-                onClick={() => handleDownload("android")}
+                onClick={() => handleDownload("googleplay")}
                 className="h-14 px-8 bg-[#f15A24] hover:bg-orange-600 text-white font-medium transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95"
               >
                 <Play className="w-6 h-6 mr-3" />
@@ -166,10 +197,7 @@ const NewHeroSection = ({ heroData }: HeroClientProps) => {
                   <div className="text-sm font-semibold">Google Play</div>
                 </div>
               </Button>
-            </div> */}
-            <section>
-              <DownloadButtons />
-            </section>
+            </div>
 
             {/* Secondary CTA */}
             <div className="flex items-center space-x-4 pt-4">
@@ -195,7 +223,7 @@ const NewHeroSection = ({ heroData }: HeroClientProps) => {
             style={{ minWidth: 0 }}
           >
             {/* Scroll container for phone + icons */}
-            <div className="flex items-center space-x-6 overflow-x-auto no-scrollbar px-4 sm:px-0 -mx-4 sm:mx-0">
+            <div className="flex items-center space-x-6 overflow-x-auto no-scrollbar px-4 sm:px-0 -mx-4 sm:mx-0 bg-transparent">
               <PhoneSlideshow />
               <RotatingIcons />
             </div>

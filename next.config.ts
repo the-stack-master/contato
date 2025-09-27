@@ -5,13 +5,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "img.youtube.com",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "contato.app",
-        pathname: "/assets/images/**",
+        hostname: "**", // matches any hostname
       },
     ],
   },

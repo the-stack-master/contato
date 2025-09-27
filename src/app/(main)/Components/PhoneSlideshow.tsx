@@ -2,27 +2,60 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { client } from "@/lib/sanity";
+
+interface HeroImage {
+  url: string;
+  caption?: string;
+}
+
+interface HeroGallery {
+  _id: string;
+  title: string;
+  imageUrls: HeroImage[];
+}
 
 const PhoneSlideshow = () => {
   // Demo image URLs
-  const images: string[] = [
-    "https://contato.app/assets/images/screenshots/analytics-engangement.png",
-    "https://contato.app/assets/images/screenshots/analytics-growth.png",
-    "https://contato.app/assets/images/screenshots/analytics-insights.png",
-    "https://contato.app/assets/images/screenshots/integrations.png",
-    "https://contato.app/assets/images/screenshots/connection-near-me.png",
-    "https://contato.app/assets/images/screenshots/my-code.png",
-  ];
+  // const images: string[] = [
+  //   "https://contato.app/assets/images/screenshots/analytics-engangement.png",
+  //   "https://contato.app/assets/images/screenshots/analytics-growth.png",
+  //   "https://contato.app/assets/images/screenshots/analytics-insights.png",
+  //   "https://contato.app/assets/images/screenshots/integrations.png",
+  //   "https://contato.app/assets/images/screenshots/connection-near-me.png",
+  //   "https://contato.app/assets/images/screenshots/my-code.png",
+  // ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [gallery, setGallery] = useState<HeroGallery | null>(null);
 
   useEffect(() => {
+    if (!gallery?.imageUrls?.length) return; // exit early if no images
+
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % images.length);
-    }, 3000); // 2 seconds
+      setCurrentIndex((prev) => (prev + 1) % gallery.imageUrls.length);
+    }, 3000);
 
     return () => clearInterval(interval);
-  }, [images.length]);
+  }, [gallery]); // depend on gallery object instead of optional chaining
+
+  useEffect(() => {
+    async function fetchGallery() {
+      try {
+        const data: HeroGallery[] = await client.fetch(`
+          *[_type == "heroImageGallery"]{
+            _id,
+            title,
+            imageUrls[]{ url, caption }
+          }
+        `);
+        setGallery(data[0] || null);
+      } catch (err) {
+        console.error("Failed to fetch gallery:", err);
+      }
+    }
+    fetchGallery();
+  }, []);
 
   return (
     <div className="relative w-80 max-w-full h-[480px] sm:h-[640px] bg-gray-900 rounded-[3rem] p-2 shadow-2xl">
@@ -40,11 +73,11 @@ const PhoneSlideshow = () => {
 
         {/* Slideshow */}
         <div className="w-full h-[calc(100%-3rem)] relative">
-          {images.map((url, index) => (
+          {gallery?.imageUrls?.map((urlObj, index) => (
             <Image
               key={index}
-              src={url}
-              alt={`slide-${index}`}
+              src={urlObj?.url}
+              alt={`slide-${urlObj?.caption}`}
               fill
               className={`object-cover transition-opacity duration-700 ${
                 index === currentIndex ? "opacity-100" : "opacity-0"

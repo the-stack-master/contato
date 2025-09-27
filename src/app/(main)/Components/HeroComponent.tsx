@@ -38,9 +38,9 @@ export interface HeroData {
   title: string;
   companyName: string;
   logo?: HeroLogo;
-  mainHeadline?: HeroHeadline[];
+  mainHeadline: HeroHeadline[];
   description?: string;
-  statistics?: HeroStatistic[];
+  statistics: HeroStatistic[];
   downloadButtons?: HeroButton[];
   backgroundStyle?: HeroBackgroundStyle;
   seo?: Record<string, string | number | undefined>;
@@ -61,6 +61,8 @@ const HeroServer = async () => {
       seo
     }
   `);
+
+  console.log("------------", heroData);
 
   return <HeroClient heroData={heroData} />;
 };
