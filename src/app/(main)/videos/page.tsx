@@ -4,26 +4,15 @@ import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Play,
-  Pause,
-  Volume2,
-  VolumeX,
-  Maximize,
-  Clock,
-  Eye,
-  ThumbsUp,
-  Share2,
-  Download,
-  Filter,
-  Search,
   PlayCircle,
   Users,
   MessageCircle,
-  Calendar,
-  BarChart3,
-  Shield,
   Smartphone,
   Sparkles,
-  ArrowRight,
+  Search,
+  Clock,
+  Eye,
+  ThumbsUp,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
@@ -40,7 +29,7 @@ interface Video {
   category: "demo" | "tutorial" | "testimonial" | "feature";
   featured: boolean;
   tags: string[];
-  src?: string; // 👈 Added for actual video URL
+  src?: string;
 }
 
 const videos: Video[] = [
@@ -188,17 +177,23 @@ const VideosSection = () => {
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setFeaturedIndex((prev) => (prev + 1) % featuredVideos.length);
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [featuredVideos.length]);
+    if (isPlaying === null) {
+      const interval = setInterval(() => {
+        setFeaturedIndex((prev) => (prev + 1) % featuredVideos.length);
+      }, 5000);
+      return () => clearInterval(interval);
+    }
+    return () => {};
+  }, [featuredVideos.length, isPlaying]);
 
   const isVisible = (sectionId: string) => visibleSections.includes(sectionId);
 
   const handlePlayVideo = (videoId: string) => {
-    setIsPlaying(isPlaying === videoId ? null : videoId);
+    if (isPlaying === videoId) {
+      setIsPlaying(null);
+    } else {
+      setIsPlaying(videoId);
+    }
   };
 
   const nextFeatured = () => {
@@ -222,39 +217,168 @@ const VideosSection = () => {
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-br from-orange-200/5 to-red-200/5 rounded-full blur-3xl animate-pulse delay-500"></div>
       </div>
 
-      {/* Hero Section */}
-      <section className="relative pt-20 pb-16 px-6">
+      {/* Title + Subtitle */}
+      <section
+        className={cn(
+          "max-w-6xl mx-auto text-center transition-all duration-1000 transform pt-20 pb-16 px-6",
+          isVisible("title")
+            ? "translate-y-0 opacity-100"
+            : "translate-y-10 opacity-0"
+        )}
+        data-section="title"
+      >
+        <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-[#f15A24]/10 to-orange-100/50 px-6 py-3 rounded-full mb-8">
+          <Play className="w-5 h-5 text-[#f15A24]" />
+          <span className="text-[#f15A24] font-semibold">Video Library</span>
+        </div>
+
+        <h1 className="text-6xl lg:text-7xl font-black text-gray-900 mb-8 leading-tight">
+          See Connecto
+          <br />
+          <span className="bg-gradient-to-r from-[#f15A24] via-orange-500 to-red-500 bg-clip-text text-transparent">
+            in action
+          </span>
+        </h1>
+
+        <p className="text-2xl text-gray-600 mb-12 max-w-4xl mx-auto leading-relaxed">
+          Explore our comprehensive video library featuring product demos,
+          tutorials, success stories, and feature deep-dives.
+        </p>
+      </section>
+
+      {/* Featured Videos Carousel */}
+      <section
+        className={cn(
+          "relative py-16 px-6 max-w-7xl mx-auto transition-all duration-1000 transform",
+          isVisible("featured")
+            ? "translate-y-0 opacity-100"
+            : "translate-y-10 opacity-0"
+        )}
+        data-section="featured"
+      >
+        <div className="text-center mb-12">
+          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+            Featured Videos
+          </h2>
+          <p className="text-xl text-gray-600">
+            Our most popular and impactful content
+          </p>
+        </div>
+
+        <div className="relative">
+          {/* Main Featured Video */}
+          <div className="relative group overflow-hidden rounded-3xl shadow-2xl mb-8">
+            <div className="aspect-video bg-gray-900 relative">
+              {isPlaying === featuredVideos[featuredIndex]?.id ? (
+                <video
+                  src={featuredVideos[featuredIndex]?.src}
+                  controls
+                  autoPlay
+                  className="w-full h-full object-cover"
+                  onEnded={() => setIsPlaying(null)}
+                />
+              ) : (
+                <img
+                  src={featuredVideos[featuredIndex]?.thumbnail}
+                  alt={featuredVideos[featuredIndex]?.title}
+                  className="w-full h-full object-cover"
+                />
+              )}
+
+              {/* Overlay & Play Button */}
+              {isPlaying !== featuredVideos[featuredIndex]?.id && (
+                <>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Button
+                      onClick={() =>
+                        handlePlayVideo(featuredVideos[featuredIndex]?.id)
+                      }
+                      className="w-24 h-24 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 border-2 border-white/50 transition-all duration-300 hover:scale-110 group-hover:scale-125"
+                    >
+                      <Play className="w-10 h-10 text-white ml-1" />
+                    </Button>
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* Content */}
+            <div className="absolute bottom-8 left-8 right-8 text-white">
+              <div className="flex items-center space-x-4 mb-4">
+                <span className="bg-[#f15A24] px-3 py-1 rounded-full text-sm font-medium capitalize">
+                  {featuredVideos[featuredIndex]?.category}
+                </span>
+                <div className="flex items-center space-x-4 text-sm">
+                  <div className="flex items-center space-x-1">
+                    <Clock className="w-4 h-4" />
+                    <span>{featuredVideos[featuredIndex]?.duration}</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <Eye className="w-4 h-4" />
+                    <span>{featuredVideos[featuredIndex]?.views} views</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <ThumbsUp className="w-4 h-4" />
+                    <span>{featuredVideos[featuredIndex]?.likes}</span>
+                  </div>
+                </div>
+              </div>
+              <h3 className="text-3xl font-bold mb-3">
+                {featuredVideos[featuredIndex]?.title}
+              </h3>
+              <p className="text-lg text-white/90 max-w-3xl">
+                {featuredVideos[featuredIndex]?.description}
+              </p>
+            </div>
+
+            {/* Navigation Arrows */}
+            <Button
+              onClick={prevFeatured}
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 border border-white/30 opacity-0 group-hover:opacity-100 transition-all duration-300"
+            >
+              <ChevronLeft className="w-6 h-6 text-white" />
+            </Button>
+            <Button
+              onClick={nextFeatured}
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 border border-white/30 opacity-0 group-hover:opacity-100 transition-all duration-300"
+            >
+              <ChevronRight className="w-6 h-6 text-white" />
+            </Button>
+          </div>
+        </div>
+
+        {/* Featured Video Indicators */}
+        <div className="flex justify-center space-x-2">
+          {featuredVideos.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setFeaturedIndex(index)}
+              className={cn(
+                "w-3 h-3 rounded-full transition-all duration-300",
+                index === featuredIndex
+                  ? "bg-[#f15A24] scale-125"
+                  : "bg-gray-300 hover:bg-gray-400"
+              )}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* All Videos with Search and Categories */}
+      <section className="relative py-16 px-6">
         <div
           className={cn(
-            "max-w-6xl mx-auto text-center transition-all duration-1000 transform",
-            isVisible("hero")
+            "max-w-7xl mx-auto transition-all duration-1000 transform",
+            isVisible("grid")
               ? "translate-y-0 opacity-100"
               : "translate-y-10 opacity-0"
           )}
-          data-section="hero"
+          data-section="grid"
         >
-          <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-[#f15A24]/10 to-orange-100/50 px-6 py-3 rounded-full mb-8">
-            <Play className="w-5 h-5 text-[#f15A24]" />
-            <span className="text-[#f15A24] font-semibold">Video Library</span>
-          </div>
-
-          <h1 className="text-6xl lg:text-7xl font-black text-gray-900 mb-8 leading-tight">
-            See Connecto
-            <br />
-            <span className="bg-gradient-to-r from-[#f15A24] via-orange-500 to-red-500 bg-clip-text text-transparent">
-              in action
-            </span>
-          </h1>
-
-          <p className="text-2xl text-gray-600 mb-12 max-w-4xl mx-auto leading-relaxed">
-            Explore our comprehensive video library featuring product demos,
-            tutorials, success stories, and feature deep-dives.
-          </p>
-
-          {/* Search and Filter */}
-          <div className="flex flex-col lg:flex-row gap-4 justify-center items-center mb-16 w-full">
+          <div className="flex flex-row gap-4 justify-start items-center mb-8 w-full overflow-x-auto">
             {/* Search */}
-            <div className="relative flex-1 w-full">
+            <div className="relative flex-none min-w-[280px] max-w-[400px] flex-grow">
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
                 type="text"
@@ -266,7 +390,7 @@ const VideosSection = () => {
             </div>
 
             {/* Categories */}
-            <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
+            <div className="flex gap-2 justify-start flex-none max-w-[600px]">
               {categories.map((category) => (
                 <Button
                   key={category.id}
@@ -287,160 +411,13 @@ const VideosSection = () => {
               ))}
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Featured Videos Carousel */}
-      <section className="relative py-16 px-6">
-        <div
-          className={cn(
-            "max-w-7xl mx-auto transition-all duration-1000 transform",
-            isVisible("featured")
-              ? "translate-y-0 opacity-100"
-              : "translate-y-10 opacity-0"
-          )}
-          data-section="featured"
-        >
-          <div className="text-center mb-12">
-            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-              Featured Videos
-            </h2>
-            <p className="text-xl text-gray-600">
-              Our most popular and impactful content
-            </p>
-          </div>
-
-          <div className="relative">
-            {/* Main Featured Video */}
-            <div className="relative group overflow-hidden rounded-3xl shadow-2xl mb-8">
-              <div className="aspect-video bg-gray-900 relative">
-                {isPlaying === featuredVideos[featuredIndex]?.id ? (
-                  <video
-                    src={featuredVideos[featuredIndex]?.src}
-                    controls
-                    autoPlay
-                    className="w-full h-full object-cover"
-                    onEnded={() => setIsPlaying(null)}
-                  />
-                ) : (
-                  <img
-                    src={featuredVideos[featuredIndex]?.thumbnail}
-                    alt={featuredVideos[featuredIndex]?.title}
-                    className="w-full h-full object-cover"
-                  />
-                )}
-
-                {/* Overlay & Play Button */}
-                {isPlaying !== featuredVideos[featuredIndex]?.id && (
-                  <>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <Button
-                        onClick={() =>
-                          handlePlayVideo(featuredVideos[featuredIndex]?.id)
-                        }
-                        className="w-24 h-24 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 border-2 border-white/50 transition-all duration-300 hover:scale-110 group-hover:scale-125"
-                      >
-                        <Play className="w-10 h-10 text-white ml-1" />
-                      </Button>
-                    </div>
-                  </>
-                )}
-
-                {/* Content */}
-                <div className="absolute bottom-8 left-8 right-8 text-white">
-                  <div className="flex items-center space-x-4 mb-4">
-                    <span className="bg-[#f15A24] px-3 py-1 rounded-full text-sm font-medium capitalize">
-                      {featuredVideos[featuredIndex]?.category}
-                    </span>
-                    <div className="flex items-center space-x-4 text-sm">
-                      <div className="flex items-center space-x-1">
-                        <Clock className="w-4 h-4" />
-                        <span>{featuredVideos[featuredIndex]?.duration}</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <Eye className="w-4 h-4" />
-                        <span>
-                          {featuredVideos[featuredIndex]?.views} views
-                        </span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <ThumbsUp className="w-4 h-4" />
-                        <span>{featuredVideos[featuredIndex]?.likes}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <h3 className="text-3xl font-bold mb-3">
-                    {featuredVideos[featuredIndex]?.title}
-                  </h3>
-                  <p className="text-lg text-white/90 max-w-3xl">
-                    {featuredVideos[featuredIndex]?.description}
-                  </p>
-                </div>
-
-                {/* Navigation Arrows */}
-                <Button
-                  onClick={prevFeatured}
-                  className="absolute left-4 top-1/2 transform -translate-y-1/2 w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 border border-white/30 opacity-0 group-hover:opacity-100 transition-all duration-300"
-                >
-                  <ChevronLeft className="w-6 h-6 text-white" />
-                </Button>
-                <Button
-                  onClick={nextFeatured}
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 border border-white/30 opacity-0 group-hover:opacity-100 transition-all duration-300"
-                >
-                  <ChevronRight className="w-6 h-6 text-white" />
-                </Button>
-              </div>
-            </div>
-
-            {/* Featured Video Indicators */}
-            <div className="flex justify-center space-x-2">
-              {featuredVideos.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setFeaturedIndex(index)}
-                  className={cn(
-                    "w-3 h-3 rounded-full transition-all duration-300",
-                    index === featuredIndex
-                      ? "bg-[#f15A24] scale-125"
-                      : "bg-gray-300 hover:bg-gray-400"
-                  )}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Video Grid */}
-      <section className="relative py-16 px-6">
-        <div
-          className={cn(
-            "max-w-7xl mx-auto transition-all duration-1000 transform",
-            isVisible("grid")
-              ? "translate-y-0 opacity-100"
-              : "translate-y-10 opacity-0"
-          )}
-          data-section="grid"
-        >
-          <div className="text-center mb-12">
-            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-              All Videos
-            </h2>
-            <p className="text-xl text-gray-600">
-              {filteredVideos.length} videos found
-            </p>
-          </div>
-
+          {/* All Videos Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredVideos.map((video, index) => (
+            {filteredVideos.map((video) => (
               <div
                 key={video.id}
-                className={cn(
-                  "group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-[1.02]",
-                  index === 0 ? "md:col-span-2" : ""
-                )}
+                className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-[1.02]"
               >
                 <div className="relative aspect-video bg-gray-900 overflow-hidden">
                   {isPlaying === video.id ? (
@@ -470,7 +447,6 @@ const VideosSection = () => {
                     </>
                   )}
                 </div>
-
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-medium uppercase text-[#f15A24]">
