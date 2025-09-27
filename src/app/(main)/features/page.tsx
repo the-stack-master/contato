@@ -151,7 +151,7 @@ const FeaturesPage = () => {
       >
         <div>
           <h2 className="text-4xl font-bold mb-12 text-center text-[#f15A24]">
-            What's new?
+            What&apos;s new?
           </h2>
         </div>
         {keyFeatures.map((feature, index) => (
