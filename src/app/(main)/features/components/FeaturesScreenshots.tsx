@@ -120,7 +120,7 @@ const FeaturesScreenshotsSection = () => {
           </p>
         </motion.div>
 
-        {/* Mobile Carousel */}
+        {/* Mobile & Desktop Carousel */}
         <div className="relative">
           <div className="overflow-hidden" ref={emblaRef}>
             <div className="flex">
@@ -139,58 +139,30 @@ const FeaturesScreenshotsSection = () => {
                     {/* Mobile Mockup */}
                     <div className="flex-1 flex justify-center">
                       <div className="relative">
-                        <div className="w-72 h-[580px] bg-gradient-to-b from-gray-800 to-gray-900 rounded-[3rem] p-3 shadow-2xl">
-                          <div className="w-full h-full bg-white rounded-[2.5rem] overflow-hidden relative">
-                            {/* Status bar */}
-                            <div className="h-8 bg-gray-900 flex items-center justify-center relative">
-                              <div className="w-20 h-1.5 bg-gray-700 rounded-full"></div>
-                              <div className="absolute right-4 top-2 text-white text-xs">
+                        <div className="w-72 max-w-full h-[600px] rounded-3xl p-1 border border-gray-700 bg-black shadow-sm">
+                          <div className="w-full h-full bg-white rounded-3xl overflow-hidden relative">
+                            <div className="h-6 bg-gray-100 flex items-center justify-center relative border-b border-gray-300">
+                              <div className="w-16 h-1 bg-gray-300 rounded-full"></div>
+                              <div className="absolute right-4 top-1 text-gray-500 text-xs font-semibold select-none">
                                 9:41
                               </div>
                             </div>
 
-                            {/* Screenshot content */}
-                            <div className="relative h-full">
+                            <div className="relative h-[calc(100%-24px)] overflow-hidden">
                               <img
                                 src={screenshot.image}
                                 alt={screenshot.title}
                                 className="w-full h-full object-cover"
+                                loading="lazy"
                               />
-                              {/* Overlay with app-like interface */}
-                              {/* <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent">
-                                <div className="absolute bottom-0 left-0 right-0 p-6">
-                                  <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-4 shadow-lg">
-                                    <div className="flex items-center space-x-3 mb-3">
-                                      <div className="w-10 h-10 bg-gradient-to-r from-[#f15A24] to-orange-500 rounded-full"></div>
-                                      <div className="flex-1">
-                                        <div className="h-3 bg-gray-300 rounded mb-1"></div>
-                                        <div className="h-2 bg-gray-200 rounded w-2/3"></div>
-                                      </div>
-                                    </div>
-                                    <div className="flex space-x-2">
-                                      <div className="flex-1 h-8 bg-gradient-to-r from-[#f15A24] to-orange-500 rounded-lg"></div>
-                                      <div className="w-8 h-8 border-2 border-gray-300 rounded-lg"></div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div> */}
                             </div>
                           </div>
                         </div>
-
-                        {/* Floating elements */}
-                        {/* <motion.div
-                          animate={{ y: [-5, 5, -5] }}
-                          transition={{ duration: 3, repeat: Infinity }}
-                          className="absolute -top-4 -right-4 w-12 h-12 bg-gradient-to-r from-[#f15A24] to-orange-500 rounded-full flex items-center justify-center shadow-lg"
-                        >
-                          <span className="text-white text-xl">📱</span>
-                        </motion.div> */}
                       </div>
                     </div>
 
                     {/* Content */}
-                    <div className="flex-1 text-center lg:text-left">
+                    <div className="flex-1 text-center lg:text-left px-4 sm:px-0">
                       <motion.div
                         initial={{ opacity: 0, x: 50 }}
                         whileInView={{ opacity: 1, x: 0 }}
@@ -236,12 +208,14 @@ const FeaturesScreenshotsSection = () => {
 
           {/* Navigation Buttons */}
           <button
+            aria-label="Previous Slide"
             className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors duration-200 z-10"
             onClick={scrollPrev}
           >
             <ChevronLeft className="w-6 h-6 text-gray-600" />
           </button>
           <button
+            aria-label="Next Slide"
             className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors duration-200 z-10"
             onClick={scrollNext}
           >
@@ -254,6 +228,7 @@ const FeaturesScreenshotsSection = () => {
           {scrollSnaps.map((_, index) => (
             <button
               key={index}
+              aria-label={`Go to slide ${index + 1}`}
               className={`w-3 h-3 rounded-full transition-all duration-200 ${
                 index === selectedIndex
                   ? "bg-gradient-to-r from-[#f15A24] to-orange-500 scale-125"
@@ -272,7 +247,7 @@ const FeaturesScreenshotsSection = () => {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="mt-16 text-center"
         >
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto px-4 sm:px-0">
             {[
               "Intuitive mobile-first design",
               "Seamless user experience",

@@ -119,75 +119,105 @@ const fadeInUp = {
 
 const FeaturesPage = () => {
   return (
-    <main className="text-gray-900 bg-white">
+    <main className="text-gray-900 bg-white scroll-mt-30">
       {/* Hero Section */}
       <motion.section
         aria-label="Hero"
-        className="flex flex-col items-center justify-center text-center max-w-7xl mx-auto pt-24 px-6 bg-gradient-to-b from-[#fef8f5] to-white rounded-b-3xl shadow-lg mb-24"
+        className="flex flex-col md:flex-row items-center max-w-7xl mx-auto pt-26 px-6 bg-white mb-24 "
         initial="hidden"
         animate="visible"
         variants={fadeInUp}
+        style={{ overflow: "visible" }} // allow phones to overflow container
       >
-        <h1 className="text-5xl font-extrabold leading-tight max-w-3xl text-[#f15A24] mb-4 drop-shadow-md">
-          Empower Your Professional Network with Intelligent Connections
-        </h1>
-        <p className="text-lg max-w-xl text-gray-700 mb-12">
-          Our app uses AI to foster meaningful relationships, automate
-          scheduling, and deliver insights to help you grow your career.
-        </p>
+        {/* Left text side */}
+        <div className="md:w-2/5 max-w-xl text-left mb-8 md:mb-0 md:pr-8">
+          <h1 className="text-3xl md:text-4xl font-extrabold leading-tight text-[#f15A24] mb-4">
+            Empower Your Professional Network with Intelligent Connections
+          </h1>
+          <p className="text-sm md:text-base text-gray-700 px-1 md:px-0">
+            Our app uses AI to foster meaningful relationships, automate
+            scheduling, and deliver insights to help you grow your career.
+          </p>
 
-        <div style={{ width: 320, height: 640 }}>
-          <PhoneUi image={heroImage} rotation={0} cropHeight={0} />
+          <div className="mt-10">
+            <AppDownloadButtons />
+          </div>
         </div>
 
-        <div className="my-12">
-          <AppDownloadButtons />
+        {/* Right phones side */}
+        <div
+          className="relative hidden md:block"
+          style={{
+            width: 640,
+            height: 600,
+            overflow: "visible",
+            marginLeft: "auto",
+          }}
+        >
+          {[...Array(3)].map((_, i) => {
+            const rotations = [-12, 0, 12];
+            const offsets = [-200, 0, 200];
+            return (
+              <div
+                key={i}
+                style={{
+                  position: "absolute",
+                  bottom: 0,
+                  left: "50%",
+                  transformOrigin: "bottom center",
+                  transform: `translateX(-50%) translateX(${offsets[i]}px) rotate(${rotations[i]}deg)`,
+                  zIndex: rotations[i] === 0 ? 3 : 1,
+                  boxShadow: `0 8px 20px rgba(0, 0, 0, ${0.2 + i * 0.1})`,
+                  borderRadius: "3rem",
+                  transition: "transform 0.3s ease",
+                  overflow: "visible",
+                }}
+                className="hover:z-50 hover:scale-105"
+              >
+                <PhoneUi image={heroImage} cropHeight={0} rotation={0} />
+              </div>
+            );
+          })}
         </div>
       </motion.section>
 
       {/* Key Features Section */}
       <section
         aria-label="Key Features"
-        className="max-w-7xl mx-auto px-6 py-20 space-y-20 border-b border-gray-200 mb-24"
+        className="max-w-7xl mx-auto px-6 py-20 bg-gray-50 rounded-2xl shadow-sm space-y-12"
       >
-        <div>
-          <h2 className="text-4xl font-bold mb-12 text-center text-[#f15A24]">
-            What&apos;s new?
-          </h2>
-        </div>
-        {keyFeatures.map((feature, index) => (
-          <motion.article
-            key={feature.title}
-            className={`flex flex-col md:flex-row items-center justify-center gap-12 ${
-              index % 2 === 1 ? "md:flex-row-reverse" : ""
-            } rounded-xl shadow-lg hover:shadow-2xl transition-shadow bg-white p-8 cursor-pointer`}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            variants={fadeInUp}
-          >
-            <div
-              className="relative rounded-xl overflow-hidden md:w-[210px] w-full border-2 border-black"
-              style={{ height: 442 }}
+        <h2 className="text-4xl font-extrabold text-center text-[#f15A24] mb-16">
+          What's New?
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-6xl mx-auto">
+          {keyFeatures.map((feature) => (
+            <motion.article
+              key={feature.title}
+              className="bg-white rounded-2xl p-8 shadow-md hover:shadow-lg transition-shadow cursor-pointer flex flex-col items-center text-center"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+              variants={fadeInUp}
             >
-              <Image
-                src={feature.image}
-                alt={`${feature.title} illustration`}
-                fill
-                style={{ objectFit: "contain" }}
-                priority={false}
-                sizes="210px"
-              />
-            </div>
-
-            <div className="md:w-1/2 max-w-lg px-6 py-8 ">
-              <h2 className="text-3xl font-bold mb-6 text-[#f15A24]">
+              <div className="relative w-40 h-40 mb-6 rounded-xl overflow-hidden border border-gray-300">
+                <Image
+                  src={feature.image}
+                  alt={`${feature.title} illustration`}
+                  fill
+                  style={{ objectFit: "cover" }}
+                  priority={false}
+                  sizes="160px"
+                />
+              </div>
+              <h3 className="text-2xl font-semibold text-[#f15A24] mb-4">
                 {feature.title}
-              </h2>
-              <p className="text-gray-700 text-lg">{feature.description}</p>
-            </div>
-          </motion.article>
-        ))}
+              </h3>
+              <p className="text-gray-700 text-lg leading-relaxed">
+                {feature.description}
+              </p>
+            </motion.article>
+          ))}
+        </div>
       </section>
 
       {/* New Features  */}

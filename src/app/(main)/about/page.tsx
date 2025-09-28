@@ -125,13 +125,6 @@ const teamMembers: TeamMember[] = [
   },
 ];
 
-const companyStats = [
-  { number: "500K+", label: "Active Users", icon: Users },
-  { number: "50+", label: "Team Members", icon: Building },
-  { number: "180+", label: "Countries", icon: Globe },
-  { number: "$25M", label: "Series A Raised", icon: TrendingUp },
-];
-
 const companyValues = [
   {
     icon: Heart,
@@ -192,9 +185,9 @@ const AboutSection = () => {
     <div className="min-h-screen bg-white">
       {/* Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 right-20 w-96 h-96 bg-gradient-to-br from-[#f15A24]/10 to-orange-300/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 left-20 w-80 h-80 bg-gradient-to-br from-red-300/10 to-[#f15A24]/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-br from-orange-200/10 to-red-200/10 rounded-full blur-3xl animate-pulse delay-500"></div>
+        <div className="absolute top-20 right-20 w-72 h-72 sm:w-96 sm:h-96 bg-gradient-to-br from-[#f15A24]/10 to-orange-300/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-20 left-20 w-64 h-64 bg-gradient-to-br from-red-300/10 to-[#f15A24]/10 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-52 h-52 bg-gradient-to-br from-orange-200/10 to-red-200/10 rounded-full blur-3xl animate-pulse delay-500" />
       </div>
 
       {/* Hero Section */}
@@ -226,7 +219,7 @@ const AboutSection = () => {
       </section>
 
       {/* Mission & Story */}
-      <section className="relative py-1 px-6 bg-gray-50">
+      <section className="relative py-8 px-6 bg-gray-50">
         <div
           className={cn(
             "max-w-6xl mx-auto transition-all duration-1000 transform",
@@ -236,9 +229,9 @@ const AboutSection = () => {
           )}
           data-section="mission"
         >
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left Content */}
-            <div className="space-y-8">
+            <div className="space-y-6">
               <div>
                 <h2 className="text-4xl font-bold text-gray-900 mb-6">
                   Revolutionizing
@@ -247,7 +240,7 @@ const AboutSection = () => {
                     Professional Networking
                   </span>
                 </h2>
-                <p className="text-md text-gray-600 leading-relaxed mb-8">
+                <p className="text-md text-gray-600 leading-relaxed mb-6">
                   Founded in 2022 by former LinkedIn and Google executives,
                   Connecto was born from a simple observation: traditional
                   networking was broken. Too much time wasted on irrelevant
@@ -260,19 +253,19 @@ const AboutSection = () => {
                   connections at the right time for the right reasons.
                 </p>
               </div>
-              <div className="flex items-center space-x-4">
+              <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
                 <Button
                   onClick={() => {
                     navigate("/about#join-contato");
                   }}
-                  className="bg-[#f15A24] hover:bg-[#f15A24]/90 text-white px-8 py-4 h-auto font-semibold transition-all duration-200 hover:scale-105"
+                  className="bg-[#f15A24] hover:bg-[#f15A24]/90 text-white px-8 py-4 h-auto font-semibold transition-all duration-200 hover:scale-105 w-full sm:w-auto"
                 >
                   Join Our Mission
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
                 <Button
                   variant="outline"
-                  className="border-[#f15A24] text-[#f15A24] hover:bg-[#f15A24] hover:text-white px-8 py-4 h-auto font-semibold transition-all duration-200"
+                  className="border-[#f15A24] text-[#f15A24] hover:bg-[#f15A24] hover:text-white px-8 py-4 h-auto font-semibold transition-all duration-200 w-full sm:w-auto"
                 >
                   <Coffee className="w-5 h-5 mr-2" />
                   Careers
@@ -315,8 +308,6 @@ const AboutSection = () => {
       {/* Meet the Team - New Compact Layout */}
       <section className="relative py-20 px-6">
         <div className="max-w-7xl mx-auto">
-          {/* Decorative SVG Wave/Blob */}
-
           {/* Section Header */}
           <div
             className={cn(
@@ -346,12 +337,12 @@ const AboutSection = () => {
           </div>
 
           {/* Team Member Compact Grid */}
-          <div className="flex flex-wrap justify-center gap-10 md:gap-16">
+          <div className="flex flex-wrap justify-center gap-6 sm:gap-10 md:gap-16">
             {teamMembers.map((member, idx) => (
               <div
                 key={member.id}
                 className={cn(
-                  "flex flex-col items-center w-64 px-4 py-6 hover:scale-105 transition-transform duration-300 bg-white/0",
+                  "flex flex-col items-center w-full max-w-xs sm:max-w-[45%] md:max-w-[30%] lg:max-w-[22%] px-4 py-6 hover:scale-105 transition-transform duration-300 bg-white/0",
                   isVisible("team")
                     ? "animate-in fade-in-50 slide-in-from-bottom-5 duration-700 opacity-100"
                     : "opacity-0 translate-y-10"
