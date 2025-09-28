@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Mail, Phone, MapPin, ExternalLink } from "lucide-react";
@@ -14,7 +15,6 @@ const footerSections = [
       { name: "Mobile App", href: "#" },
     ],
   },
-
   {
     title: "Resources",
     links: [
@@ -43,6 +43,25 @@ const socialLinks = [
 ];
 
 const Footer = () => {
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!email || !email.includes("@")) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    setError("");
+    // Add your subscription logic here
+
+    setSubmitted(true);
+    setEmail("");
+  };
+
   return (
     <footer className="bg-white text-gray-900">
       {/* CTA Section */}
@@ -56,6 +75,7 @@ const Footer = () => {
               Join millions of users transforming how they consume and share
               knowledge with Contato.
             </p>
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
                 size="lg"
@@ -66,7 +86,7 @@ const Footer = () => {
               <Button
                 size="lg"
                 variant="outline"
-                className=" bg-gradient-to-r from-[#f15A24] to-[#d04f23] border-[#f15A24] text-[#f15A24] hover:bg-[#f15A24]/10 transition-all duration-300 text-lg px-8 py-6 text-white"
+                className="bg-gradient-to-r from-[#f15A24] to-[#d04f23] border-[#f15A24] text-[#f15A24] hover:bg-[#f15A24]/10 transition-all duration-300 text-lg px-8 py-6 text-white"
               >
                 Schedule Demo
               </Button>
@@ -74,6 +94,42 @@ const Footer = () => {
           </div>
         </div>
       </div>
+
+      {/* Newsletter Signup Section */}
+      <section className="bg-gray-50 py-16">
+        <div className="container mx-auto px-4 max-w-4xl text-center">
+          <h3 className="text-2xl font-semibold text-[#f15A24] mb-2">
+            Subscribe to our Newsletter
+          </h3>
+          <p className="text-gray-600 mb-8">
+            Stay updated with the latest news, tips, and exclusive offers.
+          </p>
+
+          <form
+            onSubmit={handleSubscribe}
+            className="flex flex-col sm:flex-row gap-4 justify-center"
+          >
+            <input
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="h-14 flex-grow px-4 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#f15A24] focus:border-transparent outline-none"
+              required
+            />
+            <Button
+              type="submit"
+              className="h-14 bg-gradient-to-r from-[#f15A24] to-[#d04f23] text-white px-8 py-3 font-semibold rounded-lg hover:shadow-lg transition"
+            >
+              Subscribe
+            </Button>
+          </form>
+          {error && <p className="text-red-600 mt-4">{error}</p>}
+          {submitted && !error && (
+            <p className="text-green-600 mt-4">Thanks for subscribing!</p>
+          )}
+        </div>
+      </section>
 
       {/* Main Footer */}
       <div className="container mx-auto px-4 py-16">

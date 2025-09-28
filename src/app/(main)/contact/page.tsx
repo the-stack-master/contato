@@ -1,142 +1,169 @@
 "use client";
-
+import { motion } from "framer-motion";
 import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { Mail, Phone, MapPin, CheckCircle2 } from "lucide-react";
 
-export default function ContactUs() {
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
-  const [sent, setSent] = useState(false);
+export default function ContactForm() {
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState<null | "success" | "error">(null);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => setForm({ ...form, [e.target.name]: e.target.value });
+  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   setStatus(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSent(true);
-    setTimeout(() => setSent(false), 4000);
-    setForm({ name: "", email: "", message: "" });
-  };
+  //   const formData = new FormData(e.currentTarget);
+  //   const data = Object.fromEntries(formData.entries());
+
+  //   try {
+  //     const res = await fetch("/api/contact", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify(data),
+  //     });
+
+  //     if (res.ok) {
+  //       setStatus("success");
+  //       e.currentTarget.reset();
+  //     } else {
+  //       setStatus("error");
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //     setStatus("error");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
-    <section className="relative py-24 min-h-screen bg-gradient-to-br from-[#fff7f4] via-[#f5f1fd] to-[#fff9f3] overflow-hidden">
-      {/* Floating background blobs */}
-      <div className="absolute top-0 left-[-4rem] w-[28rem] h-[28rem] bg-gradient-to-bl from-orange-300/30 via-pink-300/20 to-white rounded-full blur-3xl pointer-events-none"></div>
-      <div className="absolute bottom-0 right-[-6rem] w-[22rem] h-[22rem] bg-gradient-to-br from-blue-300/25 via-purple-300/20 to-white rounded-full blur-3xl pointer-events-none"></div>
-
-      <div className="container mx-auto px-6 grid md:grid-cols-2 gap-16 relative z-10 items-start">
-        {/* Contact form glass card */}
-        <form className="relative bg-white/65 backdrop-blur-[10px] border border-white/60 rounded-3xl shadow-2xl p-10 space-y-7">
-          <h2 className="text-3xl font-extrabold mb-4 text-gray-900 drop-shadow">
-            Contact Us
+    <section className="py-20 bg-gray-50">
+      <div className="container mx-auto px-6 max-w-4xl">
+        {/* Heading */}
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold bg-gradient-to-r from-[#f15A24] via-orange-500 to-red-500 bg-clip-text text-transparent">
+            Get In Touch
           </h2>
+          <p className="text-gray-600 mt-2 text-lg">
+            Feel free to reach out and stay connected with us.
+          </p>
+        </div>
 
+        {/* Form */}
+        <motion.form
+          onSubmit={() => {}}
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="bg-white p-10 rounded-3xl border border-gray-200 grid grid-cols-1 md:grid-cols-2 gap-8"
+        >
+          {/* First Name */}
           <div>
-            <label
-              className="block text-gray-800 font-semibold mb-2"
-              htmlFor="name"
-            >
-              Name<span className="text-orange-500">*</span>
+            <label className="block text-sm font-semibold text-gray-700 mb-3">
+              First Name
             </label>
             <input
-              id="name"
-              name="name"
+              name="firstName"
+              type="text"
               required
-              placeholder="Your Name"
-              className="w-full rounded-2xl px-4 py-3 border border-gray-300 bg-white/85 transition placeholder:text-gray-400 text-base focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
+              placeholder="Enter first name"
+              className="w-full px-5 py-3 border border-gray-300 rounded-2xl bg-gray-50 focus:ring-4 focus:ring-[#f15A24]/30 focus:border-[#f15A24] outline-none transition"
             />
           </div>
 
+          {/* Last Name */}
           <div>
-            <label
-              className="block text-gray-800 font-semibold mb-2"
-              htmlFor="email"
-            >
-              Email<span className="text-orange-500">*</span>
+            <label className="block text-sm font-semibold text-gray-700 mb-3">
+              Last Name
             </label>
             <input
-              id="email"
-              type="email"
+              name="lastName"
+              type="text"
+              required
+              placeholder="Enter last name"
+              className="w-full px-5 py-3 border border-gray-300 rounded-2xl bg-gray-50 focus:ring-4 focus:ring-[#f15A24]/30 focus:border-[#f15A24] outline-none transition"
+            />
+          </div>
+
+          {/* Email */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-3">
+              E-Mail
+            </label>
+            <input
               name="email"
+              type="email"
               required
-              placeholder="you@email.com"
-              className="w-full rounded-2xl px-4 py-3 border border-gray-300 bg-white/85 transition placeholder:text-gray-400 text-base focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
+              placeholder="Enter email"
+              className="w-full px-5 py-3 border border-gray-300 rounded-2xl bg-gray-50 focus:ring-4 focus:ring-[#f15A24]/30 focus:border-[#f15A24] outline-none transition"
             />
-            <span className="block text-xs text-gray-400 mt-1">
-              We&apos;ll never share your email.
-            </span>
           </div>
 
+          {/* Phone */}
           <div>
-            <label
-              className="block text-gray-800 font-semibold mb-2"
-              htmlFor="phone"
-            >
-              Phone
+            <label className="block text-sm font-semibold text-gray-700 mb-3">
+              Phone Number
             </label>
             <input
-              id="phone"
               name="phone"
               type="tel"
-              placeholder="(Optional)"
-              className="w-full rounded-2xl px-4 py-3 border border-gray-300 bg-white/85 transition placeholder:text-gray-400 text-base focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
+              placeholder="Enter phone number"
+              className="w-full px-5 py-3 border border-gray-300 rounded-2xl bg-gray-50 focus:ring-4 focus:ring-[#f15A24]/30 focus:border-[#f15A24] outline-none transition"
             />
           </div>
 
-          <div>
-            <label
-              className="block text-gray-800 font-semibold mb-2"
-              htmlFor="message"
-            >
-              Message<span className="text-orange-500">*</span>
+          {/* Business Name */}
+          <div className="md:col-span-2">
+            <label className="block text-sm font-semibold text-gray-700 mb-3">
+              Business Name
+            </label>
+            <input
+              name="business"
+              type="text"
+              placeholder="Enter business name"
+              className="w-full px-5 py-3 border border-gray-300 rounded-2xl bg-gray-50 focus:ring-4 focus:ring-[#f15A24]/30 focus:border-[#f15A24] outline-none transition"
+            />
+          </div>
+
+          {/* Comments */}
+          <div className="md:col-span-2">
+            <label className="block text-sm font-semibold text-gray-700 mb-3">
+              Comments
             </label>
             <textarea
-              id="message"
-              name="message"
-              required
-              rows={5}
-              placeholder="Type your message..."
-              className="w-full rounded-2xl px-4 py-3 border border-gray-300 bg-white/85 transition placeholder:text-gray-400 text-base focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
+              name="comments"
+              rows={4}
+              placeholder="Write your message..."
+              className="w-full px-5 py-3 border border-gray-300 rounded-2xl bg-gray-50 focus:ring-4 focus:ring-[#f15A24]/30 focus:border-[#f15A24] outline-none transition resize-none"
             />
           </div>
 
-          <button
-            type="submit"
-            className="mt-2 py-4 rounded-2xl font-bold text-white text-lg bg-gradient-to-r from-[#f15A24] to-orange-500 w-full shadow-xl hover:scale-105 transition-transform hover:shadow-2xl focus-visible:ring-2 focus-visible:ring-orange-400"
-          >
-            Send Message
-          </button>
-        </form>
+          {/* Submit Button */}
+          <div className="md:col-span-2 flex justify-end">
+            <button
+              type="submit"
+              disabled={loading}
+              className={`px-10 py-4 bg-gradient-to-r from-[#f15A24] via-orange-500 to-red-500 text-white font-bold rounded-2xl transition transform ${
+                loading
+                  ? "opacity-70 cursor-not-allowed"
+                  : "hover:scale-105 hover:brightness-110"
+              }`}
+            >
+              {loading ? "Sending..." : "Submit"}
+            </button>
+          </div>
+        </motion.form>
 
-        {/* Info + icons card glassmorphism */}
-        <div className="flex flex-col gap-6">
-          <div className="bg-white/60 border border-white/40 backdrop-blur-2xl rounded-2xl shadow-lg p-6 flex items-center gap-5">
-            <Mail className="w-7 h-7 text-[#f15A24]" />
-            <div>
-              <p className="font-medium text-gray-900">Email</p>
-              <p className="text-gray-600">hello@connecto.com</p>
-            </div>
-          </div>
-          <div className="bg-white/60 border border-white/40 backdrop-blur-2xl rounded-2xl shadow-lg p-6 flex items-center gap-5">
-            <Phone className="w-7 h-7 text-[#f15A24]" />
-            <div>
-              <p className="font-medium text-gray-900">Phone</p>
-              <p className="text-gray-600">+91 123 456 7890</p>
-            </div>
-          </div>
-          <div className="bg-white/60 border border-white/40 backdrop-blur-2xl rounded-2xl shadow-lg p-6 flex items-center gap-5">
-            <MapPin className="w-7 h-7 text-[#f15A24]" />
-            <div>
-              <p className="font-medium text-gray-900">Address</p>
-              <p className="text-gray-600">
-                123 Startup Street, Tech City, India
-              </p>
-            </div>
-          </div>
-        </div>
+        {/* Status Messages */}
+        {status === "success" && (
+          <p className="mt-6 text-green-600 text-center font-semibold">
+            ✅ Your message has been sent successfully!
+          </p>
+        )}
+        {status === "error" && (
+          <p className="mt-6 text-red-600 text-center font-semibold">
+            ❌ Something went wrong. Please try again later.
+          </p>
+        )}
       </div>
     </section>
   );

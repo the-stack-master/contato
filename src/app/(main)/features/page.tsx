@@ -7,6 +7,7 @@ import "swiper/css/navigation";
 import { Navigation, Autoplay } from "swiper/modules";
 import PhoneUi from "@/components/ui/phoneUi";
 import Image from "next/image";
+import FeaturesScreenshotsSection from "./components/FeaturesScreenshots";
 
 interface HeroImage {
   url: string;
@@ -187,6 +188,11 @@ const FeaturesPage = () => {
             </div>
           </motion.article>
         ))}
+      </section>
+
+      {/* New Features  */}
+      <section>
+        <FeaturesScreenshotsSection />
       </section>
 
       {/* Screenshots Carousel Section */}

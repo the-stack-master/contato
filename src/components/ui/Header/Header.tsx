@@ -41,7 +41,7 @@ const Header = ({ authToken }: HeaderProps) => {
     { href: "/contact", label: "Contact" },
     { href: "/#pricing", label: "Pricing" },
     { href: "/support", label: "Support" },
-    { href: "/#about", label: "About Us" },
+    { href: "/about", label: "About Us" },
   ];
 
   return (
