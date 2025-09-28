@@ -101,36 +101,18 @@ const Header = ({ authToken }: HeaderProps) => {
 
           {/* Auth dependent section */}
           {authToken ? (
-            <div className="relative" ref={dropdownRef}>
-              <button
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="flex items-center space-x-2 focus:outline-none focus:ring-2 focus:ring-[#f15A24] rounded-full px-3 py-2 bg-[#f15A24] text-white font-semibold"
-              >
-                <span>CU</span>
-                <ChevronDown className="w-4 h-4 text-white" />
-              </button>
-              {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-40 bg-white rounded-xl shadow-2xl py-2 z-50">
-                  <Link
-                    href="/settings"
-                    className="block px-4 py-3 text-[#f15A24] hover:bg-[#f15A24] hover:text-white transition rounded-lg font-medium"
-                  >
-                    Settings
-                  </Link>
-                  <button
-                    onClick={() => logout()}
-                    className="w-full text-left px-4 py-3 text-[#f15A24] hover:bg-[#f15A24] hover:text-white transition rounded-lg font-medium"
-                  >
-                    Logout
-                  </button>
-                </div>
-              )}
-            </div>
+            <Button
+              // variant="ghost"
+              className="text-[#f15A24] hover:text-opacity-80 cursor-pointer"
+              onClick={() => logout()}
+            >
+              Sign Out
+            </Button>
           ) : (
             <Button
               // variant="ghost"
               className="text-[#f15A24] hover:text-opacity-80 cursor-pointer"
-              onClick={() => navigate("/home#login")}
+              onClick={() => navigate("/#login")}
             >
               Sign In
             </Button>

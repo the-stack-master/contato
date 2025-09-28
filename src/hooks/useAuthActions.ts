@@ -65,10 +65,10 @@ export function useAuthActions() {
     AuthService.logout();
 
     // If already on /home, refresh; else, redirect to /home
-    if (window.location.pathname === "/home") {
+    if (window.location.pathname === "/") {
       window.location.reload();
     } else {
-      router.push("/home");
+      router.replace("/");
     }
   };
 

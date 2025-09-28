@@ -3,6 +3,7 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Check, Crown, Zap, Building } from "lucide-react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 interface PricingFeature {
   text: string;
@@ -165,18 +166,35 @@ export default function PricingSectionClient({
                       </li>
                     ))}
                   </ul>
-
-                  <a
-                    href={plan.buttonUrl}
-                    target={plan.buttonUrl ? "_blank" : undefined}
-                    className={`inline-block w-full text-lg font-semibold transition-all duration-300 text-center py-3 rounded-lg ${
-                      plan.isPopular
-                        ? "bg-gradient-to-r from-[#f15A24] to-[#d04f23] hover:shadow-lg text-white"
-                        : "text-[#f15A24] border border-[#f15A24] hover:bg-[#f15A24]/10"
-                    }`}
-                  >
-                    {plan.buttonText}
-                  </a>
+                  {plan.buttonUrl?.startsWith("/") ? (
+                    <Link
+                      href={plan.buttonUrl}
+                      className={`inline-block w-full text-lg font-semibold transition-all duration-300 text-center py-3 rounded-lg ${
+                        plan.isPopular
+                          ? "bg-gradient-to-r from-[#f15A24] to-[#d04f23] hover:shadow-lg text-white"
+                          : "text-[#f15A24] border border-[#f15A24] hover:bg-[#f15A24]/10"
+                      }`}
+                    >
+                      {plan.buttonText}
+                    </Link>
+                  ) : (
+                    <p
+                      onClick={() =>
+                        window.open(
+                          plan.buttonUrl,
+                          "_blank",
+                          "noopener,noreferrer"
+                        )
+                      }
+                      className={`cursor-pointer inline-block w-full text-lg font-semibold transition-all duration-300 text-center py-3 rounded-lg ${
+                        plan.isPopular
+                          ? "bg-gradient-to-r from-[#f15A24] to-[#d04f23] hover:shadow-lg text-white"
+                          : "text-[#f15A24] border border-[#f15A24] hover:bg-[#f15A24]/10"
+                      }`}
+                    >
+                      {plan.buttonText}
+                    </p>
+                  )}
                 </CardContent>
 
                 {/* Decorative gradient */}

@@ -59,10 +59,11 @@ const keyFeatures = [
 
 const screenshots = [
   "https://contato.app/assets/images/screenshots/analytics-engangement.png",
-  "https://contato.app/assets/images/screenshots/analytics-engangement.png",
-  "https://contato.app/assets/images/screenshots/analytics-engangement.png",
-  "https://contato.app/assets/images/screenshots/analytics-engangement.png",
-  "https://contato.app/assets/images/screenshots/analytics-engangement.png",
+  "https://contato.app/assets/images/screenshots/analytics-growth.png",
+  "https://contato.app/assets/images/screenshots/analytics-insights.png",
+  "https://contato.app/assets/images/screenshots/integrations.png",
+  "https://contato.app/assets/images/screenshots/connection-near-me.png",
+  "https://contato.app/assets/images/screenshots/my-code.png",
 ];
 
 const fullFeatures = [
@@ -263,12 +264,16 @@ const FeaturesPage = () => {
         >
           {screenshots.map((src, i) => (
             <SwiperSlide key={i}>
-              <img
-                src={src}
-                alt={`Screenshot ${i + 1}`}
-                className="rounded-lg shadow-md w-full h-auto"
-                loading="lazy"
-              />
+              <div className="relative w-full h-160 rounded-lg shadow-md overflow-hidden">
+                <Image
+                  src={src}
+                  alt={`Screenshot ${i + 1}`}
+                  layout="fill"
+                  objectFit="cover"
+                  priority={i < 3} // optionally prioritize first few images
+                  className="rounded-lg"
+                />
+              </div>
             </SwiperSlide>
           ))}
         </Swiper>
