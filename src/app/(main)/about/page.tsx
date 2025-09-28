@@ -249,8 +249,8 @@ const AboutSection = () => {
                 </p>
                 <p className="text-lg text-gray-600 leading-relaxed">
                   We set out to build something different—an AI-powered platform
-                  that doesn't just connect professionals, but creates the right
-                  connections at the right time for the right reasons.
+                  that doesn&apos;t just connect professionals, but creates the
+                  right connections at the right time for the right reasons.
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
