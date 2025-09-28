@@ -10,14 +10,29 @@ import Image from "next/image";
 import FeaturesScreenshotsSection from "./components/FeaturesScreenshots";
 
 interface HeroImage {
+  id: number;
   url: string;
   caption?: string;
 }
 
-const heroImage = {
-  url: "https://contato.app/assets/images/screenshots/analytics-engangement.png",
-  caption: "screenshot1",
-};
+const heroImage: HeroImage[] = [
+  {
+    id: 1,
+    url: "https://contato.app/assets/images/screenshots/analytics-engangement.png",
+    caption: "screenshot2",
+  },
+  {
+    id: 2,
+    url: "https://contato.app/assets/images/screenshots/my-code.png",
+    caption: "screenshot2",
+  },
+  {
+    id: 3,
+    url: "https://contato.app/assets/images/screenshots/integrations.png",
+    caption: "screenshot2",
+  },
+];
+
 const keyFeatures = [
   {
     title: "AI-Powered Matching",
@@ -174,7 +189,7 @@ const FeaturesPage = () => {
                 }}
                 className="hover:z-50 hover:scale-105"
               >
-                <PhoneUi image={heroImage} cropHeight={0} rotation={0} />
+                <PhoneUi image={heroImage[i]} cropHeight={0} rotation={0} />
               </div>
             );
           })}

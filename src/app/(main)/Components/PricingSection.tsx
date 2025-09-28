@@ -1,150 +1,148 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Check, Crown, Zap, Building } from "lucide-react";
 import { motion } from "framer-motion";
-import { JSX } from "react";
 
-type ButtonVariant =
-  | "outline"
-  | "default"
-  | "link"
-  | "destructive"
-  | "secondary"
-  | "ghost"
-  | null
-  | undefined;
+interface PricingFeature {
+  text: string;
+  included?: boolean;
+}
 
-const plans: {
-  name: string;
-  icon: JSX.Element;
+interface PricingPlan {
+  planName: string;
+  planSubtitle?: string;
   price: string;
-  period: string;
+  pricePeriod?: string;
   description: string;
-  features: string[];
-  cta: string;
-  popular: boolean;
-  variant: ButtonVariant;
-}[] = [
-  {
-    name: "Basic",
-    icon: <Zap className="w-6 h-6 text-[#f15A24]" />,
-    price: "Free",
-    period: "forever",
-    description:
-      "Perfect for individual users exploring Contato’s essential content and networking features",
-    features: [
-      "Access to curated blogs and videos",
-      "Standard community features",
-      "Basic content recommendations",
-      "Mobile app access",
-      "Standard support",
-    ],
-    cta: "Get Started Free",
-    popular: false,
-    variant: "outline",
-  },
-  {
-    name: "Pro",
-    icon: <Crown className="w-6 h-6 text-[#f15A24]" />,
-    price: "$12",
-    period: "per month",
-    description:
-      "Ideal for professionals seeking full access and advanced networking insights",
-    features: [
-      "Unlimited premium content access",
-      "Enhanced community engagement tools",
-      "Personalized content insights",
-      "Priority support",
-      "Third-party integrations",
-    ],
-    cta: "Start Free Trial",
-    popular: true,
-    variant: "default",
-  },
-  {
-    name: "Enterprise",
-    icon: <Building className="w-6 h-6 text-[#f15A24]" />,
-    price: "Custom",
-    period: "pricing",
-    description:
-      "Comprehensive solution for teams and organizations driving content strategy and engagement",
-    features: [
-      "All Pro features included",
-      "Team management & collaboration",
-      "Advanced analytics and reporting",
-      "Dedicated account management",
-      "Custom integrations and SSO",
-    ],
-    cta: "Contact Sales",
-    popular: false,
-    variant: "outline",
-  },
-];
+  features: PricingFeature[];
+  buttonText: string;
+  buttonUrl?: string;
+  isPopular: boolean;
+  badgeText?: string;
+  planIcon?: string;
+}
 
-const PricingSection = () => {
+interface PricingBlock {
+  _id: string;
+  title?: string;
+  pricingPlans: PricingPlan[];
+}
+
+interface PricingFooterFeature {
+  text: string;
+  icon?: string;
+}
+
+interface PricingFooter {
+  _id: string;
+  title?: string;
+  mainText?: string;
+  features: PricingFooterFeature[];
+  isActive: boolean;
+}
+
+interface PricingHeader {
+  _id: string;
+  heading?: string;
+  subHeading?: string;
+}
+
+interface Props {
+  pricingHeader: PricingHeader | null;
+  pricingBlocks: PricingBlock[] | null;
+  pricingFooter: PricingFooter[] | null;
+}
+
+const iconMap: Record<string, React.JSX.Element> = {
+  Zap: <Zap className="w-4 h-4 text-[#f15A24]" />,
+  Crown: <Crown className="w-4 h-4 text-[#f15A24]" />,
+  Building: <Building className="w-4 h-4 text-[#f15A24]" />,
+};
+
+export default function PricingSectionClient({
+  pricingHeader,
+  pricingBlocks,
+  pricingFooter,
+}: Props) {
+  if (!pricingHeader || !pricingBlocks) return null;
+
+  const activeFooters = pricingFooter?.filter((f) => f.isActive) || [];
+
+  console.log("=========", pricingHeader);
+
   return (
     <section id="pricing" className="py-20 bg-black text-white">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16 max-w-3xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 drop-shadow-md">
-            Choose Your Plan
-          </h2>
-          <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-            Start free and upgrade as you grow. All plans include access to
-            Contato’s core app features.
-          </p>
-        </div>
+      <div className="container mx-auto px-4 text-center max-w-4xl mx-auto mb-16">
+        <h2 className="text-3xl md:text-4xl font-bold mb-4 drop-shadow-md">
+          {pricingHeader.heading}
+        </h2>
+        <p className="text-lg text-gray-300">{pricingHeader.subHeading}</p>
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {plans.map((plan, index) => (
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        {pricingBlocks.map((block) =>
+          block.pricingPlans.map((plan, index) => (
             <motion.div
-              key={index}
+              key={`${block._id}-${index}`}
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 200, damping: 20 }}
               className="rounded-3xl"
             >
               <Card
                 className={`group relative overflow-hidden rounded-3xl border ${
-                  plan.popular
+                  plan.isPopular
                     ? "bg-[#1a1a1a] shadow-lg border-[#f15A24] scale-105"
                     : "bg-[#111111] border-gray-700"
                 } transition-all duration-300`}
               >
-                {plan.popular && (
+                {plan.isPopular && (
                   <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-[#f15A24] to-[#d04f23] text-white text-sm font-semibold text-center py-2 rounded-b-xl z-10">
-                    Most Popular
+                    {plan.badgeText || "Most Popular"}
                   </div>
                 )}
 
                 <CardHeader
-                  className={`text-center ${plan.popular ? "pt-14" : "pt-10"}`}
+                  className={`text-center ${
+                    plan.isPopular ? "pt-14" : "pt-10"
+                  }`}
                 >
                   <div className="flex items-center justify-center mb-4">
                     <div className="text-[#f15A24] group-hover:scale-110 transition-transform duration-300">
-                      {plan.icon}
+                      {plan.planIcon && iconMap[plan.planIcon] ? (
+                        iconMap[plan.planIcon]
+                      ) : (
+                        <Zap className="w-6 h-6 text-[#f15A24]" />
+                      )}
                     </div>
                   </div>
 
                   <h3
                     className={`text-2xl font-bold ${
-                      plan.popular ? "text-[#f15A24]" : "text-white"
+                      plan.isPopular ? "text-[#f15A24]" : "text-white"
                     } mb-2`}
                   >
-                    {plan.name}
+                    {plan.planName}
                   </h3>
+
+                  {plan.planSubtitle && (
+                    <p className="text-sm text-gray-400 mb-1">
+                      {plan.planSubtitle}
+                    </p>
+                  )}
 
                   <div className="mb-4">
                     <span
                       className={`text-4xl font-bold ${
-                        plan.popular ? "text-[#f15A24]" : "text-white"
+                        plan.isPopular ? "text-[#f15A24]" : "text-white"
                       }`}
                     >
                       {plan.price}
                     </span>
-                    {plan.period && (
-                      <span className="text-gray-400 ml-2">/{plan.period}</span>
+                    {plan.pricePeriod && (
+                      <span className="text-gray-400 ml-2">
+                        /{plan.pricePeriod}
+                      </span>
                     )}
                   </div>
 
@@ -156,67 +154,60 @@ const PricingSection = () => {
                     {plan.features.map((feature, i) => (
                       <li
                         key={i}
-                        className="flex items-start text-gray-300 text-sm"
+                        className={`flex items-start text-sm ${
+                          feature.included
+                            ? "text-gray-300"
+                            : "text-gray-600 line-through"
+                        }`}
                       >
                         <Check className="w-5 h-5 text-[#f15A24] mr-3 flex-shrink-0 mt-0.5" />
-                        {feature}
+                        {feature.text}
                       </li>
                     ))}
                   </ul>
 
-                  <Button
-                    variant={
-                      plan.variant as
-                        | "outline"
-                        | "default"
-                        | "link"
-                        | "destructive"
-                        | "secondary"
-                        | "ghost"
-                        | null
-                        | undefined
-                    }
-                    className={`w-full text-lg font-semibold transition-all duration-300 ${
-                      plan.popular
-                        ? "bg-gradient-to-r from-[#f15A24] to-[#d04f23] hover:shadow-lg"
-                        : "text-[#f15A24] border-[#f15A24] hover:bg-[#f15A24]/10"
+                  <a
+                    href={plan.buttonUrl}
+                    target={plan.buttonUrl ? "_blank" : undefined}
+                    className={`inline-block w-full text-lg font-semibold transition-all duration-300 text-center py-3 rounded-lg ${
+                      plan.isPopular
+                        ? "bg-gradient-to-r from-[#f15A24] to-[#d04f23] hover:shadow-lg text-white"
+                        : "text-[#f15A24] border border-[#f15A24] hover:bg-[#f15A24]/10"
                     }`}
-                    size="lg"
                   >
-                    {plan.cta}
-                  </Button>
+                    {plan.buttonText}
+                  </a>
                 </CardContent>
 
                 {/* Decorative gradient */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[#f15A24] to-[#d04f23] rounded-full blur-3xl opacity-10 group-hover:scale-150 transition-transform duration-500 pointer-events-none"></div>
               </Card>
             </motion.div>
+          ))
+        )}
+      </div>
+
+      {/* Footer Section */}
+      {activeFooters.length > 0 && (
+        <div className="max-w-4xl mx-auto text-gray-400 mt-16 px-4 space-y-6 text-center">
+          {activeFooters.map((footer) => (
+            <div key={footer._id}>
+              <p className="mb-4">{footer.mainText}</p>
+              <ul className="flex flex-wrap justify-center gap-6">
+                {footer.features.map((feature, idx) => (
+                  <li
+                    key={idx}
+                    className="flex items-center space-x-2 text-gray-300 text-sm"
+                  >
+                    {feature.icon && iconMap[feature.icon]}
+                    <span>{feature.text}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           ))}
         </div>
-
-        {/* Additional info */}
-        <div className="text-center mt-12 max-w-3xl mx-auto text-gray-400">
-          <p className="mb-4">
-            All plans include a 14-day free trial. No credit card required.
-          </p>
-          <div className="flex flex-wrap justify-center gap-6 text-sm">
-            <span className="flex items-center space-x-2">
-              <Check className="w-4 h-4 text-[#f15A24]" />
-              <span>Cancel anytime</span>
-            </span>
-            <span className="flex items-center space-x-2">
-              <Check className="w-4 h-4 text-[#f15A24]" />
-              <span>24/7 support</span>
-            </span>
-            <span className="flex items-center space-x-2">
-              <Check className="w-4 h-4 text-[#f15A24]" />
-              <span>99.9% uptime</span>
-            </span>
-          </div>
-        </div>
-      </div>
+      )}
     </section>
   );
-};
-
-export default PricingSection;
+}

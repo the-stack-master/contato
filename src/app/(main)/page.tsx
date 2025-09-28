@@ -7,6 +7,9 @@ import PricingSection from "./Components/PricingSection";
 // import Footer from "./Components/Footer";
 import SimpleVideoSection from "./Components/VideoSection";
 import HeroServer from "./Components/HeroComponent";
+import FeaturesSectionServer from "@/components/serverComponents/HomeFeaturesServer";
+import TestimonialsSectionServer from "@/components/serverComponents/TestimonialsServer";
+import PricingSectionServer from "@/components/serverComponents/PricingServer";
 
 export default async function LandingPage() {
   const cookieStore = await cookies();
@@ -27,10 +30,10 @@ export default async function LandingPage() {
         {/* <HeroSection /> */}
         <HeroServer />
         <StatsSection />
-        <FeaturesSection />
+        <FeaturesSectionServer />
         <SimpleVideoSection />
-        <TestimonialsSection />
-        <PricingSection />
+        <TestimonialsSectionServer />
+        <PricingSectionServer />
       </main>
       {/* <Footer /> */}
     </div>

@@ -12,6 +12,40 @@ import {
 } from "lucide-react";
 import { motion, Variants } from "framer-motion";
 
+interface Feature {
+  text: string;
+}
+
+interface FeatureBlock {
+  icon: string;
+  title: string;
+  description: string;
+  features: Feature[];
+}
+
+interface HomeFeatureBlocks {
+  _id: string;
+  title: string;
+  featureBlocks: FeatureBlock[];
+}
+
+interface HomeFeatureHeader {
+  _id: string;
+  title: string;
+  heading: string;
+  subHeading: string;
+}
+
+// Map icon string to lucide-react icon components
+const iconMap: Record<string, React.ReactNode> = {
+  Smartphone: <Smartphone className="w-8 h-8 text-[#f15A24]" />,
+  "App Access": <Video className="w-8 h-8 text-[#f15A24]" />,
+  Users: <Users className="w-8 h-8 text-[#f15A24]" />,
+  BarChart: <BarChart className="w-8 h-8 text-[#f15A24]" />,
+  Shield: <Shield className="w-8 h-8 text-[#f15A24]" />,
+  Zap: <Zap className="w-8 h-8 text-[#f15A24]" />,
+};
+
 const containerVariants: Variants = {
   hidden: {},
   visible: {
@@ -39,81 +73,16 @@ const cardVariants: Variants = {
   },
 };
 
-const FeaturesSection = () => {
-  const features = [
-    {
-      icon: <Smartphone className="w-8 h-8 text-[#f15A24]" />,
-      title: "Seamless App Access",
-      description:
-        "Experience smooth navigation and easy access to blogs, videos, and posts—all within one powerful app.",
-      benefits: [
-        "User-friendly interface",
-        "Fast loading",
-        "Offline access",
-        "Cross-device sync",
-      ],
-    },
-    {
-      icon: <Video className="w-8 h-8 text-[#f15A24]" />,
-      title: "Premium Content",
-      description:
-        "Get exclusive access to expertly curated blogs, videos, and community posts to elevate your knowledge and skills.",
-      benefits: [
-        "Curated content",
-        "Expert insights",
-        "Interactive videos",
-        "Regular updates",
-      ],
-    },
-    {
-      icon: <Users className="w-8 h-8 text-[#f15A24]" />,
-      title: "Community Engagement",
-      description:
-        "Connect, share, and grow with a vibrant community of like-minded professionals and enthusiasts.",
-      benefits: [
-        "Discussion forums",
-        "User posts",
-        "Networking opportunities",
-        "Event invites",
-      ],
-    },
-    {
-      icon: <BarChart className="w-8 h-8 text-[#f15A24]" />,
-      title: "Insightful Analytics",
-      description:
-        "Track your app activity and engagement to understand your personal growth and content interaction.",
-      benefits: [
-        "View history",
-        "Engagement stats",
-        "Personalized recommendations",
-        "Progress tracking",
-      ],
-    },
-    {
-      icon: <Shield className="w-8 h-8 text-[#f15A24]" />,
-      title: "Privacy & Security",
-      description:
-        "Your data is protected with industry-standard encryption and privacy controls to keep your information safe.",
-      benefits: [
-        "Data encryption",
-        "User privacy settings",
-        "Secure authentication",
-        "Regular updates",
-      ],
-    },
-    {
-      icon: <Zap className="w-8 h-8 text-[#f15A24]" />,
-      title: "Third-Party Integrations",
-      description:
-        "Connect your favorite tools to enhance your experience and streamline workflows seamlessly.",
-      benefits: [
-        "Calendar sync",
-        "Notification integrations",
-        "API access",
-        "Cross-platform support",
-      ],
-    },
-  ];
+interface FeaturesSectionClientProps {
+  featureHeader: HomeFeatureHeader | null;
+  featureBlocks: HomeFeatureBlocks | null;
+}
+
+export default function FeaturesSectionClient({
+  featureHeader,
+  featureBlocks,
+}: FeaturesSectionClientProps) {
+  if (!featureHeader || !featureBlocks) return null;
 
   return (
     <section
@@ -133,7 +102,7 @@ const FeaturesSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            Everything You Need for Content & Community
+            {featureHeader.heading}
           </motion.h2>
           <motion.p
             className="text-lg text-gray-600 max-w-md mx-auto"
@@ -141,15 +110,14 @@ const FeaturesSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            Comprehensive features designed to connect you with valuable content
-            and a thriving network.
+            {featureHeader.subHeading}
           </motion.p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-          {features.map((feature, index) => (
+          {featureBlocks.featureBlocks.map((feature, index) => (
             <motion.div
-              key={index}
+              key={feature.title + index}
               variants={cardVariants}
               whileHover="hover"
               className={`group rounded-3xl overflow-hidden ${
@@ -159,7 +127,9 @@ const FeaturesSection = () => {
               <Card className="border-0 bg-transparent shadow-none">
                 <CardContent className="p-8">
                   <div className="mb-6 transition-transform duration-300 origin-center group-hover:scale-110">
-                    {feature.icon}
+                    {iconMap[feature.icon] || (
+                      <Smartphone className="w-8 h-8 text-[#f15A24]" />
+                    )}
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-4">
                     {feature.title}
@@ -168,13 +138,13 @@ const FeaturesSection = () => {
                     {feature.description}
                   </p>
                   <ul className="space-y-2">
-                    {feature.benefits.map((benefit, benefitIndex) => (
+                    {feature.features.map((benefit, idx) => (
                       <li
-                        key={benefitIndex}
+                        key={idx}
                         className="flex items-center text-sm text-gray-600"
                       >
                         <Check className="w-4 h-4 text-[#f15A24] mr-2 flex-shrink-0" />
-                        {benefit}
+                        {benefit.text}
                       </li>
                     ))}
                   </ul>
@@ -186,6 +156,4 @@ const FeaturesSection = () => {
       </motion.div>
     </section>
   );
-};
-
-export default FeaturesSection;
+}

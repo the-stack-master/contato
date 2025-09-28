@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -10,8 +10,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff, Users, ChevronDown } from "lucide-react";
 import { cn } from "@/utils/classNames";
-import { client } from "@/lib/sanity";
 import Head from "next/head";
+import { usePathname } from "next/navigation";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -33,37 +33,21 @@ interface LoginPage {
         url: string;
         metadata?: {
           lqip?: string;
-          dimensions?: {
-            width: number;
-            height: number;
-          };
+          dimensions?: { width: number; height: number };
         };
       };
     };
   };
 }
 
-const query = `*[_type == "loginPage"][0]{
-  _id,
-  title,
-  heading,
-  tagline,
-  seo {
-    metaTitle,
-    metaDescription,
-    openGraphImage {
-      asset -> {
-        url,
-        metadata { lqip, dimensions }
-      }
-    }
-  }
-}`;
+interface LoginFormProps {
+  loginContent: LoginPage | null;
+}
 
-export function LoginForm() {
+export function LoginForm({ loginContent }: LoginFormProps) {
   const [showPassword, setShowPassword] = useState(false);
-  const [loginContent, setLoginContent] = useState<LoginPage | null>(null);
   const { login, isLoading, error } = useAuthActions();
+  const pathname = usePathname();
 
   const {
     register,
@@ -77,20 +61,7 @@ export function LoginForm() {
     await login(data);
   };
 
-  const fetchData = async () => {
-    try {
-      const data: LoginPage = await client.fetch(query);
-      setLoginContent(data);
-    } catch (error) {
-      console.error("Error fetching login page content:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  return (
+  return pathname === "/" ? (
     <>
       {/* SEO Head */}
       {loginContent && (
@@ -308,7 +279,6 @@ export function LoginForm() {
         </div>
 
         {/* Scroll Indicator */}
-
         <div className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center text-[#f15A24] opacity-80">
           <span className="text-xs font-medium select-none mb-1">
             Scroll to see more
@@ -317,5 +287,5 @@ export function LoginForm() {
         </div>
       </div>
     </>
-  );
+  ) : null;
 }

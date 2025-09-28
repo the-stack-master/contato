@@ -1,39 +1,90 @@
 "use client";
+
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function ContactForm() {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<null | "success" | "error">(null);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   setLoading(true);
-  //   setStatus(null);
+  const validate = (data: Record<string, any>) => {
+    const err: Record<string, string> = {};
+    if (!data.firstName || data.firstName.trim().length < 2) {
+      err.firstName = "First name must be at least 2 characters";
+    }
+    if (!data.lastName || data.lastName.trim().length < 2) {
+      err.lastName = "Last name must be at least 2 characters";
+    }
+    if (
+      !data.email ||
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(data.email.trim())
+    ) {
+      err.email = "Invalid email address";
+    }
+    if (!data.phone || data.phone.trim().length < 2) {
+      err.phone = "Phone number required";
+    }
+    if (!data.phone || data.phone.trim().length < 2) {
+      err.phone = "Phone number required";
+    }
+    if (!data.business || data.business.trim().length < 2) {
+      err.business = "Business name required";
+    }
+    if (!data.comment || data.comment.trim().length < 2) {
+      err.comment = "Comment required";
+    }
+    if (data.phone && !/^\+?[\d\s()-]{7,}$/i.test(data.phone.trim())) {
+      err.phone = "Invalid phone number";
+    }
+    return err;
+  };
 
-  //   const formData = new FormData(e.currentTarget);
-  //   const data = Object.fromEntries(formData.entries());
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setStatus(null);
 
-  //   try {
-  //     const res = await fetch("/api/contact", {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify(data),
-  //     });
+    const formElement = e.currentTarget; // Save ref before async
+    const formData = new FormData(formElement);
+    const data = Object.fromEntries(formData.entries());
+    const validationErrors = validate(data);
 
-  //     if (res.ok) {
-  //       setStatus("success");
-  //       e.currentTarget.reset();
-  //     } else {
-  //       setStatus("error");
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //     setStatus("error");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    setErrors({});
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (res.ok) {
+        setStatus("success");
+        formElement.reset(); // safe reset here
+      } else {
+        setStatus("error");
+      }
+    } catch (err) {
+      console.error(err);
+      setStatus("error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Hide toast after 3 seconds
+  useEffect(() => {
+    if (status) {
+      const timer = setTimeout(() => setStatus(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [status]);
 
   return (
     <section className="py-20 bg-gray-50">
@@ -50,11 +101,11 @@ export default function ContactForm() {
 
         {/* Form */}
         <motion.form
-          onSubmit={() => {}}
+          onSubmit={handleSubmit}
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="bg-white p-10 rounded-3xl border border-gray-200 grid grid-cols-1 md:grid-cols-2 gap-8"
+          className="bg-white p-10 rounded-3xl border border-gray-200 grid grid-cols-1 md:grid-cols-2 gap-8 relative"
         >
           {/* First Name */}
           <div>
@@ -64,10 +115,14 @@ export default function ContactForm() {
             <input
               name="firstName"
               type="text"
-              required
               placeholder="Enter first name"
-              className="w-full px-5 py-3 border border-gray-300 rounded-2xl bg-gray-50 focus:ring-4 focus:ring-[#f15A24]/30 focus:border-[#f15A24] outline-none transition"
+              className={`w-full px-5 py-3 border rounded-2xl bg-gray-50 focus:ring-4 focus:ring-[#f15A24]/30 focus:border-[#f15A24] outline-none transition ${
+                errors.firstName ? "border-red-500" : "border-gray-300"
+              }`}
             />
+            {errors.firstName && (
+              <p className="mt-1 text-red-500 text-xs">{errors.firstName}</p>
+            )}
           </div>
 
           {/* Last Name */}
@@ -78,10 +133,14 @@ export default function ContactForm() {
             <input
               name="lastName"
               type="text"
-              required
               placeholder="Enter last name"
-              className="w-full px-5 py-3 border border-gray-300 rounded-2xl bg-gray-50 focus:ring-4 focus:ring-[#f15A24]/30 focus:border-[#f15A24] outline-none transition"
+              className={`w-full px-5 py-3 border rounded-2xl bg-gray-50 focus:ring-4 focus:ring-[#f15A24]/30 focus:border-[#f15A24] outline-none transition ${
+                errors.lastName ? "border-red-500" : "border-gray-300"
+              }`}
             />
+            {errors.lastName && (
+              <p className="mt-1 text-red-500 text-xs">{errors.lastName}</p>
+            )}
           </div>
 
           {/* Email */}
@@ -92,10 +151,14 @@ export default function ContactForm() {
             <input
               name="email"
               type="email"
-              required
               placeholder="Enter email"
-              className="w-full px-5 py-3 border border-gray-300 rounded-2xl bg-gray-50 focus:ring-4 focus:ring-[#f15A24]/30 focus:border-[#f15A24] outline-none transition"
+              className={`w-full px-5 py-3 border rounded-2xl bg-gray-50 focus:ring-4 focus:ring-[#f15A24]/30 focus:border-[#f15A24] outline-none transition ${
+                errors.email ? "border-red-500" : "border-gray-300"
+              }`}
             />
+            {errors.email && (
+              <p className="mt-1 text-red-500 text-xs">{errors.email}</p>
+            )}
           </div>
 
           {/* Phone */}
@@ -107,8 +170,13 @@ export default function ContactForm() {
               name="phone"
               type="tel"
               placeholder="Enter phone number"
-              className="w-full px-5 py-3 border border-gray-300 rounded-2xl bg-gray-50 focus:ring-4 focus:ring-[#f15A24]/30 focus:border-[#f15A24] outline-none transition"
+              className={`w-full px-5 py-3 border rounded-2xl bg-gray-50 focus:ring-4 focus:ring-[#f15A24]/30 focus:border-[#f15A24] outline-none transition ${
+                errors.phone ? "border-red-500" : "border-gray-300"
+              }`}
             />
+            {errors.phone && (
+              <p className="mt-1 text-red-500 text-xs">{errors.phone}</p>
+            )}
           </div>
 
           {/* Business Name */}
@@ -122,6 +190,9 @@ export default function ContactForm() {
               placeholder="Enter business name"
               className="w-full px-5 py-3 border border-gray-300 rounded-2xl bg-gray-50 focus:ring-4 focus:ring-[#f15A24]/30 focus:border-[#f15A24] outline-none transition"
             />
+            {errors.business && (
+              <p className="mt-1 text-red-500 text-xs">{errors.business}</p>
+            )}
           </div>
 
           {/* Comments */}
@@ -135,6 +206,9 @@ export default function ContactForm() {
               placeholder="Write your message..."
               className="w-full px-5 py-3 border border-gray-300 rounded-2xl bg-gray-50 focus:ring-4 focus:ring-[#f15A24]/30 focus:border-[#f15A24] outline-none transition resize-none"
             />
+            {errors.comment && (
+              <p className="mt-1 text-red-500 text-xs">{errors.comment}</p>
+            )}
           </div>
 
           {/* Submit Button */}
@@ -151,19 +225,22 @@ export default function ContactForm() {
               {loading ? "Sending..." : "Submit"}
             </button>
           </div>
-        </motion.form>
 
-        {/* Status Messages */}
-        {status === "success" && (
-          <p className="mt-6 text-green-600 text-center font-semibold">
-            ✅ Your message has been sent successfully!
-          </p>
-        )}
-        {status === "error" && (
-          <p className="mt-6 text-red-600 text-center font-semibold">
-            ❌ Something went wrong. Please try again later.
-          </p>
-        )}
+          {/* Toast Messages */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: status ? 1 : 0, y: status ? 0 : 20 }}
+            transition={{ duration: 0.3 }}
+            className={`absolute bottom-6 left-1/2 -translate-x-1/2 px-8 py-4 rounded-full font-semibold text-white shadow-lg ${
+              status === "success" ? "bg-green-600" : "bg-red-600"
+            }`}
+          >
+            {status === "success" &&
+              "✅ Your message has been sent successfully!"}
+            {status === "error" &&
+              "❌ Something went wrong. Please try again later."}
+          </motion.div>
+        </motion.form>
       </div>
     </section>
   );

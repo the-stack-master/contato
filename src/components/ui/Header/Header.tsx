@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { useAuthActions } from "@/hooks/useAuthActions";
 import useNavigate from "@/hooks/useNavigate";
+import { usePathname } from "next/navigation";
+
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 
 type HeaderProps = {
@@ -17,6 +19,7 @@ const Header = ({ authToken }: HeaderProps) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { logout } = useAuthActions();
   const navigate = useNavigate();
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -34,6 +37,7 @@ const Header = ({ authToken }: HeaderProps) => {
   const goHome = () => navigate("/");
 
   const navLinks = [
+    { href: "/", label: "Home" },
     { href: "/features", label: "Features" },
     { href: "/docs", label: "Docs" },
     { href: "/videos", label: "Videos" },
@@ -44,7 +48,7 @@ const Header = ({ authToken }: HeaderProps) => {
     { href: "/about", label: "About Us" },
   ];
 
-  return (
+  return pathname !== "/signup" ? (
     <header className="w-full bg-white sticky top-0 z-50 h-16 flex items-center border-b border-gray-200">
       <div className="container mx-auto px-4 flex items-center justify-between">
         {/* Logo */}
@@ -172,7 +176,7 @@ const Header = ({ authToken }: HeaderProps) => {
         </div>
       )}
     </header>
-  );
+  ) : null;
 };
 
 export default Header;
