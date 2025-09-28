@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { Separator } from "../separator";
 import { QRCodeSVG } from "qrcode.react";
+import Link from "next/link";
 
 const SignupForm = () => {
   return (
@@ -112,12 +113,12 @@ const SignupForm = () => {
           <div className="space-y-4 animate-in fade-in-50 slide-in-from-bottom-3 duration-500 delay-800">
             <p className="text-center text-sm text-gray-600">
               Already have an account?{" "}
-              <a
+              <Link
                 href="/#login"
                 className="text-[#f15A24] hover:text-orange-700 font-medium transition-colors"
               >
                 Sign in
-              </a>
+              </Link>
             </p>
           </div>
         </div>
