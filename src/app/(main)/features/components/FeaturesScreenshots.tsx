@@ -66,6 +66,17 @@ const FeaturesScreenshotsSection = () => {
   });
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile screen based on window width (less than 768px)
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    handleResize(); // initial check
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const scrollPrev = useCallback(() => {
     if (emblaApi) emblaApi.scrollPrev();
@@ -99,6 +110,59 @@ const FeaturesScreenshotsSection = () => {
     emblaApi.on("select", onSelect);
   }, [emblaApi, onInit, onSelect]);
 
+  // Mobile layout with scaled image and overlay features list
+  if (isMobile) {
+    const screenshot = screenshots[selectedIndex];
+    return (
+      <section className="py-12 bg-gradient-to-br from-gray-50 to-orange-50 px-6">
+        <div className="max-w-md mx-auto relative rounded-3xl overflow-hidden shadow-lg">
+          <img
+            src={screenshot.image}
+            alt={screenshot.title}
+            className="w-full h-[450px] object-cover"
+            loading="lazy"
+          />
+          <div
+            className="absolute inset-0 p-6 flex flex-col justify-center text-white"
+            style={{ backgroundColor: "rgba(0,0,0,0.75)" }}
+          >
+            <h3 className="text-2xl font-bold mb-2">{screenshot.title}</h3>
+            <p className="mb-4 text-sm opacity-90">{screenshot.description}</p>
+            <ul className="list-disc list-inside space-y-1 text-sm">
+              {screenshot.features.map((feature, idx) => (
+                <li key={idx}>{feature}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        {/* Mobile navigation */}
+        <div className="flex justify-center space-x-6 mt-8">
+          <button
+            aria-label="Previous Slide"
+            onClick={() =>
+              setSelectedIndex(
+                (prev) => (prev - 1 + screenshots.length) % screenshots.length
+              )
+            }
+            className="p-3 rounded-full bg-white shadow-md hover:bg-gray-50"
+          >
+            <ChevronLeft className="w-6 h-6 text-gray-700" />
+          </button>
+          <button
+            aria-label="Next Slide"
+            onClick={() =>
+              setSelectedIndex((prev) => (prev + 1) % screenshots.length)
+            }
+            className="p-3 rounded-full bg-white shadow-md hover:bg-gray-50"
+          >
+            <ChevronRight className="w-6 h-6 text-gray-700" />
+          </button>
+        </div>
+      </section>
+    );
+  }
+
+  // Desktop and larger screens: carousel and full layout
   return (
     <section className="py-20 bg-gradient-to-br from-gray-50 to-orange-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -121,7 +185,7 @@ const FeaturesScreenshotsSection = () => {
           </p>
         </motion.div>
 
-        {/* Mobile & Desktop Carousel */}
+        {/* Carousel */}
         <div className="relative">
           <div className="overflow-hidden" ref={emblaRef}>
             <div className="flex">

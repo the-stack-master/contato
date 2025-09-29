@@ -100,23 +100,14 @@ const Header = ({ authToken }: HeaderProps) => {
           </div>
 
           {/* Auth dependent section */}
-          {authToken ? (
-            <Button
-              // variant="ghost"
-              className="text-[#f15A24] hover:text-opacity-80 cursor-pointer"
-              onClick={() => logout()}
-            >
-              Sign Out
-            </Button>
-          ) : (
-            <Button
-              // variant="ghost"
-              className="text-[#f15A24] hover:text-opacity-80 cursor-pointer"
-              onClick={() => navigate("/#login")}
-            >
-              Sign In
-            </Button>
-          )}
+
+          <Button
+            // variant="ghost"
+            className="text-[#f15A24] hover:text-opacity-80 cursor-pointer"
+            onClick={() => navigate("/#login")}
+          >
+            Sign In
+          </Button>
 
           {/* Menu toggle visible until lg */}
           <button

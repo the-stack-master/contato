@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -8,17 +8,26 @@ import { useAuthActions } from "@/hooks/useAuthActions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Eye, EyeOff, Users, ChevronDown } from "lucide-react";
+import { Mail, Shield, ChevronDown } from "lucide-react";
 import { cn } from "@/utils/classNames";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/inputOtp";
 
-const loginSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+const emailSchema = z.object({
+  email: z.string().email({ message: "Please enter a valid email address" }),
 });
 
-type LoginFormData = z.infer<typeof loginSchema>;
+const otpSchema = z.object({
+  otp: z.string().min(6, "Please enter the complete 6-digit code").max(6),
+});
+
+type EmailFormData = z.infer<typeof emailSchema>;
+type OtpFormData = z.infer<typeof otpSchema>;
 
 interface LoginPage {
   _id: string;
@@ -45,20 +54,94 @@ interface LoginFormProps {
 }
 
 export function LoginForm({ loginContent }: LoginFormProps) {
-  const [showPassword, setShowPassword] = useState(false);
-  const { login, isLoading, error } = useAuthActions();
+  const [step, setStep] = useState<"email" | "otp">("email");
+  const [userEmail, setUserEmail] = useState("");
+  const [otpValue, setOtpValue] = useState("");
+  const [resendTimer, setResendTimer] = useState(0);
+  const [isResending, setIsResending] = useState(false);
+  const { verifyOtp, isLoading } = useAuthActions();
   const pathname = usePathname();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema),
+  const emailForm = useForm<EmailFormData>({
+    resolver: zodResolver(emailSchema),
   });
 
-  const onSubmit = async (data: LoginFormData) => {
-    await login(data);
+  const otpForm = useForm<OtpFormData>({
+    resolver: zodResolver(otpSchema),
+  });
+
+  // Timer effect for OTP resend
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (resendTimer > 0) {
+      interval = setInterval(() => {
+        setResendTimer((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [resendTimer]);
+
+  const onEmailSubmit = async (data: EmailFormData) => {
+    try {
+      // Clear previous errors
+      emailForm.clearErrors();
+
+      setUserEmail(data.email);
+      setStep("otp");
+      setResendTimer(60); // 60 second timer
+    } catch (error: any) {
+      // Set error on email field
+      emailForm.setError("email", {
+        type: "server",
+        message:
+          error?.message ||
+          "Failed to send OTP. Please check your email and try again.",
+      });
+    }
+  };
+
+  const onOtpSubmit = async (data: OtpFormData) => {
+    try {
+      // Clear previous errors
+      otpForm.clearErrors();
+
+      await verifyOtp(userEmail, data.otp);
+      // success will navigate or do whatever is needed after verification
+    } catch (error: any) {
+      otpForm.setError("otp", {
+        type: "server",
+        message:
+          error?.message || "Failed to verify OTP. Please check your code.",
+      });
+    }
+  };
+
+  const handleResendOtp = async () => {
+    if (resendTimer > 0) return;
+
+    setIsResending(true);
+    try {
+      setResendTimer(60);
+    } catch (error) {
+      // optionally handle resend error gracefully
+    } finally {
+      setIsResending(false);
+    }
+  };
+
+  const handleBackToEmail = () => {
+    setStep("email");
+    setUserEmail("");
+    setOtpValue("");
+    setResendTimer(0);
+    emailForm.reset();
+    otpForm.reset();
+  };
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
   return pathname === "/" ? (
@@ -119,124 +202,158 @@ export function LoginForm({ loginContent }: LoginFormProps) {
             {/* Logo/Brand */}
             <div className="text-center space-y-2">
               <div className="mx-auto w-16 h-16 bg-[#f15A24] rounded-2xl flex items-center justify-center mb-6 shadow-lg animate-in zoom-in-50 duration-500 delay-200">
-                <Users className="w-8 h-8 text-white" />
-              </div>
-              <h1 className="text-2xl lg:text-3xl font-bold text-gray-800 animate-in fade-in-50 slide-in-from-bottom-3 duration-500 delay-300">
-                Login to Contato
-              </h1>
-            </div>
-
-            {/* Authentication Error */}
-            {error && (
-              <div className="animate-in fade-in-50 slide-in-from-bottom-3 duration-500">
-                <div className="bg-orange-100 border border-[#f15A24] text-[#f15A24] px-4 py-3 rounded-md text-sm">
-                  {error}
-                </div>
-              </div>
-            )}
-
-            {/* Email/Password Form */}
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              className="space-y-6 animate-in fade-in-50 slide-in-from-bottom-3 duration-500 delay-700"
-            >
-              {/* Email */}
-              <div className="space-y-2">
-                <Label
-                  htmlFor="email"
-                  className="text-sm font-medium text-gray-700"
-                >
-                  Email
-                </Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="Enter your email"
-                  {...register("email")}
-                  className={cn(
-                    "h-12 bg-white border-[#f15A24] focus:border-[#f15A24] focus:ring-[#f15A24] transition-all duration-200 shadow-sm text-gray-800",
-                    errors.email &&
-                      "border-red-500 focus:border-red-500 focus:ring-red-500"
-                  )}
-                />
-                {errors.email && (
-                  <p className="text-sm text-red-600 animate-in fade-in-50 slide-in-from-left-2 duration-300">
-                    {errors.email.message}
-                  </p>
+                {step === "email" ? (
+                  <Mail className="w-8 h-8 text-white" />
+                ) : (
+                  <Shield className="w-8 h-8 text-white" />
                 )}
               </div>
+              <h1 className="text-2xl lg:text-3xl font-bold text-gray-800 animate-in fade-in-50 slide-in-from-bottom-3 duration-500 delay-300">
+                {step === "email" ? "Login to Contato" : "Verify Your Email"}
+              </h1>
+              {step === "otp" && (
+                <p className="text-sm text-gray-600 animate-in fade-in-50 slide-in-from-bottom-3 duration-500 delay-400">
+                  We've sent a 6-digit code to <br />
+                  <span className="font-medium text-[#f15A24]">
+                    {userEmail}
+                  </span>{" "}
+                  <button
+                    onClick={handleBackToEmail}
+                    className="text-xs text-gray-500 hover:text-[#f15A24] underline transition-colors ml-1"
+                  >
+                    (change)
+                  </button>
+                </p>
+              )}
+            </div>
 
-              {/* Password */}
-              <div className="space-y-2">
-                <Label
-                  htmlFor="password"
-                  className="text-sm font-medium text-gray-700"
-                >
-                  Password
-                </Label>
-                <div className="relative">
+            {/* Email Form */}
+            {step === "email" && (
+              <form
+                onSubmit={emailForm.handleSubmit(onEmailSubmit)}
+                className="space-y-6 animate-in fade-in-50 slide-in-from-left-3 duration-500 delay-700"
+                noValidate
+              >
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="email"
+                    className="text-sm font-medium text-gray-700"
+                  >
+                    Email Address
+                  </Label>
                   <Input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Enter your password"
-                    {...register("password")}
+                    id="email"
+                    type="email"
+                    placeholder="Enter your email address"
+                    {...emailForm.register("email")}
                     className={cn(
-                      "h-12 pr-11 bg-white border-[#f15A24] focus:border-[#f15A24] focus:ring-[#f15A24] transition-all duration-200 shadow-sm text-gray-800",
-                      errors.password &&
+                      "h-12 bg-white border-[#f15A24] focus:border-[#f15A24] focus:ring-[#f15A24] focus:ring-2 focus:ring-offset-0 focus:outline-none transition-all duration-200 shadow-sm text-gray-800",
+                      emailForm.formState.errors.email &&
                         "border-red-500 focus:border-red-500 focus:ring-red-500"
                     )}
                   />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3.5 top-4 text-gray-400 hover:text-[#f15A24] transition-colors"
-                  >
-                    {showPassword ? (
-                      <EyeOff className="w-4 h-4" />
-                    ) : (
-                      <Eye className="w-4 h-4" />
-                    )}
-                  </button>
+                  {emailForm.formState.errors.email && (
+                    <p className="text-sm text-red-600 animate-in fade-in-50 slide-in-from-left-2 duration-300">
+                      {emailForm.formState.errors.email.message}
+                    </p>
+                  )}
                 </div>
-                {errors.password && (
-                  <p className="text-sm text-red-600 animate-in fade-in-50 slide-in-from-left-2 duration-300">
-                    {errors.password.message}
-                  </p>
-                )}
-              </div>
 
-              {/* Keep me logged in / Forgot password */}
-              <div className="flex items-center justify-between text-sm">
-                <label className="flex items-center space-x-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    className="rounded border-[#f15A24] text-[#f15A24] focus:ring-[#f15A24]"
-                  />
-                  <span className="text-gray-600">Keep me logged in</span>
-                </label>
-                <a
-                  href="/forgot-password"
-                  className="text-[#f15A24] hover:text-orange-700 font-medium transition-colors"
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full h-12 bg-gradient-to-r from-[#f15A24] to-[#d04f23] hover:from-[#d04f23] hover:to-[#f15A24] text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
                 >
-                  Forgot password?
-                </a>
-              </div>
+                  {isLoading ? (
+                    <div className="flex items-center">
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                      Sending code...
+                    </div>
+                  ) : (
+                    "Continue"
+                  )}
+                </Button>
+              </form>
+            )}
 
-              <Button
-                type="submit"
-                disabled={isLoading}
-                className="w-full h-12 bg-gradient-to-r from-[#f15A24] to-[#d04f23] hover:from-[#d04f23] hover:to-[#f15A24] text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+            {/* OTP Form */}
+            {step === "otp" && (
+              <form
+                onSubmit={otpForm.handleSubmit(onOtpSubmit)}
+                className="space-y-6 animate-in fade-in-50 slide-in-from-right-3 duration-500"
+                noValidate
               >
-                {isLoading ? (
-                  <div className="flex items-center">
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                    Signing in...
+                <div className="space-y-4">
+                  <Label className="text-sm font-medium text-gray-700 block text-center">
+                    Enter 6-digit verification code
+                  </Label>
+                  <div className="flex justify-center">
+                    <InputOTP
+                      maxLength={6}
+                      value={otpValue}
+                      onChange={(value) => {
+                        setOtpValue(value);
+                        otpForm.setValue("otp", value);
+                        otpForm.clearErrors("otp");
+                      }}
+                    >
+                      <InputOTPGroup>
+                        {[...Array(6)].map((_, i) => (
+                          <InputOTPSlot
+                            key={i}
+                            index={i}
+                            className="h-14 w-12 text-lg border-[#f15A24] focus:border-[#f15A24] focus:ring-[#f15A24] focus:ring-2 focus:ring-offset-0 focus:outline-none"
+                          />
+                        ))}
+                      </InputOTPGroup>
+                    </InputOTP>
                   </div>
-                ) : (
-                  "Login"
-                )}
-              </Button>
-            </form>
+                  {otpForm.formState.errors.otp && (
+                    <p className="text-sm text-red-600 text-center animate-in fade-in-50 slide-in-from-bottom-2 duration-300">
+                      {otpForm.formState.errors.otp.message}
+                    </p>
+                  )}
+                </div>
+
+                <Button
+                  type="submit"
+                  disabled={isLoading || otpValue.length < 6}
+                  className="w-full h-12 bg-gradient-to-r from-[#f15A24] to-[#d04f23] hover:from-[#d04f23] hover:to-[#f15A24] text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
+                >
+                  {isLoading ? (
+                    <div className="flex items-center">
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                      Verifying...
+                    </div>
+                  ) : (
+                    "Verify & Login"
+                  )}
+                </Button>
+
+                {/* Resend OTP */}
+                <div className="text-center space-y-2">
+                  <p className="text-sm text-gray-600">
+                    Didn't receive the code?
+                  </p>
+                  <div className="flex items-center justify-center space-x-2">
+                    {resendTimer > 0 ? (
+                      <span className="text-sm text-gray-500">
+                        Resend available in {formatTime(resendTimer)}
+                      </span>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={handleResendOtp}
+                        disabled={isResending}
+                        className="text-sm text-[#f15A24] hover:text-orange-700 font-medium transition-colors underline"
+                      >
+                        {isResending ? "Sending..." : "Send code again"}
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </form>
+            )}
 
             {/* Sign up link */}
             <p className="text-center text-sm text-gray-600 animate-in fade-in-50 duration-500 delay-1000">

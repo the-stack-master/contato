@@ -8,6 +8,8 @@ import { Navigation, Autoplay } from "swiper/modules";
 import PhoneUi from "@/components/ui/phoneUi";
 import Image from "next/image";
 import FeaturesScreenshotsSection from "./components/FeaturesScreenshots";
+import { Button } from "@/components/ui/button";
+import { Apple, Play } from "lucide-react";
 
 interface HeroImage {
   id: number;
@@ -45,15 +47,14 @@ const keyFeatures = [
     title: "Smart Conversations",
     description:
       "Crafted conversation starters and relationship insights that turn awkward networking into natural connections.",
-    image:
-      "https://contato.app/assets/images/screenshots/analytics-engangement.png",
+    image: "https://contato.app/assets/images/screenshots/my-code.png",
   },
   {
     title: "Intelligent Scheduling",
     description:
       "Smart calendar integration automates your meetings and follow-ups for optimal productivity.",
     image:
-      "https://contato.app/assets/images/screenshots/analytics-engangement.png",
+      "https://contato.app/assets/images/screenshots/connection-near-me.png",
   },
 ];
 
@@ -109,22 +110,94 @@ const fullFeatures = [
   },
 ];
 
+const handleDownload = (platform: "appstore" | "googleplay") => {
+  if (platform === "appstore") {
+    window.open(
+      "https://apps.apple.com/us/app/contato-ai-powered-networking/id6452725559",
+      "_blank"
+    );
+  } else {
+    window.open(
+      "https://play.google.com/store/apps/details?id=com.contactos.contato&pcampaignid=web_share",
+      "_blank"
+    );
+  }
+};
+
+const screenshotsObjArr = [
+  {
+    id: 1,
+    title: "Profile & Connections",
+    description:
+      "Showcase your professional profile and connect with like-minded professionals",
+    image:
+      "https://images.pexels.com/photos/267350/pexels-photo-267350.jpeg?auto=compress&cs=tinysrgb&w=400&h=800&fit=crop",
+    features: [
+      "Professional Profile",
+      "Connection Requests",
+      "Skills Showcase",
+    ],
+  },
+  {
+    id: 2,
+    title: "AI-Powered Matching",
+    description:
+      "Let our AI find the perfect professional matches for your career goals",
+    image:
+      "https://images.pexels.com/photos/1181244/pexels-photo-1181244.jpeg?auto=compress&cs=tinysrgb&w=400&h=800&fit=crop",
+    features: ["Smart Matching", "Industry Insights", "Career Recommendations"],
+  },
+  {
+    id: 3,
+    title: "Event Discovery",
+    description: "Discover networking events and professional meetups near you",
+    image:
+      "https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=400&h=800&fit=crop",
+    features: ["Event Calendar", "Location-based", "RSVP Management"],
+  },
+  {
+    id: 4,
+    title: "Secure Messaging",
+    description:
+      "Connect safely with end-to-end encrypted professional conversations",
+    image:
+      "https://images.pexels.com/photos/1181354/pexels-photo-1181354.jpeg?auto=compress&cs=tinysrgb&w=400&h=800&fit=crop",
+    features: ["Encrypted Chat", "File Sharing", "Video Calls"],
+  },
+  {
+    id: 5,
+    title: "Analytics Dashboard",
+    description:
+      "Track your networking progress with detailed insights and metrics",
+    image:
+      "https://images.pexels.com/photos/590016/pexels-photo-590016.jpeg?auto=compress&cs=tinysrgb&w=400&h=800&fit=crop",
+    features: ["Network Growth", "Engagement Stats", "Career Progress"],
+  },
+];
+
 const AppDownloadButtons = () => (
-  <div className="flex gap-6 mt-6 justify-center">
-    <a
-      href="#"
-      className="inline-block bg-[#f15A24] text-white px-5 py-3 rounded-full font-semibold text-sm hover:bg-orange-600 transition transform hover:scale-105"
-      aria-label="Download on the App Store"
+  <div className="flex flex-col sm:flex-row gap-4">
+    <Button
+      onClick={() => handleDownload("appstore")}
+      className="h-14 px-8 bg-black hover:bg-gray-800 text-white font-medium transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95"
     >
-      App Store
-    </a>
-    <a
-      href="#"
-      className="inline-block bg-[#f15A24] text-white px-5 py-3 rounded-full font-semibold text-sm hover:bg-orange-600 transition transform hover:scale-105"
-      aria-label="Download on Google Play"
+      <Apple className="w-6 h-6 mr-3" />
+      <div className="text-left">
+        <div className="text-xs opacity-80">Download on the</div>
+        <div className="text-sm font-semibold">App Store</div>
+      </div>
+    </Button>
+
+    <Button
+      onClick={() => handleDownload("googleplay")}
+      className="h-14 px-8 bg-[#f15A24] hover:bg-orange-600 text-white font-medium transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95"
     >
-      Google Play
-    </a>
+      <Play className="w-6 h-6 mr-3" />
+      <div className="text-left">
+        <div className="text-xs opacity-90">Get it on</div>
+        <div className="text-sm font-semibold">Google Play</div>
+      </div>
+    </Button>
   </div>
 );
 
@@ -237,7 +310,7 @@ const FeaturesPage = () => {
       </section>
 
       {/* New Features  */}
-      <section>
+      <section className="max-w-7xl mx-auto px-6 py-20 my-5 bg-gray-50 rounded-2xl shadow-sm space-y-12">
         <FeaturesScreenshotsSection />
       </section>
 

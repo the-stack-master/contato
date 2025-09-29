@@ -61,6 +61,44 @@ export function useAuthActions() {
     }
   };
 
+  const verifyOtp = async (email: string, otp: string) => {
+    setIsLoading(true);
+    setError("");
+
+    try {
+      // Simulate API call
+
+      // Simulate success/failure
+      if (otp !== "123456") {
+        throw new Error("Invalid verification code");
+      }
+
+      console.log("OTP verified for:", email);
+
+      // Post-login device redirect logic from your login function
+      const userAgent =
+        navigator.userAgent || navigator.vendor || (window as any).opera;
+
+      if (/android/i.test(userAgent)) {
+        console.log("Redirecting to Google Play Store");
+        window.location.href =
+          "https://play.google.com/store/apps/details?id=com.contactos.contato&pcampaignid=web_share";
+      } else if (/iPad|iPhone|iPod/.test(userAgent)) {
+        console.log("Redirecting to Apple App Store");
+        window.location.href =
+          "https://apps.apple.com/us/app/contato-ai-powered-networking/id6452725559";
+      } else {
+        console.log("Redirecting to web app (desktop)");
+        window.location.href = "https://contato.app";
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to verify OTP");
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const logout = () => {
     AuthService.logout();
 
@@ -80,5 +118,6 @@ export function useAuthActions() {
     isLoading,
     error,
     clearError,
+    verifyOtp,
   };
 }
