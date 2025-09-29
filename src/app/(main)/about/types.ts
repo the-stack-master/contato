@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 // About Page main type
 export interface AboutPage {
   _id?: string;

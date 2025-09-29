@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState, useEffect } from "react";
@@ -122,7 +123,7 @@ export function LoginForm({ loginContent }: LoginFormProps) {
     setIsResending(true);
     try {
       setResendTimer(60);
-    } catch (error) {
+    } catch {
       // optionally handle resend error gracefully
     } finally {
       setIsResending(false);
@@ -213,7 +214,7 @@ export function LoginForm({ loginContent }: LoginFormProps) {
               </h1>
               {step === "otp" && (
                 <p className="text-sm text-gray-600 animate-in fade-in-50 slide-in-from-bottom-3 duration-500 delay-400">
-                  We've sent a 6-digit code to <br />
+                  We&apos;ve sent a 6-digit code to <br />
                   <span className="font-medium text-[#f15A24]">
                     {userEmail}
                   </span>{" "}
@@ -333,7 +334,7 @@ export function LoginForm({ loginContent }: LoginFormProps) {
                 {/* Resend OTP */}
                 <div className="text-center space-y-2">
                   <p className="text-sm text-gray-600">
-                    Didn't receive the code?
+                    Didn&apos;t receive the code?
                   </p>
                   <div className="flex items-center justify-center space-x-2">
                     {resendTimer > 0 ? (
