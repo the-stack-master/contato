@@ -106,7 +106,6 @@ const VideosSection = () => {
     }`;
 
     const data: Video[] = await client.fetch(query);
-    console.log("--------------dara", data);
     setVideos((prevVideos) => (append ? [...prevVideos, ...data] : data));
     setHasMore(data.length === PAGE_SIZE);
   };

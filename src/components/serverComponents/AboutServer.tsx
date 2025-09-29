@@ -91,7 +91,5 @@ export default async function AboutSectionServer() {
     contactHR,
   };
 
-  console.log(aboutData, "---ddd----aboutData");
-
   return <AboutSectionClient aboutData={aboutData} />;
 }

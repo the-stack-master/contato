@@ -35,8 +35,6 @@ export default function TestimonialsSectionClient({
 }: Props) {
   if (!testimonialHeader || !testimonialBlocks) return null;
 
-  console.log("------sdsds", testimonialHeader, testimonialBlocks);
-
   return (
     <section className="py-20 bg-white">
       <div className="container mx-auto px-4">

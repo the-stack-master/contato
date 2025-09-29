@@ -62,8 +62,6 @@ const HeroServer = async () => {
     }
   `);
 
-  console.log("------------", heroData);
-
   return <HeroClient heroData={heroData} />;
 };
 

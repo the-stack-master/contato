@@ -70,8 +70,6 @@ export default function PricingSectionClient({
 
   const activeFooters = pricingFooter?.filter((f) => f.isActive) || [];
 
-  console.log("=========", pricingHeader);
-
   return (
     <section id="pricing" className="py-20 bg-black text-white">
       <div className="container mx-auto px-4 text-center max-w-4xl mx-auto mb-16">
