@@ -27,6 +27,7 @@ import { cn } from "@/utils/classNames";
 import useNavigate from "@/hooks/useNavigate";
 import { AboutData } from "@/components/serverComponents/AboutServer";
 import { urlFor } from "@/lib/sanity";
+import { ImageAsset } from "./types";
 
 interface TeamMember {
   id: string;
@@ -201,7 +202,7 @@ const AboutSection = ({ aboutData }: AboutSectionProps) => {
 
   const isVisible = (sectionId: string) => visibleSections.includes(sectionId);
 
-  const getImageUrl = (image: string | any) => {
+  const getImageUrl = (image: string | ImageAsset) => {
     // If it's already a string URL
     if (typeof image === "string") return image;
 
