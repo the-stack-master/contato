@@ -438,7 +438,7 @@ interface PageProps {
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const category = supportData.categories.find((cat) => cat.id === params.slug);
+  const category = supportData.categories[0];
 
   if (!category) {
     return {
@@ -453,7 +453,7 @@ export async function generateMetadata({
 }
 
 const CategoryPage = ({ params }: PageProps) => {
-  const category = supportData.categories.find((cat) => cat.id === params.slug);
+  const category = supportData?.categories[0];
 
   if (!category) {
     notFound();

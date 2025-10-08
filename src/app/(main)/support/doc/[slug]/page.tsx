@@ -8,6 +8,7 @@ import { PortableText } from "@portabletext/react";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import SanityFileViewer from "@/app/(main)/supportTest/page";
 
 interface Article {
   title: string;
@@ -83,11 +84,11 @@ export default function ArticlePage() {
         >
           {/* Back Button */}
           <Link
-            href={`/support/${params.category}`}
+            href={`/support`}
             className="inline-flex items-center text-[#f15A24] hover:text-orange-600 font-semibold mb-8 transition-colors duration-300"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to {params.category}
+            Back to support
           </Link>
 
           {/* Article Header */}
@@ -101,110 +102,10 @@ export default function ArticlePage() {
                 {article.description}
               </p>
             )}
-
-            <div className="flex items-center gap-6 text-sm text-gray-500">
-              {article.publishedAt && (
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4" />
-                  <span>
-                    {new Date(article.publishedAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </span>
-                </div>
-              )}
-              {article.readTime && (
-                <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4" />
-                  <span>{article.readTime} min read</span>
-                </div>
-              )}
-            </div>
           </div>
 
           {/* Article Content */}
-          <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
-            <div className="prose prose-lg prose-orange max-w-none">
-              {article.content ? (
-                <PortableText
-                  value={article.content}
-                  components={{
-                    block: {
-                      h1: ({ children }) => (
-                        <h1 className="text-3xl font-bold text-gray-900 mt-8 mb-4">
-                          {children}
-                        </h1>
-                      ),
-                      h2: ({ children }) => (
-                        <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">
-                          {children}
-                        </h2>
-                      ),
-                      h3: ({ children }) => (
-                        <h3 className="text-xl font-bold text-gray-900 mt-6 mb-3">
-                          {children}
-                        </h3>
-                      ),
-                      normal: ({ children }) => (
-                        <p className="text-gray-700 leading-relaxed mb-4">
-                          {children}
-                        </p>
-                      ),
-                    },
-                    list: {
-                      bullet: ({ children }) => (
-                        <ul className="list-disc pl-6 mb-4 space-y-2">
-                          {children}
-                        </ul>
-                      ),
-                      number: ({ children }) => (
-                        <ol className="list-decimal pl-6 mb-4 space-y-2">
-                          {children}
-                        </ol>
-                      ),
-                    },
-                    listItem: {
-                      bullet: ({ children }) => (
-                        <li className="text-gray-700">{children}</li>
-                      ),
-                      number: ({ children }) => (
-                        <li className="text-gray-700">{children}</li>
-                      ),
-                    },
-                    marks: {
-                      strong: ({ children }) => (
-                        <strong className="font-bold text-gray-900">
-                          {children}
-                        </strong>
-                      ),
-                      em: ({ children }) => (
-                        <em className="italic">{children}</em>
-                      ),
-                      code: ({ children }) => (
-                        <code className="bg-gray-100 text-[#f15A24] px-2 py-1 rounded text-sm font-mono">
-                          {children}
-                        </code>
-                      ),
-                      link: ({ children, value }) => (
-                        <a
-                          href={value?.href}
-                          className="text-[#f15A24] hover:text-orange-600 underline"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {children}
-                        </a>
-                      ),
-                    },
-                  }}
-                />
-              ) : (
-                <p className="text-gray-600">Content coming soon...</p>
-              )}
-            </div>
-          </div>
+          <SanityFileViewer />
 
           {/* Help Footer */}
           <div className="mt-12 p-6 bg-gradient-to-r from-orange-50 to-red-50 rounded-2xl border border-orange-100">

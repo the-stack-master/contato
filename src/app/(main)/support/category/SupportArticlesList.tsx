@@ -33,7 +33,7 @@ export default function SupportArticlesList({
               transition={{ duration: 0.3, delay: index * 0.05 }}
               className="group"
             >
-              <Link href={`/support/${categoryId}/${article.slug}`}>
+              <Link href={`/support/doc/${article.slug}`}>
                 <div className="flex items-center p-4 rounded-xl hover:bg-gray-50 transition-all duration-200 group-hover:shadow-md border border-transparent hover:border-gray-200">
                   <div className="w-10 h-10 bg-gradient-to-r from-[#f15A24] to-orange-500 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
                     <FileText className="w-5 h-5 text-white" />
