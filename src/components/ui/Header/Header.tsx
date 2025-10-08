@@ -129,6 +129,9 @@ const Header = ({ authToken }: HeaderProps) => {
             {navLinks.map(({ href, label }) => (
               <Link
                 key={href}
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                }}
                 href={href}
                 className="block text-[#f15A24] hover:text-opacity-80 font-medium"
               >
