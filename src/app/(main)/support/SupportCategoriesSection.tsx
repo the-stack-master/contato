@@ -157,8 +157,8 @@ export default function SupportCategoriesSection({
               Still need help?
             </h3>
             <p className="text-lg mb-6 opacity-90">
-              Can't find what you're looking for? Our support team is here to
-              help.
+              Can&apos;t find what you&apos;re looking for? Our support team is
+              here to help.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button className="bg-white text-[#f15A24] hover:bg-gray-100 px-6 py-3 rounded-xl font-semibold">

@@ -65,7 +65,7 @@ export default function SupportArticlesList({
         >
           <div className="bg-gradient-to-r from-[#f15A24] to-orange-500 rounded-2xl p-8 text-white">
             <h3 className="text-2xl md:text-3xl font-bold mb-4">
-              Didn't find what you were looking for?
+              Didn&apos;t find what you were looking for?
             </h3>
             <p className="text-lg mb-6 opacity-90 max-w-2xl mx-auto">
               Our support team is always ready to help you with any questions

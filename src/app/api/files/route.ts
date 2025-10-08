@@ -40,7 +40,6 @@ async function convertPdfToHtml(buffer: Buffer) {
   const pdfjsLib = await import("pdfjs-dist");
   // Set up workerSrc if necessary (for some environments)
   if (pdfjsLib.GlobalWorkerOptions) {
-    // @ts-ignore
     pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
   }
   const data = new Uint8Array(buffer);
