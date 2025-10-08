@@ -2,6 +2,10 @@
 import { client } from "@/lib/sanity";
 import FeaturesSectionClient from "@/app/(main)/features/FeaturesClient";
 import { ImageAsset } from "@/utils/getImageUrl";
+import { Metadata } from "next";
+
+// === Revalidate every 60 seconds ===
+export const revalidate = 60;
 
 // === Types ===
 interface CtaButton {
@@ -112,7 +116,6 @@ export interface ExperienceConnectoCarousel {
   }[];
 }
 
-// === Main FeaturesData type ===
 export interface FeaturesData {
   id: string;
   title: string;
@@ -137,9 +140,45 @@ const featuresPageQuery = `*[_type == "featuresPage"][0]{
   pageBuilder[]{...}
 }`;
 
+// === SEO Metadata ===
+export async function generateMetadata(): Promise<Metadata> {
+  const data = await client.fetch<any>(
+    featuresPageQuery,
+    {},
+    { cache: "force-cache" }
+  );
+
+  return {
+    title: data?.seoTitle || data?.title || "Features - NetworkPro",
+    description:
+      data?.seoDescription ||
+      "Explore NetworkPro features that help you grow your professional network efficiently.",
+    openGraph: {
+      title: data?.seoTitle || data?.title || "Features - NetworkPro",
+      description:
+        data?.seoDescription ||
+        "Discover how NetworkPro helps you expand your professional reach.",
+      url: "https://yourdomain.com/features",
+      siteName: "NetworkPro",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: data?.seoTitle || data?.title || "Features - NetworkPro",
+      description:
+        data?.seoDescription ||
+        "Discover how NetworkPro helps you expand your professional reach.",
+    },
+  };
+}
+
 // === Server Component ===
 export default async function FeaturesSectionServer() {
-  const data = await client.fetch<any>(featuresPageQuery);
+  const data = await client.fetch<any>(
+    featuresPageQuery,
+    {},
+    { cache: "force-cache" }
+  );
 
   if (!data) {
     return <div>Features page data not found.</div>;
