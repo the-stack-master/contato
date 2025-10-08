@@ -5,59 +5,11 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import { EmblaCarouselType } from "embla-carousel";
 import { useCallback, useEffect, useState } from "react";
+import { FeaturesDataProps } from "../FeaturesClient";
+import getImageUrl from "@/utils/getImageUrl";
+import { splitSentence } from "@/utils/stringFunctions";
 
-const screenshots = [
-  {
-    id: 1,
-    title: "Profile & Connections",
-    description:
-      "Showcase your professional profile and connect with like-minded professionals",
-    image:
-      "https://images.pexels.com/photos/267350/pexels-photo-267350.jpeg?auto=compress&cs=tinysrgb&w=400&h=800&fit=crop",
-    features: [
-      "Professional Profile",
-      "Connection Requests",
-      "Skills Showcase",
-    ],
-  },
-  {
-    id: 2,
-    title: "AI-Powered Matching",
-    description:
-      "Let our AI find the perfect professional matches for your career goals",
-    image:
-      "https://images.pexels.com/photos/1181244/pexels-photo-1181244.jpeg?auto=compress&cs=tinysrgb&w=400&h=800&fit=crop",
-    features: ["Smart Matching", "Industry Insights", "Career Recommendations"],
-  },
-  {
-    id: 3,
-    title: "Event Discovery",
-    description: "Discover networking events and professional meetups near you",
-    image:
-      "https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=400&h=800&fit=crop",
-    features: ["Event Calendar", "Location-based", "RSVP Management"],
-  },
-  {
-    id: 4,
-    title: "Secure Messaging",
-    description:
-      "Connect safely with end-to-end encrypted professional conversations",
-    image:
-      "https://images.pexels.com/photos/1181354/pexels-photo-1181354.jpeg?auto=compress&cs=tinysrgb&w=400&h=800&fit=crop",
-    features: ["Encrypted Chat", "File Sharing", "Video Calls"],
-  },
-  {
-    id: 5,
-    title: "Analytics Dashboard",
-    description:
-      "Track your networking progress with detailed insights and metrics",
-    image:
-      "https://images.pexels.com/photos/590016/pexels-photo-590016.jpeg?auto=compress&cs=tinysrgb&w=400&h=800&fit=crop",
-    features: ["Network Growth", "Engagement Stats", "Career Progress"],
-  },
-];
-
-const FeaturesScreenshotsSection = () => {
+const FeaturesScreenshotsSection = ({ featuresData }: FeaturesDataProps) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: true,
     align: "center",
@@ -67,6 +19,8 @@ const FeaturesScreenshotsSection = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
   const [isMobile, setIsMobile] = useState(false);
+
+  const screenshots = featuresData?.carousel?.carouselSlides || [];
 
   // Detect mobile screen based on window width (less than 768px)
   useEffect(() => {
@@ -117,8 +71,8 @@ const FeaturesScreenshotsSection = () => {
       <section className="py-12 bg-gradient-to-br from-gray-50 to-orange-50 px-6">
         <div className="max-w-md mx-auto relative rounded-3xl overflow-hidden shadow-lg">
           <img
-            src={screenshot.image}
-            alt={screenshot.title}
+            src={getImageUrl(screenshot.slideImage || "")}
+            alt={screenshot.slideTitle}
             className="w-full h-[450px] object-cover"
             loading="lazy"
           />
@@ -126,11 +80,13 @@ const FeaturesScreenshotsSection = () => {
             className="absolute inset-0 p-6 flex flex-col justify-center text-white"
             style={{ backgroundColor: "rgba(0,0,0,0.75)" }}
           >
-            <h3 className="text-2xl font-bold mb-2">{screenshot.title}</h3>
-            <p className="mb-4 text-sm opacity-90">{screenshot.description}</p>
+            <h3 className="text-2xl font-bold mb-2">{screenshot.slideTitle}</h3>
+            <p className="mb-4 text-sm opacity-90">
+              {screenshot.slideDescription}
+            </p>
             <ul className="list-disc list-inside space-y-1 text-sm">
-              {screenshot.features.map((feature, idx) => (
-                <li key={idx}>{feature}</li>
+              {screenshot?.features?.map((feat, idx) => (
+                <li key={idx}>{feat?.featureName}</li>
               ))}
             </ul>
           </div>
@@ -174,14 +130,16 @@ const FeaturesScreenshotsSection = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Experience{" "}
+            {splitSentence(featuresData?.carousel?.sectionHeading)?.firstPart}{" "}
             <span className="bg-gradient-to-r from-[#f15A24] via-orange-500 to-red-500 bg-clip-text text-transparent">
-              Connecto
+              {
+                splitSentence(featuresData?.carousel?.sectionHeading)
+                  ?.secondPart
+              }
             </span>
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            See how Connecto transforms professional networking with beautiful,
-            intuitive design and powerful features at your fingertips.
+            {featuresData?.carousel?.sectionDescription}
           </p>
         </motion.div>
 
@@ -191,7 +149,7 @@ const FeaturesScreenshotsSection = () => {
             <div className="flex">
               {screenshots.map((screenshot, index) => (
                 <div
-                  key={screenshot.id}
+                  key={screenshot._key}
                   className="flex-[0_0_100%] min-w-0 px-4"
                 >
                   <motion.div
@@ -215,8 +173,8 @@ const FeaturesScreenshotsSection = () => {
 
                             <div className="relative h-[calc(100%-24px)] overflow-hidden">
                               <img
-                                src={screenshot.image}
-                                alt={screenshot.title}
+                                src={getImageUrl(screenshot?.slideImage || "")}
+                                alt={screenshot.slideTitle}
                                 className="w-full h-full object-cover"
                                 loading="lazy"
                               />
@@ -235,14 +193,14 @@ const FeaturesScreenshotsSection = () => {
                         transition={{ duration: 0.6, delay: 0.2 }}
                       >
                         <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                          {screenshot.title}
+                          {screenshot.slideTitle}
                         </h3>
                         <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                          {screenshot.description}
+                          {screenshot.slideDescription}
                         </p>
 
                         <div className="space-y-3">
-                          {screenshot.features.map((feature, idx) => (
+                          {screenshot?.features?.map((feature, idx) => (
                             <motion.div
                               key={idx}
                               initial={{ opacity: 0, x: 20 }}
@@ -258,7 +216,7 @@ const FeaturesScreenshotsSection = () => {
                                 <span className="text-white text-sm">✓</span>
                               </div>
                               <span className="text-gray-700 font-medium">
-                                {feature}
+                                {feature?.featureName}
                               </span>
                             </motion.div>
                           ))}
@@ -313,16 +271,14 @@ const FeaturesScreenshotsSection = () => {
           className="mt-16 text-center"
         >
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto px-4 sm:px-0">
-            {[
-              "Intuitive mobile-first design",
-              "Seamless user experience",
-              "Professional networking made simple",
-            ].map((feature, index) => (
+            {featuresData?.carousel?.bottomFeatures?.map((feature, index) => (
               <div
                 key={index}
                 className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100"
               >
-                <p className="text-gray-600 font-medium">{feature}</p>
+                <p className="text-gray-600 font-medium">
+                  {feature?.featureName}
+                </p>
               </div>
             ))}
           </div>

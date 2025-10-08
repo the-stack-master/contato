@@ -28,6 +28,7 @@ import useNavigate from "@/hooks/useNavigate";
 import { AboutData } from "@/components/serverComponents/AboutServer";
 import { urlFor } from "@/lib/sanity";
 import { ImageAsset } from "./types";
+import getImageUrl from "@/utils/getImageUrl";
 
 interface TeamMember {
   id: string;
@@ -201,17 +202,6 @@ const AboutSection = ({ aboutData }: AboutSectionProps) => {
   }, []);
 
   const isVisible = (sectionId: string) => visibleSections.includes(sectionId);
-
-  const getImageUrl = (image: string | ImageAsset) => {
-    // If it's already a string URL
-    if (typeof image === "string") return image;
-
-    // If it's a Sanity image object
-    if (image && image.asset) return urlFor(image).url();
-
-    // Fallback
-    return "/placeholder.png";
-  };
 
   return (
     <div className="min-h-screen bg-white">

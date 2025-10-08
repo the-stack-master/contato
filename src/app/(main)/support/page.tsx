@@ -1,120 +1,144 @@
-"use client";
+import { Metadata } from "next";
+import SupportHeroSection from "./SupportHeroSection";
+import SupportCategoriesSection from "./SupportCategoriesSection";
 
-import React, { useState } from "react";
+export const metadata: Metadata = {
+  title: "Contato Support - Help Center",
+  description:
+    "Find answers to your questions about Contato. Get help with features, troubleshooting, and more.",
+  keywords:
+    "Contato support, help center, networking app help, troubleshooting",
+};
 
-const faqItems = [
-  {
-    question: "How can I contact support?",
-    answer:
-      "You can reach us anytime at support@contatoapp.com or call +1 800 123 4567 for assistance.",
-  },
-  {
-    question: "What are the support hours?",
-    answer:
-      "Our support team is available 24/7 to help you with any issues or questions.",
-  },
-  {
-    question: "Where can I find user guides and tutorials?",
-    answer:
-      "Visit our Help Center on the website for comprehensive user guides, video tutorials, and FAQs.",
-  },
-  {
-    question: "I forgot my password. What should I do?",
-    answer:
-      "Use the 'Forgot Password' link on the sign-in page and follow the instructions to reset your password securely.",
-  },
-  {
-    question: "How can I update my billing information?",
-    answer:
-      "Go to your account settings, click on 'Billing', and update your payment details securely.",
-  },
-  {
-    question: "How do I cancel or change my subscription?",
-    answer:
-      "Subscriptions can be managed under 'Account > Subscription'. You can upgrade, downgrade, or cancel at any time.",
-  },
-  {
-    question: "The app is not working as expected. How do I troubleshoot?",
-    answer:
-      "Try clearing your app cache, restarting the device, or updating to the latest app version. Contact support if issues persist.",
-  },
-];
+// Support data - this would typically come from a CMS or database
+const supportData = {
+  categories: [
+    {
+      id: "getting-started",
+      title: "Getting Started",
+      description:
+        "Learn the basics of Contato and set up your professional profile",
+      icon: "rocket",
+      articleCount: 9,
+      articles: [
+        {
+          id: 1,
+          title: "Creating Your Professional Profile",
+          slug: "creating-professional-profile",
+        },
+        { id: 2, title: "Setting Up Your Account", slug: "setting-up-account" },
+        {
+          id: 3,
+          title: "Verifying Your Professional Credentials",
+          slug: "verifying-credentials",
+        },
+      ],
+    },
+    {
+      id: "ai-matching",
+      title: "AI-Powered Matching",
+      description:
+        "Discover how our AI connects you with the right professionals",
+      icon: "brain",
+      articleCount: 9,
+      articles: [
+        {
+          id: 6,
+          title: "How AI Matching Works",
+          slug: "how-ai-matching-works",
+        },
+        {
+          id: 7,
+          title: "Improving Your Match Quality",
+          slug: "improving-match-quality",
+        },
+        {
+          id: 8,
+          title: "Understanding Match Scores",
+          slug: "understanding-match-scores",
+        },
+      ],
+    },
+    {
+      id: "messaging",
+      title: "Messaging & Communication",
+      description: "Connect safely with secure messaging and video features",
+      icon: "message",
+      articleCount: 10,
+      articles: [
+        { id: 12, title: "Sending Your First Message", slug: "first-message" },
+        {
+          id: 13,
+          title: "Video Introduction Cards",
+          slug: "video-introductions",
+        },
+        {
+          id: 14,
+          title: "Message Encryption & Security",
+          slug: "message-security",
+        },
+      ],
+    },
+    {
+      id: "events",
+      title: "Events & Networking",
+      description: "Find and attend professional events and meetups",
+      icon: "calendar",
+      articleCount: 8,
+      articles: [
+        {
+          id: 19,
+          title: "Discovering Networking Events",
+          slug: "discovering-events",
+        },
+        { id: 20, title: "RSVP and Event Management", slug: "rsvp-management" },
+        { id: 21, title: "Creating Your Own Events", slug: "creating-events" },
+      ],
+    },
+    {
+      id: "premium",
+      title: "Premium Features",
+      description: "Get the most out of Contato with premium capabilities",
+      icon: "crown",
+      articleCount: 9,
+      articles: [
+        { id: 24, title: "Upgrading to Premium", slug: "upgrading-premium" },
+        {
+          id: 25,
+          title: "Advanced Analytics Dashboard",
+          slug: "analytics-dashboard",
+        },
+        {
+          id: 26,
+          title: "Priority Matching & Visibility",
+          slug: "priority-matching",
+        },
+      ],
+    },
+    {
+      id: "troubleshooting",
+      title: "Troubleshooting",
+      description: "Solve common issues and technical problems",
+      icon: "wrench",
+      articleCount: 10,
+      articles: [
+        { id: 30, title: "App Not Loading or Crashing", slug: "app-crashes" },
+        { id: 31, title: "Login and Password Issues", slug: "login-issues" },
+        {
+          id: 32,
+          title: "Notification Problems",
+          slug: "notification-problems",
+        },
+      ],
+    },
+  ],
+};
 
-const helpfulTips = [
-  "Keep your app updated to access the latest features and security improvements.",
-  "Use the Community Forums to share tips and get advice from other users.",
-  "Enable notifications to stay informed about new content and events.",
-  "Regularly review your profile settings to keep your information up-to-date.",
-];
-
-export default function Support() {
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
-
-  const toggleFAQ = (index: number) => {
-    setExpandedIndex(expandedIndex === index ? null : index);
-  };
-
+export default function SupportPage() {
   return (
-    <section className="max-w-5xl mx-auto px-6 py-16">
-      {/* Contact Info */}
-      <div className="mb-16 text-center">
-        <h2 className="text-5xl font-extrabold text-gray-900 mb-6 drop-shadow-sm">
-          We’re Here to Help
-        </h2>
-        <p className="text-xl text-gray-700 max-w-3xl mx-auto mb-8">
-          Reach out via email, phone, or live chat. Our dedicated support team
-          is always ready to assist you.
-        </p>
-        <div className="flex justify-center flex-wrap gap-8 text-lg text-[#f15A24] font-semibold">
-          <a href="mailto:support@contatoapp.com" className="hover:underline">
-            support@contatoapp.com
-          </a>
-          <a href="tel:+18001234567" className="hover:underline">
-            +1 800 123 4567
-          </a>
-          <a href="/live-chat" className="hover:underline">
-            Live Chat
-          </a>
-        </div>
-      </div>
-
-      {/* FAQ Section */}
-      <div className="mb-20">
-        <h3 className="text-4xl font-bold mb-8 text-gray-900">
-          Frequently Asked Questions
-        </h3>
-        <div className="space-y-5">
-          {faqItems.map((item, index) => (
-            <div
-              key={index}
-              className="border border-gray-300 rounded-lg p-6 cursor-pointer shadow-sm hover:shadow-md transition-shadow duration-300"
-              onClick={() => toggleFAQ(index)}
-            >
-              <div className="flex justify-between items-center">
-                <h4 className="text-xl font-semibold text-gray-900">
-                  {item.question}
-                </h4>
-                <span className="text-[#f15A24] text-2xl select-none">
-                  {expandedIndex === index ? "−" : "+"}
-                </span>
-              </div>
-              {expandedIndex === index && (
-                <p className="mt-4 text-gray-700 text-lg">{item.answer}</p>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Helpful Tips */}
-      <div className="bg-[#fef8f5] border border-[#f15A24] rounded-xl p-8">
-        <h3 className="text-3xl font-bold mb-6 text-[#f15A24]">Helpful Tips</h3>
-        <ul className="list-disc list-inside space-y-3 text-gray-800 text-lg">
-          {helpfulTips.map((tip, i) => (
-            <li key={i}>{tip}</li>
-          ))}
-        </ul>
-      </div>
-    </section>
+    <main className="min-h-screen bg-white">
+      <SupportHeroSection />
+      <SupportCategoriesSection categories={supportData.categories} />
+    </main>
   );
 }

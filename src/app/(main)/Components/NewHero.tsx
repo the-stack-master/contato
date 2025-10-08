@@ -38,12 +38,6 @@ const NewHeroSection = ({ heroData }: HeroClientProps) => {
         ?.url,
       "_blank"
     );
-    // } else {
-    //   window.open(
-    //     "https://play.google.com/store/apps/details?id=com.contactos.contato&pcampaignid=web_share",
-    //     "_blank"
-    //   );
-    // }
   };
 
   return (
@@ -125,17 +119,17 @@ const NewHeroSection = ({ heroData }: HeroClientProps) => {
             <div className="space-y-6">
               <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
                 {heroData?.mainHeadline?.length
-                  ? heroData?.mainHeadline[0]?.text ?? ""
+                  ? (heroData?.mainHeadline[0]?.text ?? "")
                   : ""}
                 <br />
                 <span className="bg-gradient-to-r from-[#f15A24] to-orange-500 bg-clip-text text-transparent">
                   {heroData?.mainHeadline?.length
-                    ? heroData?.mainHeadline[1]?.text ?? ""
+                    ? (heroData?.mainHeadline[1]?.text ?? "")
                     : ""}
                 </span>
                 <br />
                 {heroData?.mainHeadline?.length
-                  ? heroData?.mainHeadline[2]?.text ?? ""
+                  ? (heroData?.mainHeadline[2]?.text ?? "")
                   : ""}
               </h1>
               <p className="text-xl text-gray-600 leading-relaxed max-w-lg">

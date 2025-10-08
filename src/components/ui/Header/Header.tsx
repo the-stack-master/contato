@@ -39,7 +39,6 @@ const Header = ({ authToken }: HeaderProps) => {
   const navLinks = [
     { href: "/", label: "Home" },
     { href: "/features", label: "Features" },
-    { href: "/docs", label: "Docs" },
     { href: "/videos", label: "Videos" },
     { href: "/blog", label: "Blog" },
     { href: "/contact", label: "Contact" },
