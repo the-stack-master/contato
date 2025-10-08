@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 // src/lib/convertSanityFile.ts
 import { client } from "@/lib/sanity";
 import mammoth from "mammoth";
