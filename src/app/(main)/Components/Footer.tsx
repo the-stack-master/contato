@@ -14,7 +14,7 @@ interface FooterClientProps {
   footerData: FooterDocument | null;
 }
 
-export default function footerFooterClient({ footerData }: FooterClientProps) {
+const FooterClient = ({ footerData }: FooterClientProps) => {
   const pathname = usePathname();
 
   if (pathname === "/signup") return null;
@@ -168,4 +168,6 @@ export default function footerFooterClient({ footerData }: FooterClientProps) {
       </div>
     </footer>
   );
-}
+};
+
+export default FooterClient;

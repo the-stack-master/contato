@@ -1,3 +1,5 @@
+import { SanitySeo } from "./commonTypes";
+
 // types/footer.ts
 export interface CTAButton {
   text: string;
@@ -80,7 +82,7 @@ export interface FooterDocument {
   _id: string;
   _type: "footerDocument";
   title: string;
-  seo?: any;
+  seo?: SanitySeo;
   footerHeader?: FooterHeader;
   footerAddressBlock?: FooterAddressBlock;
   footerNavLinksBlock?: FooterNavLinksBlock;
