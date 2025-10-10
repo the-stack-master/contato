@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   Users,
@@ -17,28 +16,30 @@ import { cn } from "@/utils/classNames";
 import PhoneSlideshow from "./PhoneSlideshow";
 import RotatingIcons from "./RotatingIcons";
 import DownloadButtons from "./DownloadAppButton";
-import { HeroData } from "./HeroComponent";
+import { AppShowcaseSection, HeroData } from "@/types/homeTypes";
 
 interface HeroClientProps {
   heroData: HeroData | null;
+  appShowcaseData: AppShowcaseSection | null;
 }
 
-const NewHeroSection = ({ heroData }: HeroClientProps) => {
+const NewHeroSection = ({ heroData, appShowcaseData }: HeroClientProps) => {
   const [isVisible, setIsVisible] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
     setIsVisible(true);
   }, []);
 
-  const handleDownload = (platform: "appstore" | "googleplay") => {
-    // if (platform === "ios") {
-    window.open(
-      heroData?.downloadButtons?.find((item) => item?.platform === platform)
-        ?.url,
-      "_blank"
-    );
+  const handleCTA = (url?: string) => {
+    if (url?.length) {
+      window.open(url, "_blank");
+    }
   };
+
+  const getCTAClasses = (isPrimaryVal: boolean) =>
+    isPrimaryVal
+      ? "h-14 px-8 bg-black hover:bg-gray-800 text-white font-medium transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95"
+      : "h-14 px-8 bg-[#f15A24] hover:bg-orange-600 text-white font-medium transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95";
 
   return (
     <section
@@ -110,27 +111,19 @@ const NewHeroSection = ({ heroData }: HeroClientProps) => {
               <div className="w-12 h-12 bg-gradient-to-br from-[#f15A24] to-orange-500 rounded-2xl flex items-center justify-center shadow-lg">
                 <Users className="w-6 h-6 text-white" />
               </div>
-              <span className="text-2xl font-bold text-gray-900">
-                {heroData?.companyName}
-              </span>
+              <span className="text-2xl font-bold text-gray-900">Contato</span>
             </div>
 
             {/* Main Headline */}
             <div className="space-y-6">
               <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                {heroData?.mainHeadline?.length
-                  ? (heroData?.mainHeadline[0]?.text ?? "")
-                  : ""}
+                {heroData?.mainHeading || ""}
                 <br />
                 <span className="bg-gradient-to-r from-[#f15A24] to-orange-500 bg-clip-text text-transparent">
-                  {heroData?.mainHeadline?.length
-                    ? (heroData?.mainHeadline[1]?.text ?? "")
-                    : ""}
+                  {heroData?.highlightedWord || ""}
                 </span>
                 <br />
-                {heroData?.mainHeadline?.length
-                  ? (heroData?.mainHeadline[2]?.text ?? "")
-                  : ""}
+                {heroData?.secondaryHeading || ""}
               </h1>
               <p className="text-xl text-gray-600 leading-relaxed max-w-lg">
                 {heroData?.description}
@@ -139,71 +132,69 @@ const NewHeroSection = ({ heroData }: HeroClientProps) => {
 
             {/* Stats */}
             <div className="flex items-center space-x-8 py-6">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-[#f15A24]">
-                  {heroData?.statistics[0]?.value}
+              {heroData?.statistics?.map((statsSection) => (
+                <div key={statsSection?.label} className="text-center">
+                  <div className="flex items-center justify-center space-x-1 mb-1">
+                    <span className="text-3xl font-bold text-[#f15A24]">
+                      {statsSection?.value}
+                    </span>
+                    {statsSection?.label === "App Rating" ? (
+                      <Star className="w-6 h-6 fill-[#f15A24] text-[#f15A24]" />
+                    ) : null}
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    {statsSection?.label}
+                  </div>
                 </div>
-                <div className="text-sm text-gray-600">
-                  {heroData?.statistics[0]?.label}
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-[#f15A24]">
-                  {heroData?.statistics[1]?.value}
-                </div>
-                <div className="text-sm text-gray-600">
-                  {heroData?.statistics[1]?.label}
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="flex items-center justify-center space-x-1 mb-1">
-                  <span className="text-3xl font-bold text-[#f15A24]">
-                    {heroData?.statistics[2]?.value}
-                  </span>
-                  <Star className="w-6 h-6 fill-[#f15A24] text-[#f15A24]" />
-                </div>
-                <div className="text-sm text-gray-600">
-                  {heroData?.statistics[2]?.label}
-                </div>
-              </div>
+              ))}
             </div>
 
             {/* Download Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button
-                onClick={() => handleDownload("appstore")}
-                className="h-14 px-8 bg-black hover:bg-gray-800 text-white font-medium transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95"
-              >
-                <Apple className="w-6 h-6 mr-3" />
-                <div className="text-left">
-                  <div className="text-xs opacity-80">Download on the</div>
-                  <div className="text-sm font-semibold">App Store</div>
-                </div>
-              </Button>
-
-              <Button
-                onClick={() => handleDownload("googleplay")}
-                className="h-14 px-8 bg-[#f15A24] hover:bg-orange-600 text-white font-medium transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95"
-              >
-                <Play className="w-6 h-6 mr-3" />
-                <div className="text-left">
-                  <div className="text-xs opacity-90">Get it on</div>
-                  <div className="text-sm font-semibold">Google Play</div>
-                </div>
-              </Button>
+              {heroData?.ctaButtons?.map((cta) => (
+                <Button
+                  key={cta?.buttonUrl}
+                  onClick={() => handleCTA(cta?.buttonUrl)}
+                  className={getCTAClasses(cta?.isPrimary ?? false)}
+                >
+                  {cta?.isPrimary ? (
+                    <Apple className="w-6 h-6 mr-3" />
+                  ) : (
+                    <Play className="w-6 h-6 mr-3" />
+                  )}
+                  <div className="flex flex-col items-center">
+                    {cta?.buttonText &&
+                      (() => {
+                        const words = cta.buttonText.split(" ");
+                        const top = words.slice(0, 3).join(" "); // first 3 words
+                        const bottom = words.slice(3).join(" "); // remaining words
+                        return (
+                          <>
+                            <div className="text-xs opacity-90">{top}</div>
+                            <div className="text-sm font-semibold">
+                              {bottom}
+                            </div>
+                          </>
+                        );
+                      })()}
+                  </div>
+                </Button>
+              ))}
             </div>
 
             {/* Secondary CTA */}
-            <div className="flex items-center space-x-4 pt-4">
+            {/* <div className="flex items-center space-x-4 pt-4">
               <Button
                 variant="outline"
                 className="border-[#f15A24] text-[#f15A24] hover:bg-[#f15A24] hover:text-white transition-all duration-200"
               >
-                Watch Demo
+                {heroData?.demoVideo?.videoText}
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
-              <span className="text-sm text-gray-500">2 min overview</span>
-            </div>
+              <span className="text-sm text-gray-500">
+                {heroData?.demoVideo?.videoDuration}
+              </span>
+            </div> */}
           </div>
 
           {/* Right Content - Phone Mockup and icons */}
@@ -218,7 +209,7 @@ const NewHeroSection = ({ heroData }: HeroClientProps) => {
           >
             {/* Scroll container for phone + icons */}
             <div className="flex items-center space-x-6 overflow-x-auto no-scrollbar px-4 sm:px-0 -mx-4 sm:mx-0 bg-transparent">
-              <PhoneSlideshow />
+              <PhoneSlideshow appShowcaseData={appShowcaseData} />
               <RotatingIcons />
             </div>
           </div>
@@ -226,9 +217,16 @@ const NewHeroSection = ({ heroData }: HeroClientProps) => {
       </div>
 
       {/* Bottom Wave */}
-      <div className="absolute bottom-0 left-0 right-0">
-        <svg viewBox="0 0 1200 120" className="w-full h-20 fill-gray-50">
-          <path d="M0,60 C300,120 900,0 1200,60 L1200,120 L0,120 Z"></path>
+      <div className="absolute bottom-0 left-0 right-0 w-full overflow-hidden">
+        <svg
+          viewBox="0 0 1200 120"
+          className="w-full h-20"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M0,60 C300,120 900,0 1200,60 L1200,120 L0,120 Z"
+            className="fill-gray-50"
+          ></path>
         </svg>
       </div>
     </section>

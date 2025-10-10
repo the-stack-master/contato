@@ -11,30 +11,7 @@ import {
   Zap,
 } from "lucide-react";
 import { motion, Variants } from "framer-motion";
-
-interface Feature {
-  text: string;
-}
-
-interface FeatureBlock {
-  icon: string;
-  title: string;
-  description: string;
-  features: Feature[];
-}
-
-interface HomeFeatureBlocks {
-  _id: string;
-  title: string;
-  featureBlocks: FeatureBlock[];
-}
-
-interface HomeFeatureHeader {
-  _id: string;
-  title: string;
-  heading: string;
-  subHeading: string;
-}
+import { ContentFeaturesGrid } from "@/types/homeTypes";
 
 // Map icon string to lucide-react icon components
 const iconMap: Record<string, React.ReactNode> = {
@@ -74,15 +51,13 @@ const cardVariants: Variants = {
 };
 
 interface FeaturesSectionClientProps {
-  featureHeader: HomeFeatureHeader | null;
-  featureBlocks: HomeFeatureBlocks | null;
+  featureData: ContentFeaturesGrid | null;
 }
 
 export default function FeaturesSectionClient({
-  featureHeader,
-  featureBlocks,
+  featureData,
 }: FeaturesSectionClientProps) {
-  if (!featureHeader || !featureBlocks) return null;
+  if (!featureData) return null;
 
   return (
     <section
@@ -102,7 +77,7 @@ export default function FeaturesSectionClient({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            {featureHeader.heading}
+            {featureData?.sectionHeading}
           </motion.h2>
           <motion.p
             className="text-lg text-gray-600 max-w-md mx-auto"
@@ -110,14 +85,14 @@ export default function FeaturesSectionClient({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            {featureHeader.subHeading}
+            {featureData?.sectionDescription}
           </motion.p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-          {featureBlocks.featureBlocks.map((feature, index) => (
+          {featureData.features.map((feature, index) => (
             <motion.div
-              key={feature.title + index}
+              key={feature.featureTitle + index}
               variants={cardVariants}
               whileHover="hover"
               className={`group rounded-3xl overflow-hidden ${
@@ -127,24 +102,24 @@ export default function FeaturesSectionClient({
               <Card className="border-0 bg-transparent shadow-none">
                 <CardContent className="p-8">
                   <div className="mb-6 transition-transform duration-300 origin-center group-hover:scale-110">
-                    {iconMap[feature.icon] || (
+                    {iconMap[feature.featureTitle] || (
                       <Smartphone className="w-8 h-8 text-[#f15A24]" />
                     )}
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                    {feature.title}
+                    {feature.featureTitle}
                   </h3>
                   <p className="text-gray-700 mb-6 leading-relaxed">
                     {feature.description}
                   </p>
                   <ul className="space-y-2">
-                    {feature.features.map((benefit, idx) => (
+                    {feature.featurePoints.map((benefit, idx) => (
                       <li
                         key={idx}
                         className="flex items-center text-sm text-gray-600"
                       >
                         <Check className="w-4 h-4 text-[#f15A24] mr-2 flex-shrink-0" />
-                        {benefit.text}
+                        {benefit}
                       </li>
                     ))}
                   </ul>

@@ -1,62 +1,34 @@
-"use client";
-
 import { Card, CardContent } from "@/components/ui/card";
+import { UserTestimonials } from "@/types/homeTypes";
 import { Star, Quote } from "lucide-react";
 
-interface Testimonial {
-  _id: string;
-  company: string;
-  firstName: string;
-  lastName: string;
-  role: string;
-  quote: string;
-  rating: number;
-}
-
-interface TestimonialBlock {
-  _id: string;
-  testimonials: Testimonial[];
-}
-
-interface TestimonialHeader {
-  title?: string;
-  heading?: string;
-  subHeading?: string;
-}
-
 interface Props {
-  testimonialHeader: TestimonialHeader | null;
-  testimonialBlocks: TestimonialBlock | null;
+  testimonialData: UserTestimonials | null;
 }
 
-export default function TestimonialsSectionClient({
-  testimonialHeader,
-  testimonialBlocks,
-}: Props) {
-  if (!testimonialHeader || !testimonialBlocks) return null;
+export default function TestimonialsSectionClient({ testimonialData }: Props) {
+  if (!testimonialData) return null;
 
   return (
     <section className="py-20 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16 max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            {testimonialHeader.heading || "What Our Users Say"}
+            {testimonialData?.sectionHeading || "What Our Users Say"}
           </h2>
           <p className="text-lg text-gray-600">
-            {testimonialHeader.subHeading ||
+            {testimonialData?.sectionDescription ||
               "Hear from professionals who are growing and connecting with Contato."}
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-          {testimonialBlocks?.testimonials?.map((testimonial, index) => {
-            const avatar =
-              (testimonial.firstName?.[0] || "") +
-              (testimonial.lastName?.[0] || "");
+          {testimonialData?.testimonials?.map((testimonial, index) => {
+            const avatar = testimonial.authorInitials || "";
 
             return (
               <Card
-                key={testimonial._id || index}
+                key={index}
                 className="group border-0 bg-white shadow-lg rounded-2xl relative overflow-hidden cursor-pointer hover:shadow-[0_8px_25px_rgba(241,90,36,0.3)] transition-shadow duration-500"
               >
                 <CardContent className="p-8 relative z-10">
@@ -72,7 +44,7 @@ export default function TestimonialsSectionClient({
                   </div>
 
                   <blockquote className="text-gray-900 mb-6 leading-relaxed italic font-semibold">
-                    &ldquo;{testimonial.quote}&rdquo;
+                    &ldquo;{testimonial.testimonialText}&rdquo;
                   </blockquote>
 
                   <div className="flex items-center">
@@ -81,14 +53,13 @@ export default function TestimonialsSectionClient({
                     </div>
                     <div>
                       <div className="font-semibold text-gray-900">
-                        {testimonial.firstName} {testimonial.lastName}
+                        {testimonial.authorName}
                       </div>
-                      <div className="text-sm text-gray-600 font-medium">
-                        {testimonial.role}
-                      </div>
-                      <div className="text-sm text-[#f15A24] font-semibold">
-                        {testimonial.company}
-                      </div>
+                      {testimonial?.authorTitle ? (
+                        <div className="text-sm text-[#f15A24] font-semibold">
+                          {testimonial.authorTitle}
+                        </div>
+                      ) : null}
                     </div>
                   </div>
                 </CardContent>

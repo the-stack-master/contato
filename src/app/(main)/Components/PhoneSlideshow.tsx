@@ -2,60 +2,24 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { client } from "@/lib/sanity";
+import { AppShowcaseSection } from "@/types/homeTypes";
 
-interface HeroImage {
-  url: string;
-  caption?: string;
+interface PhoneSlideshowProps {
+  appShowcaseData: AppShowcaseSection | null;
 }
 
-interface HeroGallery {
-  _id: string;
-  title: string;
-  imageUrls: HeroImage[];
-}
-
-const PhoneSlideshow = () => {
-  // Demo image URLs
-  // const images: string[] = [
-  //   "https://contato.app/assets/images/screenshots/analytics-engangement.png",
-  //   "https://contato.app/assets/images/screenshots/analytics-growth.png",
-  //   "https://contato.app/assets/images/screenshots/analytics-insights.png",
-  //   "https://contato.app/assets/images/screenshots/integrations.png",
-  //   "https://contato.app/assets/images/screenshots/connection-near-me.png",
-  //   "https://contato.app/assets/images/screenshots/my-code.png",
-  // ];
-
+const PhoneSlideshow = ({ appShowcaseData }: PhoneSlideshowProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [gallery, setGallery] = useState<HeroGallery | null>(null);
 
   useEffect(() => {
-    if (!gallery?.imageUrls?.length) return; // exit early if no images
+    if (!appShowcaseData?.imageUrls?.length) return; // exit early if no images
 
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % gallery.imageUrls.length);
+      setCurrentIndex((prev) => (prev + 1) % appShowcaseData.imageUrls.length);
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [gallery]); // depend on gallery object instead of optional chaining
-
-  useEffect(() => {
-    async function fetchGallery() {
-      try {
-        const data: HeroGallery[] = await client.fetch(`
-          *[_type == "heroImageGallery"]{
-            _id,
-            title,
-            imageUrls[]{ url, caption }
-          }
-        `);
-        setGallery(data[0] || null);
-      } catch (err) {
-        console.error("Failed to fetch gallery:", err);
-      }
-    }
-    fetchGallery();
-  }, []);
+  }, [appShowcaseData]); // depend on gallery object instead of optional chaining
 
   return (
     <div className="relative w-80 max-w-full h-[480px] sm:h-[640px] bg-gray-900 rounded-[3rem] p-2 shadow-2xl">
@@ -73,11 +37,11 @@ const PhoneSlideshow = () => {
 
         {/* Slideshow */}
         <div className="w-full h-[calc(100%-3rem)] relative">
-          {gallery?.imageUrls?.map((urlObj, index) => (
+          {appShowcaseData?.imageUrls?.map((urlObj, index) => (
             <Image
               key={index}
-              src={urlObj?.url}
-              alt={`slide-${urlObj?.caption}`}
+              src={urlObj?.imageUrl}
+              alt={`slide-${urlObj?.alt}`}
               fill
               className={`object-cover transition-opacity duration-700 ${
                 index === currentIndex ? "opacity-100" : "opacity-0"

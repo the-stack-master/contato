@@ -1,31 +1,15 @@
-import { client } from "@/lib/sanity";
 import FooterClient from "@/app/(main)/Components/Footer";
+import { FooterDocument } from "@/types/footerTypes";
+import { getFooter } from "@/lib/sanity-queries/footerQuery";
+import { generateMetadata } from "@/lib/generateMetadata";
 
-const footerHeaderQuery = `*[_type == "footerHeader" && isActive == true][0]{ heading, subHeading, ctaButtons[] }`;
-const footerAddressQuery = `*[_type == "footerAddressBlock" && isActive == true][0]{
-  companyName, description, contactInfo{ email, phone, address{ street, city, state, zipCode, country } }
-}`;
-const footerNavLinksQuery = `*[_type == "footerNavLinksBlock" && isActive == true][0]{ navigationColumns[] }`;
-const footerSocialQuery = `*[_type == "footerSocialMediaLinksBlock" && isActive == true][0]{ socialLinks[] }`;
-const footerCopyrightQuery = `*[_type == "footerCopyrightText" && isActive == true][0]{ companyName, copyrightYear,
-  copyrightText, additionalText, showCopyrightSymbol, autoUpdateYear }`;
+export async function generateMetadataForHome() {
+  const footer = await getFooter();
+  return generateMetadata(footer?.seo);
+}
 
 export default async function FooterServer() {
-  const [header, address, navLinks, socials, copyright] = await Promise.all([
-    client.fetch(footerHeaderQuery),
-    client.fetch(footerAddressQuery),
-    client.fetch(footerNavLinksQuery),
-    client.fetch(footerSocialQuery),
-    client.fetch(footerCopyrightQuery),
-  ]);
+  const footerData: FooterDocument | null = await getFooter();
 
-  return (
-    <FooterClient
-      header={header}
-      address={address}
-      navLinks={navLinks?.navigationColumns || []}
-      socials={socials?.socialLinks || []}
-      copyright={copyright}
-    />
-  );
+  return <FooterClient footerData={footerData} />;
 }

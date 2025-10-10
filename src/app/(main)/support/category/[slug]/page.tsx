@@ -1,5 +1,3 @@
-import { Metadata } from "next";
-import { notFound } from "next/navigation";
 import SupportCategoryHeader from "../SupportCategoryHeader";
 import SupportArticlesList from "../SupportArticlesList";
 
@@ -435,29 +433,8 @@ interface PageProps {
   };
 }
 
-export async function generateMetadata({
-  params,
-}: PageProps): Promise<Metadata> {
-  const category = supportData.categories[0];
-
-  if (!category) {
-    return {
-      title: "Category Not Found - NetworkPro Support",
-    };
-  }
-
-  return {
-    title: `${category.title} - NetworkPro Support`,
-    description: category.description,
-  };
-}
-
 const CategoryPage = ({ params }: PageProps) => {
   const category = supportData?.categories[0];
-
-  if (!category) {
-    notFound();
-  }
 
   return (
     <main className="min-h-screen bg-white">
@@ -469,11 +446,5 @@ const CategoryPage = ({ params }: PageProps) => {
     </main>
   );
 };
-
-export async function generateStaticParams() {
-  return supportData.categories.map((category) => ({
-    category: category.id,
-  }));
-}
 
 export default CategoryPage;

@@ -1,5 +1,6 @@
 import { client } from "@/lib/sanity";
 import HeroClient from "./NewHero";
+import { HeroData } from "@/types/homeTypes";
 
 interface HeroLogo {
   asset: { _id: string; url: string };
@@ -33,18 +34,18 @@ interface HeroBackgroundStyle {
   backgroundImage?: { asset: { _id: string; url: string } };
 }
 
-export interface HeroData {
-  _id: string;
-  title: string;
-  companyName: string;
-  logo?: HeroLogo;
-  mainHeadline: HeroHeadline[];
-  description?: string;
-  statistics: HeroStatistic[];
-  downloadButtons?: HeroButton[];
-  backgroundStyle?: HeroBackgroundStyle;
-  seo?: Record<string, string | number | undefined>;
-}
+// export interface HeroData {
+//   _id: string;
+//   title: string;
+//   companyName: string;
+//   logo?: HeroLogo;
+//   mainHeadline: HeroHeadline[];
+//   description?: string;
+//   statistics: HeroStatistic[];
+//   downloadButtons?: HeroButton[];
+//   backgroundStyle?: HeroBackgroundStyle;
+//   seo?: Record<string, string | number | undefined>;
+// }
 
 const HeroServer = async () => {
   const heroData: HeroData | null = await client.fetch(`
@@ -62,7 +63,8 @@ const HeroServer = async () => {
     }
   `);
 
-  return <HeroClient heroData={heroData} />;
+  // return <HeroClient heroData={heroData} />;
+  return <div>Heor</div>;
 };
 
 export default HeroServer;

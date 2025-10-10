@@ -14,6 +14,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { cn } from "@/utils/classNames";
+import VideoPlayer from "@/components/ui/VideoPlayer";
 
 export type SanityImage = {
   asset: { _id: string; url: string };
@@ -42,7 +43,7 @@ const categories = [
   { id: "tutorial", label: "Tutorials", icon: Users },
 ];
 
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 1;
 
 const VideosSection = () => {
   const [featuredVideos, setFeaturedVideos] = useState<Video[]>([]);
@@ -55,6 +56,7 @@ const VideosSection = () => {
   const [gridPlaying, setGridPlaying] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [hasMore, setHasMore] = useState(true);
+  const [totalVideos, setTotalVideos] = useState(0);
 
   // Fetch featured videos
   const fetchFeaturedVideos = async () => {
@@ -75,7 +77,20 @@ const VideosSection = () => {
     setFeaturedVideos(data);
   };
 
-  // Fetch grid videos with filters + pagination
+  // Fetch total count for current filter/search
+  const fetchTotalCount = async (search: string, category: string) => {
+    let filter = "true";
+    if (category !== "all")
+      filter += ` && category->.title match "${category}"`;
+    if (search)
+      filter += ` && (title match "*${search}*" || description match "*${search}*" || tags[] match "*${search}*")`;
+
+    const countQuery = `count(*[_type=="video" && ${filter}])`;
+    const total: number = await client.fetch(countQuery);
+    return total;
+  };
+
+  // Fetch grid videos
   const fetchVideos = async (
     pageNumber: number = 1,
     search: string = "",
@@ -85,7 +100,7 @@ const VideosSection = () => {
     const start = (pageNumber - 1) * PAGE_SIZE;
     const end = pageNumber * PAGE_SIZE;
 
-    let filter = "true"; // always true, no filtering by featured
+    let filter = "true";
     if (category !== "all")
       filter += ` && category->.title match "${category}"`;
     if (search)
@@ -106,20 +121,36 @@ const VideosSection = () => {
     }`;
 
     const data: Video[] = await client.fetch(query);
-    setVideos((prevVideos) => (append ? [...prevVideos, ...data] : data));
-    setHasMore(data.length === PAGE_SIZE);
+
+    setVideos((prev) => (append ? [...prev, ...data] : data));
+
+    return data;
   };
 
   // Initial fetch
   useEffect(() => {
-    fetchFeaturedVideos();
-    fetchVideos(1, searchQuery, selectedCategory);
+    const initialize = async () => {
+      fetchFeaturedVideos();
+      const total = await fetchTotalCount(searchQuery, selectedCategory);
+      setTotalVideos(total);
+
+      const data = await fetchVideos(1, searchQuery, selectedCategory, false);
+      setHasMore(data.length < total);
+    };
+    initialize();
   }, []);
 
   // Refetch on search/category change
   useEffect(() => {
-    setPage(1);
-    fetchVideos(1, searchQuery, selectedCategory);
+    const refetch = async () => {
+      setPage(1);
+      const total = await fetchTotalCount(searchQuery, selectedCategory);
+      setTotalVideos(total);
+
+      const data = await fetchVideos(1, searchQuery, selectedCategory, false);
+      setHasMore(data.length < total);
+    };
+    refetch();
   }, [searchQuery, selectedCategory]);
 
   // Featured carousel auto-play
@@ -131,14 +162,6 @@ const VideosSection = () => {
       return () => clearInterval(interval);
     }
   }, [featuredVideos, featuredPlaying]);
-
-  const handlePlayFeatured = (videoId: string) => {
-    setFeaturedPlaying(featuredPlaying === videoId ? null : videoId);
-  };
-
-  const handlePlayGrid = (videoId: string) => {
-    setGridPlaying(gridPlaying === videoId ? null : videoId);
-  };
 
   const nextFeatured = () => {
     setFeaturedIndex((prev) => (prev + 1) % featuredVideos.length);
@@ -152,47 +175,25 @@ const VideosSection = () => {
     setFeaturedPlaying(null);
   };
 
-  const loadMore = () => {
+  const loadMore = async () => {
     const nextPage = page + 1;
-    fetchVideos(nextPage, searchQuery, selectedCategory, true);
+    const startIndex = (nextPage - 1) * PAGE_SIZE;
+
+    const data = await fetchVideos(
+      nextPage,
+      searchQuery,
+      selectedCategory,
+      true
+    );
     setPage(nextPage);
-  };
 
-  const getThumbnailUrl = (video: Video) => {
-    const thumb = video.thumbnails?.[0];
-    if (!thumb) return "/placeholder.jpg";
-    if ("asset" in thumb) return thumb.asset.url;
-    if ("url" in thumb) return thumb.url;
-    return "/placeholder.jpg";
-  };
-
-  const getVideoUrl = (video: Video): string | undefined => {
-    if (!video) return undefined;
-
-    // Case 1: Sanity file asset (direct mp4)
-    if (video.videoFile?.asset?.url) return video.videoFile.asset.url;
-
-    // Case 2: YouTube link → convert to embed URL
-    if (video.videoUrl && video.videoUrl.includes("youtube.com")) {
-      const videoId = new URL(video.videoUrl).searchParams.get("v");
-      if (videoId)
-        return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
-    }
-
-    if (video.videoUrl && video.videoUrl.includes("youtu.be")) {
-      const videoId = video.videoUrl.split("/").pop();
-      if (videoId)
-        return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
-    }
-
-    return undefined;
+    setHasMore(startIndex + data.length < totalVideos);
   };
 
   return (
     <div className="min-h-screen bg-white" ref={containerRef}>
       {/* Title + Subtitle */}
       <section className="max-w-7xl mx-auto px-6 py-20 flex flex-col lg:flex-row gap-12">
-        {/* Left: Title + Subtitle */}
         <div className="lg:w-1/2 text-center lg:text-left flex flex-col justify-center">
           <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-[#f15A24]/10 to-orange-100/50 px-6 py-3 rounded-full mb-8">
             <Play className="w-5 h-5 text-[#f15A24]" />
@@ -200,7 +201,7 @@ const VideosSection = () => {
           </div>
           <h1 className="text-5xl lg:text-6xl font-black text-gray-900 mb-6 leading-tight">
             See Connecto <br />
-            <span className="bg-gradien88t-to-r from-[#f15A24] via-orange-500 to-red-500 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#f15A24] via-orange-500 to-red-500 bg-clip-text text-transparent">
               in action
             </span>
           </h1>
@@ -210,7 +211,7 @@ const VideosSection = () => {
           </p>
         </div>
 
-        {/* Right: Featured Videos */}
+        {/* Featured Videos */}
         {featuredVideos.length > 0 && (
           <div className="lg:w-1/2">
             <div className="text-center mb-8 lg:text-left">
@@ -221,41 +222,19 @@ const VideosSection = () => {
             </div>
 
             <div className="relative group overflow-hidden rounded-3xl shadow-2xl">
-              <div className="aspect-video bg-gray-900 relative">
-                {featuredPlaying === featuredVideos[featuredIndex]?._id ? (
-                  <video
-                    src={
-                      featuredVideos[featuredIndex]?.videoFile?.asset.url ||
-                      featuredVideos[featuredIndex]?.videoUrl
-                    }
-                    controls
-                    autoPlay
-                    className="w-full h-full object-cover"
-                    onEnded={() => setFeaturedPlaying(null)}
-                  />
-                ) : (
-                  <img
-                    src={getThumbnailUrl(featuredVideos[featuredIndex])}
-                    alt={
-                      featuredVideos[featuredIndex]?.title || "Featured video"
-                    }
-                    className="w-full h-full object-cover"
-                  />
-                )}
-
-                {featuredPlaying !== featuredVideos[featuredIndex]?._id && (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Button
-                      onClick={() =>
-                        handlePlayFeatured(featuredVideos[featuredIndex]?._id)
-                      }
-                      className="w-24 h-24 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 border-2 border-white/50"
-                    >
-                      <Play className="w-10 h-10 text-white ml-1" />
-                    </Button>
-                  </div>
-                )}
-              </div>
+              <VideoPlayer
+                video={featuredVideos[featuredIndex]}
+                isPlaying={
+                  featuredPlaying === featuredVideos[featuredIndex]._id
+                }
+                onPlayToggle={() =>
+                  setFeaturedPlaying(
+                    featuredPlaying === featuredVideos[featuredIndex]._id
+                      ? null
+                      : featuredVideos[featuredIndex]._id
+                  )
+                }
+              />
 
               {featuredVideos.length > 1 && (
                 <>
@@ -292,7 +271,7 @@ const VideosSection = () => {
             />
           </div>
 
-          <div className="flex gap-2 justify-start flex-none max-w-[600px]">
+          {/* <div className="flex gap-2 justify-start flex-none max-w-[600px]">
             {categories.map((category) => (
               <Button
                 key={category.id}
@@ -311,7 +290,7 @@ const VideosSection = () => {
                 {category.label}
               </Button>
             ))}
-          </div>
+          </div> */}
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -320,42 +299,13 @@ const VideosSection = () => {
               key={video._id}
               className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-[1.02]"
             >
-              <div className="relative aspect-video bg-gray-900 overflow-hidden">
-                {gridPlaying === video._id ? (
-                  video.videoFile?.asset?.url ? (
-                    <video
-                      src={getVideoUrl(video)}
-                      controls
-                      autoPlay
-                      className="w-full h-full object-cover"
-                      onEnded={() => setGridPlaying(null)}
-                    />
-                  ) : (
-                    <iframe
-                      src={getVideoUrl(video)}
-                      className="w-full h-full"
-                      allow="autoplay; encrypted-media"
-                      allowFullScreen
-                    />
-                  )
-                ) : (
-                  <>
-                    <img
-                      src={getThumbnailUrl(video)}
-                      alt={video.title || "Video thumbnail"}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <Button
-                        onClick={() => handlePlayGrid(video._id)}
-                        className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 border border-white/50"
-                      >
-                        <Play className="w-6 h-6 text-white ml-0.5" />
-                      </Button>
-                    </div>
-                  </>
-                )}
-              </div>
+              <VideoPlayer
+                video={video}
+                isPlaying={gridPlaying === video._id}
+                onPlayToggle={() =>
+                  setGridPlaying(gridPlaying === video._id ? null : video._id)
+                }
+              />
               <div className="p-6">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs font-medium uppercase text-[#f15A24]">
@@ -376,7 +326,18 @@ const VideosSection = () => {
 
         {hasMore && (
           <div className="mt-8 text-center">
-            <Button onClick={loadMore} className="px-8 py-3">
+            <Button
+              onClick={loadMore}
+              className="
+                px-8 py-3
+                bg-gradient-to-r from-[#f15A24] to-[#ff7f50] 
+                text-white font-semibold 
+                rounded-lg shadow-md 
+                hover:shadow-lg hover:scale-105 
+                transition-transform duration-300 ease-in-out
+                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#f15A24]
+              "
+            >
               Load More
             </Button>
           </div>

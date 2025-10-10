@@ -4,10 +4,9 @@
 import { client, urlFor } from "@/lib/sanity";
 import { notFound } from "next/navigation";
 import { PortableText } from "@portabletext/react";
-import { ArrowLeft, Calendar, Clock, Tag, MessageCircle } from "lucide-react";
+import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import Link from "next/link";
-import { SanityImage } from "../page";
-import { BlogPost } from "../page"; // your updated type
+import { BlogPost } from "../page";
 
 interface PageProps {
   params: { slug: string };
@@ -54,27 +53,25 @@ export default async function BlogPostPage({ params }: PageProps) {
     });
 
   return (
-    <div className="min-h-screen bg-white relative">
-      {/* Back Button - fully left aligned */}
-      <div className="absolute top-8 left-6 z-20">
-        <Link
-          href="/blog"
-          className="inline-flex items-center gap-2 px-3 py-1 bg-white border border-orange-500 rounded-lg text-orange-500 shadow-sm hover:bg-orange-100 hover:scale-105 transition-all font-medium"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Blog
-        </Link>
-      </div>
+    <div className="min-h-screen bg-white">
+      {/* Hero Section + Back Button */}
+      <section className="pt-6 pb-16 px-6 bg-gradient-to-br from-gray-50 to-white overflow-hidden">
+        <div className="max-w-4xl mx-auto flex flex-col gap-6">
+          {/* Back Button */}
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-2 px-3 py-1 bg-white border border-orange-500 rounded-lg text-orange-500 shadow-sm hover:bg-orange-100 hover:scale-105 transition-all font-medium w-max"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Blog
+          </Link>
 
-      {/* Hero Section + Category/Meta/Title/Excerpt/Tags */}
-      <section className="pt-20 pb-16 px-6 bg-gradient-to-br from-gray-50 to-white overflow-hidden text-left">
-        <div className="max-w-4xl mx-auto relative z-10">
-          {/* Optional Category and Meta */}
+          {/* Category & Meta */}
           {post.category && (
-            <div className="flex flex-wrap items-center gap-4 mb-4">
-              <span className="px-4 py-2 rounded-full text-sm font-semibold text-white bg-orange-500">
+            <div className="flex flex-wrap items-center gap-4">
+              {/* <span className="px-4 py-2 rounded-full text-sm font-semibold text-white bg-orange-500">
                 {post.category?.title}
-              </span>
+              </span> */}
               <div className="flex items-center space-x-4 text-gray-600">
                 <div className="flex items-center space-x-1">
                   <Calendar className="w-4 h-4" />
@@ -97,55 +94,44 @@ export default async function BlogPostPage({ params }: PageProps) {
             {post.title}
           </h1>
 
-          {/* Tagline / Excerpt */}
+          {/* Tagline */}
           {post.tagline && (
             <p className="text-xl text-gray-600 mb-4 leading-relaxed">
               {post.tagline}
             </p>
           )}
 
-          {/* Tags (directly under heading/subheading) */}
+          {/* Tags */}
           {post.tags && post.tags.length > 0 && (
-            <div className="mb-8">
-              <div className="flex flex-wrap gap-2">
-                {post.tags.map((tag, i) => (
-                  <span
-                    key={i}
-                    className="px-4 py-1 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-orange-100 hover:text-orange-500 transition-colors cursor-pointer"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Author */}
-          {post.author && (
-            <div className="flex items-center gap-4 mb-8">
-              <div>
-                <h3 className="font-semibold text-gray-900">{post.author}</h3>
-              </div>
+            <div className="flex flex-wrap gap-2">
+              {post.tags.map((tag, i) => (
+                <span
+                  key={i}
+                  className="px-4 py-1 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-orange-100 hover:text-orange-500 transition-colors cursor-pointer"
+                >
+                  {tag}
+                </span>
+              ))}
             </div>
           )}
         </div>
       </section>
 
-      {/* Featured Image - width matches content */}
+      {/* Main Blog Image */}
       {post.mainImage && (
-        <section className="-mt-8 px-6 relative z-10">
+        <section className="px-6 -mt-8">
           <div className="max-w-4xl mx-auto relative overflow-hidden rounded-3xl shadow-2xl">
             <img
               src={urlFor(post.mainImage).width(1200).url()}
               alt={post.title}
-              className="w-full h-[400px] object-cover"
+              className="w-full h-auto object-cover rounded-3xl"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-3xl"></div>
           </div>
         </section>
       )}
 
-      {/* Article Content + Separator */}
+      {/* Article Content */}
       <section className="py-16 px-6">
         <div className="max-w-4xl mx-auto">
           <div className="prose prose-lg max-w-none text-left">
@@ -167,6 +153,7 @@ export default async function BlogPostPage({ params }: PageProps) {
               }}
             />
           </div>
+
           {/* End-of-post separator */}
           <div className="my-10 flex items-center justify-center">
             <span className="w-16 h-1 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 rounded-full" />
