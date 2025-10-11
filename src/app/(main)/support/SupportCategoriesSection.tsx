@@ -80,8 +80,6 @@ export default function SupportCategoriesSection({
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {categories?.map((category, index) => {
-            // const IconComponent =
-            //   iconMap[category.icon as keyof typeof iconMap];
             return (
               <motion.div
                 key={category?._id}
@@ -89,7 +87,7 @@ export default function SupportCategoriesSection({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl hover:border-orange-200 transition-all duration-300 group"
+                className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl hover:border-orange-200 transition-all duration-300 group flex flex-col"
               >
                 <div className="flex items-center mb-4">
                   <div className="w-12 h-12 bg-gradient-to-r from-[#f15A24] to-orange-500 rounded-xl flex items-center justify-center mr-4">
@@ -102,26 +100,22 @@ export default function SupportCategoriesSection({
                     <h3 className="text-xl font-bold text-gray-900 group-hover:text-[#f15A24] transition-colors duration-300 truncate whitespace-nowrap overflow-hidden">
                       {category.title}
                     </h3>
-
                     <p className="text-sm text-gray-500">
                       {category?.totalDocuments} articles
                     </p>
                   </div>
                 </div>
 
-                <p className="text-gray-600 mb-6 leading-relaxed h-12 overflow-hidden text-ellipsis">
-                  {category?.description}
-                </p>
-
-                <div className="space-y-2 mb-6">
+                {/* Articles container */}
+                <div className="space-y-2 mb-6 min-h-[calc(5*2rem+4*0.5rem)] flex-1">
                   {category?.documents
-                    ?.slice(0, 3)
+                    ?.slice(0, 5)
                     .map((article, articleIndex) => (
                       <div
-                        key={article?.publishedAt}
-                        onClick={() => {
-                          handleDocClick(article, category?.slug?.current);
-                        }}
+                        key={article?.publishedAt || articleIndex}
+                        onClick={() =>
+                          handleDocClick(article, category?.slug?.current)
+                        }
                         className="flex items-center text-sm text-gray-600 hover:text-[#f15A24] transition-colors duration-200 cursor-pointer"
                       >
                         <div className="w-1.5 h-1.5 bg-[#f15A24] rounded-full mr-3 flex-shrink-0"></div>
@@ -130,13 +124,15 @@ export default function SupportCategoriesSection({
                     ))}
                 </div>
 
-                <Button
-                  onClick={() => handleCategoryClick(category)}
-                  className="w-full bg-gradient-to-r from-[#f15A24] to-orange-500 hover:from-orange-600 hover:to-red-500 text-white rounded-xl transition-all duration-300 group-hover:shadow-lg"
-                >
-                  See all {category?.totalDocuments} articles
-                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
-                </Button>
+                {category?.totalDocuments > 5 && (
+                  <Button
+                    onClick={() => handleCategoryClick(category)}
+                    className="w-full bg-gradient-to-r from-[#f15A24] to-orange-500 hover:from-orange-600 hover:to-red-500 text-white rounded-xl transition-all duration-300 group-hover:shadow-lg mt-auto"
+                  >
+                    See all {category?.totalDocuments} articles
+                    <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
+                  </Button>
+                )}
               </motion.div>
             );
           })}
