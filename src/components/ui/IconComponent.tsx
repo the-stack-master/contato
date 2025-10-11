@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { DynamicIcon, IconName } from "lucide-react/dynamic";
 
 type LucideIconByNameProps = {

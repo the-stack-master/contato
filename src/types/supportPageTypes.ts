@@ -33,7 +33,7 @@ export interface DocumentUpload {
   tags?: string[];
   status?: string;
   featured?: boolean;
-  seo?: any;
+  seo?: SanitySeo;
   internalNotes?: string;
 }
 
