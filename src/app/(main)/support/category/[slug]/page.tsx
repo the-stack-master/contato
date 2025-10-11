@@ -1,5 +1,6 @@
 import SupportCategoryHeader from "../SupportCategoryHeader";
 import SupportArticlesList from "../SupportArticlesList";
+import CategoryServer from "@/components/serverComponents/CategoryPageServer";
 
 // This would typically come from a database or CMS
 const supportData = {
@@ -434,17 +435,7 @@ interface PageProps {
 }
 
 const CategoryPage = ({ params }: PageProps) => {
-  const category = supportData?.categories[0];
-
-  return (
-    <main className="min-h-screen bg-white">
-      <SupportCategoryHeader category={category} />
-      <SupportArticlesList
-        articles={category.articles}
-        categoryId={category.id}
-      />
-    </main>
-  );
+  return <CategoryServer slug={params.slug} />;
 };
 
 export default CategoryPage;

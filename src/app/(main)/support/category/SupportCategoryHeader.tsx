@@ -13,6 +13,8 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { DocumentUpload } from "@/types/categoryPageTypes";
+import { formatDateUTC } from "@/utils/getFormatedDate";
 
 interface Category {
   id: string;
@@ -23,7 +25,7 @@ interface Category {
 }
 
 interface SupportCategoryHeaderProps {
-  category: Category;
+  category: DocumentUpload | null;
 }
 
 const iconMap = {
@@ -38,7 +40,7 @@ const iconMap = {
 export default function SupportCategoryHeader({
   category,
 }: SupportCategoryHeaderProps) {
-  const IconComponent = iconMap[category.icon as keyof typeof iconMap];
+  // const IconComponent = iconMap[category.icon as keyof typeof iconMap];
 
   return (
     <section className="py-5 bg-gradient-to-br from-white via-orange-50 to-red-50">
@@ -59,15 +61,12 @@ export default function SupportCategoryHeader({
           </Link>
 
           <div className="flex flex-col lg:flex-row items-start lg:items-center space-y-8 lg:space-y-0 lg:space-x-10 mb-12">
-            <div className="w-28 h-28 bg-gradient-to-r from-[#f15A24] to-orange-500 rounded-3xl flex items-center justify-center shadow-2xl">
-              <IconComponent className="w-14 h-14 text-white" />
-            </div>
             <div>
               <h1 className="text-5xl md:text-4xl font-bold text-gray-900 mb-6">
-                {category.title}
+                {category?.title}
               </h1>
               <p className="text-xl text-gray-600 leading-relaxed max-w-3xl">
-                {category.description}
+                {category?.description}
               </p>
             </div>
           </div>
@@ -76,13 +75,15 @@ export default function SupportCategoryHeader({
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0">
               <div className="flex items-center space-x-6">
                 <div className="text-4xl font-bold text-[#f15A24]">
-                  {category.articles.length}
+                  {category?.totalDocuments ?? 0}
                 </div>
                 <div className="text-gray-600 text-lg">
                   articles in this category
                 </div>
               </div>
-              <div className="text-gray-500">Last updated: Today</div>
+              <div className="text-gray-500">
+                Last updated: {formatDateUTC(category?._updatedAt)}
+              </div>
             </div>
           </div>
         </motion.div>

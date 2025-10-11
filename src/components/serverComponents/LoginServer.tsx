@@ -1,5 +1,7 @@
 import { client } from "@/lib/sanity";
 import { LoginForm } from "../ui/LoginForm";
+import { LogoDocument } from "@/types/commonTypes";
+import { getLogo } from "@/lib/sanity-queries/logoFetchQuery";
 
 interface LoginPage {
   _id: string;
@@ -41,6 +43,7 @@ const query = `*[_type == "loginPage"][0]{
 export default async function LoginPageServer() {
   // Fetch the data on the server
   const loginContent: LoginPage | null = await client.fetch(query);
+  const logoData: LogoDocument | null = await getLogo();
 
-  return <LoginForm loginContent={loginContent} />;
+  return <LoginForm loginContent={loginContent} logoData={logoData} />;
 }

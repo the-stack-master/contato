@@ -18,6 +18,9 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/inputOtp";
+import { LogoDocument } from "@/types/commonTypes";
+import Image from "next/image";
+import getImageUrl from "@/utils/getImageUrl";
 
 const emailSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
@@ -52,9 +55,10 @@ interface LoginPage {
 
 interface LoginFormProps {
   loginContent: LoginPage | null;
+  logoData: LogoDocument | null;
 }
 
-export function LoginForm({ loginContent }: LoginFormProps) {
+export function LoginForm({ loginContent, logoData }: LoginFormProps) {
   const [step, setStep] = useState<"email" | "otp">("email");
   const [userEmail, setUserEmail] = useState("");
   const [otpValue, setOtpValue] = useState("");
@@ -202,12 +206,14 @@ export function LoginForm({ loginContent }: LoginFormProps) {
           <div className="w-full max-w-sm space-y-6 lg:space-y-8 animate-in fade-in-50 slide-in-from-left-5 duration-700">
             {/* Logo/Brand */}
             <div className="text-center space-y-2">
-              <div className="mx-auto w-16 h-16 bg-[#f15A24] rounded-2xl flex items-center justify-center mb-6 shadow-lg animate-in zoom-in-50 duration-500 delay-200">
-                {step === "email" ? (
-                  <Mail className="w-8 h-8 text-white" />
-                ) : (
-                  <Shield className="w-8 h-8 text-white" />
-                )}
+              <div className="mx-auto flex items-center justify-center mb-6  animate-in zoom-in-50 duration-500 delay-200 overflow-hidden">
+                <Image
+                  src={getImageUrl(logoData?.mainLogo?.image?.asset?.url ?? "")}
+                  alt={logoData?.mainLogo?.altText || "Company Logo"}
+                  width={100} // match w-16
+                  height={100} // match h-16
+                  className="object-contain"
+                />
               </div>
               <h1 className="text-2xl lg:text-3xl font-bold text-gray-800 animate-in fade-in-50 slide-in-from-bottom-3 duration-500 delay-300">
                 {step === "email" ? "Login to Contato" : "Verify Your Email"}

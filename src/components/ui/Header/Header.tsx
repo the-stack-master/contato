@@ -6,6 +6,10 @@ import { Menu, X } from "lucide-react";
 import { useAuthActions } from "@/hooks/useAuthActions";
 import useNavigate from "@/hooks/useNavigate";
 import { usePathname } from "next/navigation";
+import { getLogo } from "@/lib/sanity-queries/logoFetchQuery";
+import { LogoDocument } from "@/types/commonTypes";
+import Image from "next/image";
+import getImageUrl from "@/utils/getImageUrl";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -13,6 +17,7 @@ const Header = () => {
   const { logout } = useAuthActions();
   const navigate = useNavigate();
   const pathname = usePathname();
+  const [logo, setLogo] = useState<LogoDocument | null>(null);
 
   // Close mobile menu when clicking outside
   useEffect(() => {
@@ -26,6 +31,15 @@ const Header = () => {
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const fetchLogo = async () => {
+    const logoData = await getLogo();
+    setLogo(logoData);
+  };
+
+  useEffect(() => {
+    fetchLogo();
   }, []);
 
   const goHome = () => navigate("/");
@@ -51,18 +65,20 @@ const Header = () => {
           className="flex items-center space-x-2 cursor-pointer"
           onClick={goHome}
         >
-          <div
-            className="w-8 h-8 rounded-lg flex items-center justify-center shadow-md"
-            style={{ backgroundColor: "#f15A24" }}
-          >
-            <span className="text-white font-bold text-sm">CT</span>
-          </div>
-          <span
-            className="hidden sm:inline text-xl font-semibold"
-            style={{ color: "#f15A24" }}
-          >
-            Contato
-          </span>
+          {getImageUrl(logo?.mainLogo?.image?.asset?.url ?? "") ? (
+            <span
+              className="hidden sm:inline text-xl font-semibold"
+              style={{ color: "#f15A24" }}
+            >
+              <Image
+                src={getImageUrl(logo?.mainLogo?.image?.asset?.url ?? "")}
+                alt={logo?.mainLogo?.altText || "Company Logo"}
+                width={100} // match w-16
+                height={100} // match h-16
+                className="object-contain"
+              />
+            </span>
+          ) : null}
         </div>
 
         {/* XL and above → horizontal nav */}
@@ -87,11 +103,14 @@ const Header = () => {
           <div className="hidden xl:flex items-center space-x-4">
             <Button
               className="hidden sm:inline-flex border-[#f15A24] text-white bg-[#f15A24] hover:bg-[#f15A24] text-white transition cursor-pointer"
-              onClick={() => navigate("/home#hero")}
+              onClick={() => navigate("/#hero")}
             >
               Download App
             </Button>
-            <Button className="bg-[#f15A24] hover:bg-opacity-90 text-white transition-all duration-300">
+            <Button
+              onClick={() => navigate("/contact")}
+              className="bg-[#f15A24] hover:bg-opacity-90 text-white transition-all duration-300 cursor-pointer"
+            >
               Schedule a Demo
             </Button>
           </div>

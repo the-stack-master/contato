@@ -10,6 +10,8 @@ import { generateMetadata } from "@/lib/generateMetadata";
 import { HomePage } from "@/types/homeTypes";
 import { Video } from "@/types/videoTypes";
 import { getLatestVideos } from "@/lib/sanity-queries/videoListQuery";
+import { LogoDocument } from "@/types/commonTypes";
+import { getLogo } from "@/lib/sanity-queries/logoFetchQuery";
 
 export async function generateMetadataForHome() {
   const homepage = await getHomePage();
@@ -19,6 +21,7 @@ export async function generateMetadataForHome() {
 const HomePageServer = async () => {
   const homePage: HomePage | null = await getHomePage();
   const videos: Video[] | null = await getLatestVideos();
+  const logoData: LogoDocument | null = await getLogo();
 
   if (!homePage) {
     return (
@@ -64,7 +67,11 @@ const HomePageServer = async () => {
 
   return (
     <>
-      <NewHeroSection heroData={heroData} appShowcaseData={appShowCaseData} />
+      <NewHeroSection
+        heroData={heroData}
+        appShowcaseData={appShowCaseData}
+        logoData={logoData}
+      />
       <StatsSection statsData={statsData} />
       <FeaturesSectionClient featureData={featureData} />
       <VideoSection videoData={videoData} videoList={videos} />

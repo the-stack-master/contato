@@ -1,5 +1,7 @@
 "use client";
 
+import useNavigate from "@/hooks/useNavigate";
+import { DocumentItem } from "@/types/categoryPageTypes";
 import { motion } from "framer-motion";
 import { FileText, ArrowRight } from "lucide-react";
 import Link from "next/link";
@@ -12,28 +14,34 @@ interface Article {
 }
 
 interface SupportArticlesListProps {
-  articles: Article[];
-  categoryId: string;
+  articles?: DocumentItem[];
+  categorySlug?: string;
 }
 
 export default function SupportArticlesList({
   articles,
-  categoryId,
+  categorySlug,
 }: SupportArticlesListProps) {
+  const navigate = useNavigate();
+
+  console.log(":aasas", articles);
+
   return (
     <section className="py-16 bg-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="space-y-4">
-          {articles.map((article, index) => (
+          {articles?.map((article, index) => (
             <motion.div
-              key={article.id}
+              key={article?.publishedAt}
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.3, delay: index * 0.05 }}
               className="group"
             >
-              <Link href={`/support/doc/${article.slug}`}>
+              <Link
+                href={`/support/category/${categorySlug}/${article?.slug?.current}`}
+              >
                 <div className="flex items-center p-4 rounded-xl hover:bg-gray-50 transition-all duration-200 group-hover:shadow-md border border-transparent hover:border-gray-200">
                   <div className="w-10 h-10 bg-gradient-to-r from-[#f15A24] to-orange-500 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
                     <FileText className="w-5 h-5 text-white" />
@@ -44,7 +52,7 @@ export default function SupportArticlesList({
                       {article.title}
                     </h3>
                     <p className="text-sm text-gray-600 mt-1 line-clamp-2">
-                      {article.excerpt}
+                      {article?.subtitle}
                     </p>
                   </div>
 

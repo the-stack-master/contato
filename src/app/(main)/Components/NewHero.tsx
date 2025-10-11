@@ -17,13 +17,21 @@ import PhoneSlideshow from "./PhoneSlideshow";
 import RotatingIcons from "./RotatingIcons";
 import DownloadButtons from "./DownloadAppButton";
 import { AppShowcaseSection, HeroData } from "@/types/homeTypes";
+import { LogoDocument } from "@/types/commonTypes";
+import Image from "next/image";
+import getImageUrl from "@/utils/getImageUrl";
 
 interface HeroClientProps {
   heroData: HeroData | null;
   appShowcaseData: AppShowcaseSection | null;
+  logoData: LogoDocument | null;
 }
 
-const NewHeroSection = ({ heroData, appShowcaseData }: HeroClientProps) => {
+const NewHeroSection = ({
+  heroData,
+  appShowcaseData,
+  logoData,
+}: HeroClientProps) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -111,7 +119,15 @@ const NewHeroSection = ({ heroData, appShowcaseData }: HeroClientProps) => {
               <div className="w-12 h-12 bg-gradient-to-br from-[#f15A24] to-orange-500 rounded-2xl flex items-center justify-center shadow-lg">
                 <Users className="w-6 h-6 text-white" />
               </div>
-              <span className="text-2xl font-bold text-gray-900">Contato</span>
+              <span className="text-2xl font-bold text-gray-900">
+                <Image
+                  src={getImageUrl(logoData?.mainLogo?.image?.asset?.url ?? "")}
+                  alt={logoData?.smallLogo?.altText || "Company Logo"}
+                  width={100} // match w-16
+                  height={100} // match h-16
+                  className="object-contain"
+                />
+              </span>
             </div>
 
             {/* Main Headline */}

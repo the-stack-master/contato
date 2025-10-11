@@ -39,3 +39,27 @@ export interface SanitySeo {
     | "yearly"
     | "never";
 }
+
+// types/logoDocument.ts
+// types/commonTypes.ts
+export interface SanityImage {
+  _type: "image";
+  asset: {
+    _ref: string;
+    _type: "reference";
+    url: string; // Sanity asset URL
+  };
+}
+
+export interface LogoDocument {
+  _id: string;
+  title: string;
+  mainLogo?: {
+    image?: SanityImage;
+    altText?: string;
+  };
+  smallLogo?: {
+    image?: SanityImage;
+    altText?: string;
+  };
+}

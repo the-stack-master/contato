@@ -1,75 +1,56 @@
 "use client";
 
+import { SupportPageType } from "@/types/supportPageTypes";
+import { splitSentence } from "@/utils/stringFunctions";
 import { motion } from "framer-motion";
-import { Search, HelpCircle } from "lucide-react";
+import { HelpCircle } from "lucide-react";
 
-export default function SupportHeroSection() {
+interface SupportHeroSectionProps {
+  heroData: SupportPageType | null;
+}
+
+export default function SupportHeroSection({
+  heroData,
+}: SupportHeroSectionProps) {
   return (
     <section className="relative py-16 bg-gradient-to-br from-white via-orange-50 to-red-50 overflow-hidden">
-      {/* Animated Background Blobs */}
+      {/* Background Blobs */}
       <div className="absolute inset-0">
         <motion.div
-          className="absolute top-10 left-10 w-64 h-64 bg-gradient-to-r from-[#f15A24] via-orange-400 to-red-400 rounded-full opacity-10 blur-3xl"
-          animate={{
-            scale: [1, 1.2, 1],
-            rotate: [0, 180, 360],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "linear",
-          }}
+          className="absolute top-12 left-12 w-72 h-72 bg-gradient-to-r from-[#f15A24] via-orange-400 to-red-400 rounded-full opacity-15 blur-3xl"
+          animate={{ scale: [1, 1.15, 1], rotate: [0, 180, 360] }}
+          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
         />
         <motion.div
-          className="absolute bottom-10 right-10 w-80 h-80 bg-gradient-to-r from-orange-400 via-red-400 to-[#f15A24] rounded-full opacity-10 blur-3xl"
-          animate={{
-            scale: [1.2, 1, 1.2],
-            rotate: [360, 180, 0],
-          }}
-          transition={{
-            duration: 25,
-            repeat: Infinity,
-            ease: "linear",
-          }}
+          className="absolute bottom-12 right-12 w-96 h-96 bg-gradient-to-r from-orange-400 via-red-400 to-[#f15A24] rounded-full opacity-15 blur-3xl"
+          animate={{ scale: [1.1, 1, 1.1], rotate: [360, 180, 0] }}
+          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
         />
       </div>
 
-      <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center -mt-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <div className="flex items-center justify-center mb-8">
-            <div className="w-16 h-16 bg-gradient-to-r from-[#f15A24] to-orange-500 rounded-2xl flex items-center justify-center mr-4 shadow-xl">
+          {/* Icon + Title */}
+          <div className="flex flex-col md:flex-row items-center justify-center mb-4 md:mb-6 gap-3">
+            <div className="w-16 h-16 bg-gradient-to-r from-[#f15A24] to-orange-500 rounded-3xl flex items-center justify-center shadow-2xl">
               <HelpCircle className="w-8 h-8 text-white" />
             </div>
-            <h1 className="text-3xl md:text-5xl font-bold">
+            <h1 className="text-2xl md:text-4xl font-extrabold leading-snug">
               <span className="bg-gradient-to-r from-[#f15A24] via-orange-500 to-red-500 bg-clip-text text-transparent">
-                Contato
+                {splitSentence(heroData?.title, 1)?.firstPart}
               </span>{" "}
-              Help Center
+              {splitSentence(heroData?.title, 1)?.secondPart}
             </h1>
           </div>
 
-          <p className="text-lg md:text-xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed">
-            Find answers to your questions, learn how to use Contato features,
-            and get the support you need to grow your professional network.
+          {/* Subtitle */}
+          <p className="text-base md:text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed">
+            {heroData?.subtitle}
           </p>
-
-          <div className="relative max-w-2xl mx-auto">
-            <div className="relative">
-              <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <input
-                type="text"
-                placeholder="Search for help articles, features, or topics..."
-                className="w-full pl-14 pr-32 py-4 text-lg border-2 border-gray-200 rounded-2xl focus:border-[#f15A24] focus:outline-none transition-colors duration-300 shadow-lg bg-white/90 backdrop-blur-sm"
-              />
-              <button className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-[#f15A24] to-orange-500 hover:from-orange-600 hover:to-red-500 text-white px-6 py-2 rounded-xl transition-all duration-300 font-semibold shadow-lg">
-                Search
-              </button>
-            </div>
-          </div>
         </motion.div>
       </div>
     </section>
