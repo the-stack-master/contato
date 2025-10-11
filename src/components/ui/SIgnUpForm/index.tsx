@@ -13,8 +13,26 @@ import {
 import { Separator } from "../separator";
 import { QRCodeSVG } from "qrcode.react";
 import Link from "next/link";
+import { SignupPageDocument } from "@/types/signUpPageTypes";
+import { IconComponent } from "../IconComponent";
+import { IconName } from "lucide-react/dynamic";
 
-const SignupForm = () => {
+interface SignUpProps {
+  signUpData: SignupPageDocument | null;
+}
+
+const gradients = [
+  "from-[#f15A24] to-[#d04f23]",
+  "from-[#f15A24] to-pink-400",
+  "from-[#ffad87] to-[#f15A24]",
+  "from-teal-400 to-[#f15A24]",
+];
+
+const SignupForm = ({ signUpData }: SignUpProps) => {
+  const downloadButtons = signUpData?.appDownloadSection?.downloadButtons;
+  const socialSection = signUpData?.socialProofSection;
+  const appFeatures = signUpData?.appFeaturesSection?.features;
+
   return (
     <div className="min-h-screen flex flex-col lg:flex-row">
       {/* Left Section - App Download */}
@@ -26,11 +44,10 @@ const SignupForm = () => {
               <Users className="w-8 h-8 text-white" />
             </div>
             <h1 className="text-2xl lg:text-3xl font-bold text-gray-800 animate-in fade-in-50 slide-in-from-bottom-3 duration-500 delay-300">
-              Get Contato
+              {signUpData?.appDownloadSection?.headline}
             </h1>
             <p className="text-gray-600 animate-in fade-in-50 slide-in-from-bottom-3 duration-500 delay-400">
-              Download Contato for seamless access to exclusive blogs, videos,
-              and community features.
+              {signUpData?.appDownloadSection?.description}
             </p>
           </div>
 
@@ -42,14 +59,16 @@ const SignupForm = () => {
                 <div className="bg-gray-50 p-4 rounded-xl border-2 border-[#f15A24]/10 hover:border-[#f15A24]/30 transition-colors">
                   <div className="w-24 h-24 mx-auto bg-white rounded-lg flex items-center justify-center shadow-sm">
                     <QRCodeSVG
-                      value="https://apps.apple.com/us/app/contato-ai-powered-networking/id6452725559"
+                      value={downloadButtons?.iosButton?.url ?? ""}
                       size={90}
                       bgColor="white"
                       fgColor="black"
                     />
                   </div>
                 </div>
-                <p className="text-sm font-medium text-gray-700">iOS App</p>
+                <p className="text-sm font-medium text-gray-700">
+                  {signUpData?.appDownloadSection?.qrCodes?.iosLabel}
+                </p>
               </div>
 
               {/* Android QR Code */}
@@ -57,14 +76,16 @@ const SignupForm = () => {
                 <div className="bg-gray-50 p-4 rounded-xl border-2 border-[#f15A24]/10 hover:border-[#f15A24]/30 transition-colors">
                   <div className="w-24 h-24 mx-auto bg-white rounded-lg flex items-center justify-center shadow-sm">
                     <QRCodeSVG
-                      value="https://play.google.com/store/apps/details?id=com.contactos.contato&pcampaignid=web_share"
+                      value={downloadButtons?.androidButton?.url ?? ""}
                       size={90}
                       bgColor="white"
                       fgColor="black"
                     />
                   </div>
                 </div>
-                <p className="text-sm font-medium text-gray-700">Android App</p>
+                <p className="text-sm font-medium text-gray-700">
+                  {signUpData?.appDownloadSection?.qrCodes?.androidLabel}
+                </p>
               </div>
             </div>
           </div>
@@ -74,29 +95,23 @@ const SignupForm = () => {
             <Button
               variant="outline"
               onClick={() =>
-                window.open(
-                  "https://apps.apple.com/us/app/contato-ai-powered-networking/id6452725559",
-                  "_blank"
-                )
+                window.open(downloadButtons?.iosButton?.url, "_blank")
               }
               className="w-full h-12 border-[#f15A24] text-[#f15A24] hover:bg-[#f15A24]/10 font-medium transition-all duration-200 hover:shadow-md hover:scale-[1.02] active:scale-[0.98]"
             >
               <Download className="w-5 h-5 mr-3" />
-              Download for iOS
+              {downloadButtons?.iosButton?.text}
             </Button>
 
             <Button
               variant="outline"
               onClick={() =>
-                window.open(
-                  "https://play.google.com/store/apps/details?id=com.contactos.contato&pcampaignid=web_share",
-                  "_blank"
-                )
+                window.open(downloadButtons?.androidButton?.url, "_blank")
               }
               className="w-full h-12 border-[#f15A24] text-[#f15A24] hover:bg-[#f15A24]/10 font-medium transition-all duration-200 hover:shadow-md hover:scale-[1.02] active:scale-[0.98]"
             >
               <Download className="w-5 h-5 mr-3" />
-              Download for Android
+              {downloadButtons?.androidButton?.text}
             </Button>
           </div>
 
@@ -107,19 +122,6 @@ const SignupForm = () => {
                 <Separator className="w-full bg-gray-100" />
               </div>
             </div>
-          </div>
-
-          {/* Quick Web Signup */}
-          <div className="space-y-4 animate-in fade-in-50 slide-in-from-bottom-3 duration-500 delay-800">
-            <p className="text-center text-sm text-gray-600">
-              Already have an account?{" "}
-              <Link
-                href="/#login"
-                className="text-[#f15A24] hover:text-orange-700 font-medium transition-colors"
-              >
-                Sign in
-              </Link>
-            </p>
           </div>
         </div>
       </div>
@@ -143,57 +145,39 @@ const SignupForm = () => {
               <Smartphone className="w-10 h-10 text-white" />
             </div>
             <h2 className="text-4xl font-bold text-gray-900 leading-tight">
-              Network on the go with Contato
+              {signUpData?.appFeaturesSection?.headline}
               <br />
               <span className="bg-gradient-to-r from-[#f15A24] to-[#d04f23] bg-clip-text text-transparent">
-                mobile app
+                {signUpData?.appFeaturesSection?.subheading}
               </span>
             </h2>
           </div>
 
           {/* App Features */}
           <div className="grid grid-cols-2 gap-6 animate-in fade-in-50 slide-in-from-bottom-5 duration-700 delay-700">
-            <div className="text-center space-y-3 p-4 rounded-2xl bg-white/80 backdrop-blur-md hover:bg-white transition-all duration-300 hover:scale-105">
-              <div className="mx-auto w-12 h-12 bg-gradient-to-br from-[#f15A24] to-[#d04f23] rounded-xl flex items-center justify-center">
-                <Bell className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="font-semibold text-gray-800">
-                Smart Notifications
-              </h3>
-              <p className="text-sm text-gray-600">
-                Never miss networking opportunities
-              </p>
-            </div>
-
-            <div className="text-center space-y-3 p-4 rounded-2xl bg-white/80 backdrop-blur-md hover:bg-white transition-all duration-300 hover:scale-105">
-              <div className="mx-auto w-12 h-12 bg-gradient-to-br from-[#f15A24] to-pink-400 rounded-xl flex items-center justify-center">
-                <MessageCircle className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="font-semibold text-gray-800">Instant Messaging</h3>
-              <p className="text-sm text-gray-600">
-                Connect instantly with matches
-              </p>
-            </div>
-
-            <div className="text-center space-y-3 p-4 rounded-2xl bg-white/80 backdrop-blur-md hover:bg-white transition-all duration-300 hover:scale-105">
-              <div className="mx-auto w-12 h-12 bg-gradient-to-br from-[#ffad87] to-[#f15A24] rounded-xl flex items-center justify-center">
-                <Calendar className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="font-semibold text-gray-800">Easy Scheduling</h3>
-              <p className="text-sm text-gray-600">
-                Book meetings with one tap
-              </p>
-            </div>
-
-            <div className="text-center space-y-3 p-4 rounded-2xl bg-white/80 backdrop-blur-md hover:bg-white transition-all duration-300 hover:scale-105">
-              <div className="mx-auto w-12 h-12 bg-gradient-to-br from-teal-400 to-[#f15A24] rounded-xl flex items-center justify-center">
-                <Star className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="font-semibold text-gray-800">Premium Features</h3>
-              <p className="text-sm text-gray-600">
-                Advanced matching algorithms
-              </p>
-            </div>
+            {appFeatures?.slice(0, 4).map((section, idx) => {
+              return (
+                <div
+                  key={section?._key}
+                  className="text-center space-y-3 p-4 rounded-2xl bg-white/80 backdrop-blur-md hover:bg-white transition-all duration-300 hover:scale-105"
+                >
+                  <div
+                    className={`mx-auto w-12 h-12 bg-gradient-to-br ${gradients[idx]} rounded-xl flex items-center justify-center`}
+                  >
+                    <IconComponent
+                      name={section?.icon?.alt as IconName}
+                      className="w-6 h-6 text-white"
+                    />
+                  </div>
+                  <h3 className="font-semibold text-gray-800">
+                    {section?.title}
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    {section?.description}
+                  </p>
+                </div>
+              );
+            })}
           </div>
 
           {/* Call to Action */}
@@ -211,7 +195,9 @@ const SignupForm = () => {
                   />
                 ))}
               </div>
-              <span>4.8/5 rating on app stores</span>
+              <span>
+                {socialSection?.rating}/5 {socialSection?.ratingLabel}
+              </span>
             </div>
           </div>
         </div>

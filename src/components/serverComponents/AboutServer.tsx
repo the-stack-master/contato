@@ -6,7 +6,7 @@ import {
   ContactHRSection,
   ImageAsset,
   TeamIntroSection,
-} from "@/app/(main)/about/types";
+} from "@/types/aboutPageTypes";
 
 interface TeamMember {
   id: string;
@@ -20,12 +20,6 @@ interface TeamMember {
   email?: string;
   joinDate: string;
   location: string;
-}
-
-interface CompanyValue {
-  icon: string; // keep as string here, map to component inside client
-  title: string;
-  description: string;
 }
 
 export interface AboutData {

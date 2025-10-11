@@ -1,9 +1,9 @@
-import SignupForm from "@/components/ui/SIgnUpForm";
+import SignUpServer from "@/components/serverComponents/SignUpServer";
 
 const SignUpPage = () => {
   return (
     <div>
-      <SignupForm />
+      <SignUpServer />
     </div>
   );
 };

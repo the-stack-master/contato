@@ -2,32 +2,26 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useAuthActions } from "@/hooks/useAuthActions";
 import useNavigate from "@/hooks/useNavigate";
 import { usePathname } from "next/navigation";
 
-import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
-
-type HeaderProps = {
-  authToken?: RequestCookie;
-};
-
-const Header = ({ authToken }: HeaderProps) => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
   const { logout } = useAuthActions();
   const navigate = useNavigate();
   const pathname = usePathname();
 
+  // Close mobile menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target as Node)
       ) {
-        setDropdownOpen(false);
+        setMobileMenuOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -47,7 +41,9 @@ const Header = ({ authToken }: HeaderProps) => {
     { href: "/about", label: "About Us" },
   ];
 
-  return pathname !== "/signup" ? (
+  if (pathname === "/signup") return null;
+
+  return (
     <header className="w-full bg-white sticky top-0 z-50 h-16 flex items-center border-b border-gray-200">
       <div className="container mx-auto px-4 flex items-center justify-between">
         {/* Logo */}
@@ -71,15 +67,18 @@ const Header = ({ authToken }: HeaderProps) => {
 
         {/* XL and above → horizontal nav */}
         <nav className="hidden xl:flex items-center space-x-8">
-          {navLinks.map(({ href, label }) => (
-            <Link
-              key={href}
-              href={href}
-              className="transition-colors text-[#f15A24] hover:text-opacity-80 font-medium"
-            >
-              {label}
-            </Link>
-          ))}
+          {navLinks.map(({ href, label }) => {
+            if (href === "/#pricing" && pathname !== "/") return null;
+            return (
+              <Link
+                key={href}
+                href={href}
+                className="transition-colors text-[#f15A24] hover:text-opacity-80 font-medium"
+              >
+                {label}
+              </Link>
+            );
+          })}
         </nav>
 
         {/* Right side */}
@@ -87,9 +86,8 @@ const Header = ({ authToken }: HeaderProps) => {
           {/* CTA buttons only visible on xl+ */}
           <div className="hidden xl:flex items-center space-x-4">
             <Button
-              // variant="outline"
-              className="hidden sm:inline-flex border-[#f15A24] text-[#f15A24] bg-[#f15A24] hover:bg-[#f15A24] text-white hover:text-white transition cursor-pointer"
-              onClick={() => (window.location.href = "/home#hero")}
+              className="hidden sm:inline-flex border-[#f15A24] text-white bg-[#f15A24] hover:bg-[#f15A24] text-white transition cursor-pointer"
+              onClick={() => navigate("/home#hero")}
             >
               Download App
             </Button>
@@ -99,19 +97,20 @@ const Header = ({ authToken }: HeaderProps) => {
           </div>
 
           {/* Auth dependent section */}
-
           <Button
-            // variant="ghost"
             className="text-[#f15A24] hover:text-opacity-80 cursor-pointer"
             onClick={() => navigate("/#login")}
           >
             Sign In
           </Button>
 
-          {/* Menu toggle visible until lg */}
+          {/* Mobile menu toggle */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="xl:hidden text-[#f15A24] focus:outline-none"
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-menu"
+            aria-label="Toggle navigation menu"
           >
             {mobileMenuOpen ? (
               <X className="w-6 h-6" />
@@ -122,36 +121,39 @@ const Header = ({ authToken }: HeaderProps) => {
         </div>
       </div>
 
-      {/* Collapsible nav for sm–lg screens */}
+      {/* Collapsible mobile nav */}
       {mobileMenuOpen && (
-        <div className="absolute top-16 left-0 w-full bg-white border-t border-gray-200 shadow-lg z-40 xl:hidden">
+        <div
+          id="mobile-menu"
+          ref={mobileMenuRef}
+          className="absolute top-16 left-0 w-full bg-white border-t border-gray-200 shadow-lg z-40 xl:hidden"
+        >
           <nav className="flex flex-col space-y-2 px-6 py-4">
-            {navLinks.map(({ href, label }) => (
-              <Link
-                key={href}
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                }}
-                href={href}
-                className="block text-[#f15A24] hover:text-opacity-80 font-medium"
-              >
-                {label}
-              </Link>
-            ))}
-            <Button
-              // variant="outline"
-              className="border-[#f15A24] text-[#f15A24] bg-[#f15A24] hover:bg-[#f15A24] text-white hover:text-white transition w-full"
-            >
+            {navLinks.map(({ href, label }) => {
+              // Hide pricing link if not on home page
+              if (href === "/#pricing" && pathname !== "/") return null;
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block text-[#f15A24] hover:text-opacity-80 font-medium"
+                >
+                  {label}
+                </Link>
+              );
+            })}
+            <Button className="w-full border-[#f15A24] text-white bg-[#f15A24] hover:bg-[#f15A24] transition">
               Download App
             </Button>
-            <Button className="bg-[#f15A24] hover:bg-opacity-90 text-white transition-all duration-300 w-full">
+            <Button className="w-full bg-[#f15A24] hover:bg-opacity-90 text-white transition-all duration-300">
               Schedule a Demo
             </Button>
           </nav>
         </div>
       )}
     </header>
-  ) : null;
+  );
 };
 
 export default Header;

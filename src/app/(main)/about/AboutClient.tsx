@@ -4,157 +4,23 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Users,
-  Target,
-  Award,
   Globe,
-  Rocket,
   Heart,
   Linkedin,
   Twitter,
   Mail,
   MapPin,
   Calendar,
-  TrendingUp,
   Zap,
-  Star,
   ArrowRight,
   CircleCheck as CheckCircle,
   Sparkles,
-  Building,
   Coffee,
 } from "lucide-react";
 import { cn } from "@/utils/classNames";
 import useNavigate from "@/hooks/useNavigate";
 import { AboutData } from "@/components/serverComponents/AboutServer";
-import { urlFor } from "@/lib/sanity";
-import { ImageAsset } from "./types";
 import getImageUrl from "@/utils/getImageUrl";
-
-interface TeamMember {
-  id: string;
-  name: string;
-  position: string;
-  department: string;
-  image: string;
-  bio: string;
-  linkedin?: string;
-  twitter?: string;
-  email?: string;
-  joinDate: string;
-  location: string;
-}
-
-const teamMembers: TeamMember[] = [
-  {
-    id: "1",
-    name: "Sarah Chen",
-    position: "CEO & Co-Founder",
-    department: "Leadership",
-    image:
-      "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=400",
-    bio: "Former VP at LinkedIn with 15+ years in networking technology. Passionate about connecting professionals worldwide.",
-    linkedin: "https://linkedin.com/in/sarahchen",
-    twitter: "https://twitter.com/sarahchen",
-    email: "sarah@connecto.com",
-    joinDate: "2022",
-    location: "San Francisco, CA",
-  },
-  {
-    id: "2",
-    name: "Marcus Rodriguez",
-    position: "CTO & Co-Founder",
-    department: "Engineering",
-    image:
-      "https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg?auto=compress&cs=tinysrgb&w=400",
-    bio: "AI/ML expert with background at Google and Meta. Leading our revolutionary matching algorithms.",
-    linkedin: "https://linkedin.com/in/marcusrodriguez",
-    twitter: "https://twitter.com/marcustech",
-    email: "marcus@connecto.com",
-    joinDate: "2022",
-    location: "San Francisco, CA",
-  },
-  {
-    id: "3",
-    name: "Emily Watson",
-    position: "Head of Product",
-    department: "Product",
-    image:
-      "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=400",
-    bio: "Product strategist from Airbnb. Focused on creating intuitive experiences that drive meaningful connections.",
-    linkedin: "https://linkedin.com/in/emilywatson",
-    email: "emily@connecto.com",
-    joinDate: "2023",
-    location: "New York, NY",
-  },
-  {
-    id: "4",
-    name: "David Kim",
-    position: "Head of Engineering",
-    department: "Engineering",
-    image:
-      "https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=400",
-    bio: "Full-stack architect with expertise in scalable systems. Building the infrastructure for millions of connections.",
-    linkedin: "https://linkedin.com/in/davidkim",
-    twitter: "https://twitter.com/davidkimdev",
-    email: "david@connecto.com",
-    joinDate: "2023",
-    location: "Seattle, WA",
-  },
-  {
-    id: "5",
-    name: "Lisa Thompson",
-    position: "Head of Design",
-    department: "Design",
-    image:
-      "https://images.pexels.com/photos/3184317/pexels-photo-3184317.jpeg?auto=compress&cs=tinysrgb&w=400",
-    bio: "Design leader from Figma. Creating beautiful, accessible experiences that make networking effortless.",
-    linkedin: "https://linkedin.com/in/lisathompson",
-    email: "lisa@connecto.com",
-    joinDate: "2023",
-    location: "Los Angeles, CA",
-  },
-  {
-    id: "6",
-    name: "James Wilson",
-    position: "Head of Growth",
-    department: "Marketing",
-    image:
-      "https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&cs=tinysrgb&w=400",
-    bio: "Growth expert from Stripe. Helping professionals worldwide discover the power of strategic networking.",
-    linkedin: "https://linkedin.com/in/jameswilson",
-    twitter: "https://twitter.com/jamesgrowth",
-    email: "james@connecto.com",
-    joinDate: "2023",
-    location: "Austin, TX",
-  },
-];
-
-const companyValues = [
-  {
-    icon: Heart,
-    title: "Human-Centered",
-    description:
-      "We believe technology should enhance human connections, not replace them.",
-  },
-  {
-    icon: Zap,
-    title: "Innovation First",
-    description:
-      "We push boundaries to create breakthrough networking experiences.",
-  },
-  {
-    icon: CheckCircle,
-    title: "Trust & Privacy",
-    description:
-      "Your professional data is sacred. We protect it with enterprise-grade security.",
-  },
-  {
-    icon: Globe,
-    title: "Global Impact",
-    description:
-      "Building bridges between professionals across cultures and continents.",
-  },
-];
 
 const getIcon = (iconVal: string) => {
   switch (iconVal) {

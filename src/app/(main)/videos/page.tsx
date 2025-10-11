@@ -43,7 +43,7 @@ const categories = [
   { id: "tutorial", label: "Tutorials", icon: Users },
 ];
 
-const PAGE_SIZE = 1;
+const PAGE_SIZE = 5;
 
 const VideosSection = () => {
   const [featuredVideos, setFeaturedVideos] = useState<Video[]>([]);
