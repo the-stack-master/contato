@@ -67,6 +67,11 @@ export async function getFooter(): Promise<FooterDocument | null> {
       autoUpdateYear,
       isActive
     },
+    footerPolicies[]{
+      _key,
+      text,
+      url
+    },
     isActive,
     displayOrder
   }`;

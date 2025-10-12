@@ -78,6 +78,12 @@ export interface FooterCopyrightText {
   isActive?: boolean;
 }
 
+export interface FooterPolicyItem {
+  _key: string;
+  text: string;
+  url: string;
+}
+
 export interface FooterDocument {
   _id: string;
   _type: "footerDocument";
@@ -90,4 +96,5 @@ export interface FooterDocument {
   footerCopyrightText?: FooterCopyrightText;
   isActive?: boolean;
   displayOrder?: number;
+  footerPolicies?: FooterPolicyItem[];
 }

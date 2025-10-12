@@ -9,6 +9,7 @@ import { usePathname } from "next/navigation";
 import NewsLetter from "./NewsLetter";
 import { FooterDocument } from "@/types/footerTypes";
 import FooterSocialLinks from "@/components/ui/FooterSocialLinks";
+import Link from "next/link";
 
 interface FooterClientProps {
   footerData: FooterDocument | null;
@@ -139,9 +140,11 @@ const FooterClient = ({ footerData }: FooterClientProps) => {
       {/* Bottom Links & Socials */}
       <div className="max-w-6xl mx-auto px-4 py-6 sm:py-8 flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0 w-full">
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 text-sm text-gray-600 text-center sm:text-left">
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms</a>
-          <a href="#">Cookies</a>
+          {footerData?.footerPolicies?.map((link) => (
+            <Link key={link?._key} href={link?.url}>
+              {link?.text}
+            </Link>
+          ))}
         </div>
         <div className="flex gap-4 sm:gap-6 text-sm">
           <FooterSocialLinks

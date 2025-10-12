@@ -7,6 +7,8 @@ import { PlatformLearning } from "@/types/homeTypes";
 import useNavigate from "@/hooks/useNavigate";
 import { Video } from "@/types/videoTypes";
 import VideoPlayer from "@/components/ui/VideoPlayer";
+import { IconComponent } from "@/components/ui/IconComponent";
+import { IconName } from "lucide-react/dynamic";
 
 interface VideoSectionProps {
   videoData: PlatformLearning | null;
@@ -62,8 +64,6 @@ const VideoSection = ({ videoData, videoList }: VideoSectionProps) => {
     return "";
   };
 
-  console.log("sdsds video data", videoList);
-
   return (
     <div className="w-full px-2 sm:px-6 lg:px-12 py-6 sm:py-12 bg-gray-50">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-8 items-start">
@@ -85,7 +85,8 @@ const VideoSection = ({ videoData, videoList }: VideoSectionProps) => {
                 className="flex items-center space-x-2 sm:space-x-3 text-gray-800 list-none transition-transform duration-300 hover:scale-105 text-sm sm:text-base"
               >
                 <div className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 text-[#f15A24]">
-                  {getIcons(icon)}
+                  {/* {getIcons(icon)} */}
+                  <IconComponent name={icon as IconName} />
                 </div>
                 <span>{title}</span>
               </li>

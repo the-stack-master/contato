@@ -215,9 +215,9 @@ export function LoginForm({ loginContent, logoData }: LoginFormProps) {
                   className="object-contain"
                 />
               </div>
-              <h1 className="text-2xl lg:text-3xl font-bold text-gray-800 animate-in fade-in-50 slide-in-from-bottom-3 duration-500 delay-300">
+              <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 animate-in fade-in-50 slide-in-from-bottom-3 duration-500 delay-300">
                 {step === "email" ? "Login to Contato" : "Verify Your Email"}
-              </h1>
+              </h2>
               {step === "otp" && (
                 <p className="text-sm text-gray-600 animate-in fade-in-50 slide-in-from-bottom-3 duration-500 delay-400">
                   We&apos;ve sent a 6-digit code to <br />

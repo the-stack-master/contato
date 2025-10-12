@@ -41,7 +41,7 @@ export interface HeroCallToAction {
 export interface FeatureItem {
   title?: string | null;
   description: string;
-  icon?: string;
+  iconName?: string;
   _key?: string;
 }
 

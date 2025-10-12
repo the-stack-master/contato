@@ -16,9 +16,13 @@ import Link from "next/link";
 import { SignupPageDocument } from "@/types/signUpPageTypes";
 import { IconComponent } from "../IconComponent";
 import { IconName } from "lucide-react/dynamic";
+import { LogoDocument } from "@/types/commonTypes";
+import Image from "next/image";
+import getImageUrl from "@/utils/getImageUrl";
 
 interface SignUpProps {
   signUpData: SignupPageDocument | null;
+  logoData: LogoDocument | null;
 }
 
 const gradients = [
@@ -28,7 +32,7 @@ const gradients = [
   "from-teal-400 to-[#f15A24]",
 ];
 
-const SignupForm = ({ signUpData }: SignUpProps) => {
+const SignupForm = ({ signUpData, logoData }: SignUpProps) => {
   const downloadButtons = signUpData?.appDownloadSection?.downloadButtons;
   const socialSection = signUpData?.socialProofSection;
   const appFeatures = signUpData?.appFeaturesSection?.features;
@@ -40,8 +44,14 @@ const SignupForm = ({ signUpData }: SignUpProps) => {
         <div className="w-full max-w-sm space-y-6 lg:space-y-8 animate-in fade-in-50 slide-in-from-left-5 duration-700">
           {/* Logo/Brand */}
           <div className="text-center space-y-2">
-            <div className="mx-auto w-16 h-16 bg-[#f15A24] rounded-2xl flex items-center justify-center mb-6 shadow-lg animate-in zoom-in-50 duration-500 delay-200">
-              <Users className="w-8 h-8 text-white" />
+            <div className="mx-auto flex items-center justify-center mb-6  animate-in zoom-in-50 duration-500 delay-200 overflow-hidden">
+              <Image
+                src={getImageUrl(logoData?.mainLogo?.image?.asset?.url ?? "")}
+                alt={logoData?.mainLogo?.altText || "Company Logo"}
+                width={100} // match w-16
+                height={100} // match h-16
+                className="object-contain"
+              />
             </div>
             <h1 className="text-2xl lg:text-3xl font-bold text-gray-800 animate-in fade-in-50 slide-in-from-bottom-3 duration-500 delay-300">
               {signUpData?.appDownloadSection?.headline}
@@ -117,10 +127,13 @@ const SignupForm = ({ signUpData }: SignUpProps) => {
 
           {/* Web Sign Up Option */}
           <div className="animate-in fade-in-50 duration-500 delay-700">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <Separator className="w-full bg-gray-100" />
-              </div>
+            <div className="text-center">
+              <Link
+                href="/#login"
+                className="text-sm cursor-pointer font-medium text-[#f15A24] hover:text-[#d04f23] transition-colors duration-300"
+              >
+                Back to Login
+              </Link>
             </div>
           </div>
         </div>
@@ -181,25 +194,11 @@ const SignupForm = ({ signUpData }: SignUpProps) => {
           </div>
 
           {/* Call to Action */}
-          <div className="animate-in fade-in-50 slide-in-from-bottom-5 duration-700 delay-900">
+          {/* <div className="animate-in fade-in-50 slide-in-from-bottom-5 duration-700 delay-900">
             <p className="text-lg text-gray-700 mb-4">
-              Join <span className="font-semibold text-[#f15A24]">50,000+</span>{" "}
-              professionals already networking smarter
+              Join professionals already networking smarter
             </p>
-            <div className="flex items-center justify-center space-x-2 text-sm text-gray-500">
-              <div className="flex space-x-1">
-                {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    className="w-4 h-4 fill-yellow-400 text-yellow-400"
-                  />
-                ))}
-              </div>
-              <span>
-                {socialSection?.rating}/5 {socialSection?.ratingLabel}
-              </span>
-            </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

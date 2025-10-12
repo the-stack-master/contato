@@ -1,6 +1,6 @@
 import { client } from "@/lib/sanity";
 import { LoginForm } from "../ui/LoginForm";
-import { LogoDocument } from "@/types/commonTypes";
+import { LogoDocument, SanitySeo } from "@/types/commonTypes";
 import { getLogo } from "@/lib/sanity-queries/logoFetchQuery";
 
 interface LoginPage {
@@ -8,19 +8,7 @@ interface LoginPage {
   title: string;
   heading: string;
   tagline: string;
-  seo?: {
-    metaTitle?: string;
-    metaDescription?: string;
-    openGraphImage?: {
-      asset: {
-        url: string;
-        metadata?: {
-          lqip?: string;
-          dimensions?: { width: number; height: number };
-        };
-      };
-    };
-  };
+  seo?: SanitySeo;
 }
 
 const query = `*[_type == "loginPage"][0]{
@@ -28,16 +16,7 @@ const query = `*[_type == "loginPage"][0]{
   title,
   heading,
   tagline,
-  seo {
-    metaTitle,
-    metaDescription,
-    openGraphImage {
-      asset -> {
-        url,
-        metadata { lqip, dimensions }
-      }
-    }
-  }
+  seo
 }`;
 
 export default async function LoginPageServer() {

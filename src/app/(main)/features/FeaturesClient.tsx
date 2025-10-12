@@ -12,6 +12,8 @@ import { Button } from "@/components/ui/button";
 import { Apple, CheckCircle, Globe, Heart, Play, Zap } from "lucide-react";
 import { FeaturesData } from "@/components/serverComponents/FeaturesServer";
 import getImageUrl from "@/utils/getImageUrl";
+import { IconComponent } from "@/components/ui/IconComponent";
+import { IconName } from "lucide-react/dynamic";
 
 const getFeaturesIcons = (iconVal?: string) => {
   switch (iconVal) {
@@ -241,17 +243,17 @@ const FeaturesPage = ({ featuresData }: FeaturesDataProps) => {
           {featuresData?.featuresGrid?.features.map((feature, i) => (
             <motion.article
               key={i}
-              className="flex flex-col items-center justify-center p-6 rounded-2xl shadow-md border border-orange-400 bg-white transition-transform duration-300 min-h-[180px] max-w-[280px] mx-auto hover:scale-105 hover:shadow-lg"
+              className="flex flex-col items-center justify-center p-6 rounded-2xl shadow-lg border border-orange-400 bg-gradient-to-br from-white via-[#F4F7FA] to-[#FFF7F1] transition-transform duration-300 min-h-[200px] max-w-[300px] mx-auto hover:scale-105 hover:shadow-xl"
               tabIndex={0}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.3 }}
               variants={fadeInUp}
             >
-              <div className="flex items-center justify-center mb-4 w-16 h-16 rounded-full bg-white border border-[#f15A24] shadow-[0_4px_10px_rgba(241,90,36,0.3)] text-4xl text-[#f15A24]">
-                {getFeaturesIcons(feature?.icon)}
+              <div className="flex items-center justify-center mb-4 w-16 h-16 rounded-full bg-gradient-to-tr from-orange-100 via-orange-300 to-orange-400 border border-[#f15A24] shadow-lg text-4xl text-[#f15A24]">
+                <IconComponent name={feature?.iconName as IconName} />
               </div>
-
+              <div className="w-10 h-1 bg-orange-200 rounded-full mb-2"></div>
               <h3 className="text-lg font-semibold mb-1 text-[#f15A24] text-center tracking-wide">
                 {feature.title}
               </h3>
