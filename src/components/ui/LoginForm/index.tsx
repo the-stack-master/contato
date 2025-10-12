@@ -9,9 +9,8 @@ import { useAuthActions } from "@/hooks/useAuthActions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Mail, Shield, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { cn } from "@/utils/classNames";
-import Head from "next/head";
 import { usePathname } from "next/navigation";
 import {
   InputOTP,
@@ -21,6 +20,7 @@ import {
 import { LogoDocument } from "@/types/commonTypes";
 import Image from "next/image";
 import getImageUrl from "@/utils/getImageUrl";
+import { LoginPage } from "@/types/loginTypes";
 
 const emailSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
@@ -32,26 +32,6 @@ const otpSchema = z.object({
 
 type EmailFormData = z.infer<typeof emailSchema>;
 type OtpFormData = z.infer<typeof otpSchema>;
-
-interface LoginPage {
-  _id: string;
-  title: string;
-  heading: string;
-  tagline: string;
-  seo?: {
-    metaTitle?: string;
-    metaDescription?: string;
-    openGraphImage?: {
-      asset: {
-        url: string;
-        metadata?: {
-          lqip?: string;
-          dimensions?: { width: number; height: number };
-        };
-      };
-    };
-  };
-}
 
 interface LoginFormProps {
   loginContent: LoginPage | null;
@@ -151,51 +131,6 @@ export function LoginForm({ loginContent, logoData }: LoginFormProps) {
 
   return pathname === "/" ? (
     <>
-      {/* SEO Head */}
-      {loginContent && (
-        <Head>
-          <title>{loginContent.seo?.metaTitle || loginContent.title}</title>
-          <meta
-            name="description"
-            content={loginContent.seo?.metaDescription || loginContent.tagline}
-          />
-          {loginContent.seo?.openGraphImage?.asset?.url && (
-            <>
-              <meta
-                property="og:title"
-                content={loginContent.seo.metaTitle || loginContent.title}
-              />
-              <meta
-                property="og:description"
-                content={
-                  loginContent.seo.metaDescription || loginContent.tagline
-                }
-              />
-              <meta
-                property="og:image"
-                content={loginContent.seo.openGraphImage.asset.url}
-              />
-              <meta property="og:type" content="website" />
-              <meta name="twitter:card" content="summary_large_image" />
-              <meta
-                name="twitter:title"
-                content={loginContent.seo.metaTitle || loginContent.title}
-              />
-              <meta
-                name="twitter:description"
-                content={
-                  loginContent.seo.metaDescription || loginContent.tagline
-                }
-              />
-              <meta
-                name="twitter:image"
-                content={loginContent.seo.openGraphImage.asset.url}
-              />
-            </>
-          )}
-        </Head>
-      )}
-
       {/* Login Page Layout */}
       <div
         id="login"
@@ -216,11 +151,13 @@ export function LoginForm({ loginContent, logoData }: LoginFormProps) {
                 />
               </div>
               <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 animate-in fade-in-50 slide-in-from-bottom-3 duration-500 delay-300">
-                {step === "email" ? "Login to Contato" : "Verify Your Email"}
+                {step === "email"
+                  ? loginContent?.title
+                  : loginContent?.otpTitle}
               </h2>
               {step === "otp" && (
                 <p className="text-sm text-gray-600 animate-in fade-in-50 slide-in-from-bottom-3 duration-500 delay-400">
-                  We&apos;ve sent a 6-digit code to <br />
+                  {loginContent?.infoText} <br />
                   <span className="font-medium text-[#f15A24]">
                     {userEmail}
                   </span>{" "}
@@ -292,7 +229,7 @@ export function LoginForm({ loginContent, logoData }: LoginFormProps) {
               >
                 <div className="space-y-4">
                   <Label className="text-sm font-medium text-gray-700 block text-center">
-                    Enter 6-digit verification code
+                    {loginContent?.otpLabel}
                   </Label>
                   <div className="flex justify-center">
                     <InputOTP
@@ -340,12 +277,13 @@ export function LoginForm({ loginContent, logoData }: LoginFormProps) {
                 {/* Resend OTP */}
                 <div className="text-center space-y-2">
                   <p className="text-sm text-gray-600">
-                    Didn&apos;t receive the code?
+                    {loginContent?.resendText}
                   </p>
                   <div className="flex items-center justify-center space-x-2">
                     {resendTimer > 0 ? (
                       <span className="text-sm text-gray-500">
-                        Resend available in {formatTime(resendTimer)}
+                        {loginContent?.resendTimerLabel}{" "}
+                        {formatTime(resendTimer)}
                       </span>
                     ) : (
                       <button
@@ -364,7 +302,7 @@ export function LoginForm({ loginContent, logoData }: LoginFormProps) {
 
             {/* Sign up link */}
             <p className="text-center text-sm text-gray-600 animate-in fade-in-50 duration-500 delay-1000">
-              Don&apos;t have an account?{" "}
+              {loginContent?.signupText}{" "}
               <a
                 href="/signup"
                 className="text-[#f15A24] hover:text-orange-700 font-medium transition-colors"
@@ -389,14 +327,14 @@ export function LoginForm({ loginContent, logoData }: LoginFormProps) {
           <div className="relative z-10 max-w-lg text-center space-y-8">
             <div className="space-y-6 animate-in fade-in-50 slide-in-from-bottom-5 duration-700 delay-500">
               <h2 className="text-5xl font-bold text-gray-900 leading-tight">
-                {loginContent?.title}
+                {loginContent?.heroHeading}
                 <br />
                 <span className="bg-gradient-to-r from-[#f15A24] to-[#d04f23] bg-clip-text text-transparent">
-                  {loginContent?.heading}
+                  {loginContent?.heroHighlightedText}
                 </span>
               </h2>
               <p className="text-lg text-gray-700 leading-relaxed max-w-md mx-auto">
-                {loginContent?.tagline}
+                {loginContent?.heroTagline}
               </p>
             </div>
           </div>

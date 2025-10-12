@@ -12,6 +12,7 @@ export async function getSignupPage(): Promise<SignupPageDocument | null> {
       slug,
       isPublished,
       publishedAt,
+      signupBaseLabel,
 
       // 🌐 SEO
       seo{
@@ -98,11 +99,8 @@ export async function getSignupPage(): Promise<SignupPageDocument | null> {
           _key,
           title,
           description,
-          icon{
-            _type,
-            alt,
-            asset->{ _id, url }
-          }
+          iconName,
+          alt
         }
       },
 

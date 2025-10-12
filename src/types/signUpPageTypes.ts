@@ -56,7 +56,8 @@ export interface FeatureItem {
   _key: string;
   title: string;
   description: string;
-  icon: ImageType;
+  iconName: string;
+  alt?: string;
 }
 
 export interface AppFeaturesSection {
@@ -115,4 +116,5 @@ export interface SignupPageDocument {
   appDownloadSection: AppDownloadSection;
   appFeaturesSection: AppFeaturesSection;
   socialProofSection: SocialProofSection;
+  signupBaseLabel: string;
 }

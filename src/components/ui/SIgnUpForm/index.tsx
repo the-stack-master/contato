@@ -178,7 +178,7 @@ const SignupForm = ({ signUpData, logoData }: SignUpProps) => {
                     className={`mx-auto w-12 h-12 bg-gradient-to-br ${gradients[idx]} rounded-xl flex items-center justify-center`}
                   >
                     <IconComponent
-                      name={section?.icon?.alt as IconName}
+                      name={section?.iconName as IconName}
                       className="w-6 h-6 text-white"
                     />
                   </div>
@@ -194,11 +194,11 @@ const SignupForm = ({ signUpData, logoData }: SignUpProps) => {
           </div>
 
           {/* Call to Action */}
-          {/* <div className="animate-in fade-in-50 slide-in-from-bottom-5 duration-700 delay-900">
+          <div className="animate-in fade-in-50 slide-in-from-bottom-5 duration-700 delay-900">
             <p className="text-lg text-gray-700 mb-4">
-              Join professionals already networking smarter
+              {signUpData?.signupBaseLabel ?? ""}
             </p>
-          </div> */}
+          </div>
         </div>
       </div>
     </div>
