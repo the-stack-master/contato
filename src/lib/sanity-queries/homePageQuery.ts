@@ -35,7 +35,7 @@ export async function getHomePage(): Promise<HomePage | null> {
           _type == "contentFeaturesGrid" => {
             sectionHeading,
             sectionDescription,
-            features[]{ featureTitle, description, featurePoints }
+            features[]{ featureTitle, description, featurePoints,iconName }
           },
           _type == "networkSmarterHero" => {
             mainHeading,

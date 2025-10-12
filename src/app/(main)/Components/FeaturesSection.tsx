@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { motion, Variants } from "framer-motion";
 import { ContentFeaturesGrid } from "@/types/homeTypes";
+import { IconComponent } from "@/components/ui/IconComponent";
 
 // Map icon string to lucide-react icon components
 const iconMap: Record<string, React.ReactNode> = {
@@ -102,9 +103,10 @@ export default function FeaturesSectionClient({
               <Card className="border-0 bg-transparent shadow-none">
                 <CardContent className="p-8">
                   <div className="mb-6 transition-transform duration-300 origin-center group-hover:scale-110">
-                    {iconMap[feature.featureTitle] || (
-                      <Smartphone className="w-8 h-8 text-[#f15A24]" />
-                    )}
+                    <IconComponent
+                      name={feature?.iconName}
+                      className="w-8 h-8 text-[#f15A24]"
+                    />
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-4">
                     {feature.featureTitle}

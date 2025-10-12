@@ -43,6 +43,7 @@ export interface ContentFeature {
   featureTitle: string;
   description: string;
   featurePoints: string[];
+  iconName: string;
 }
 
 export interface ContentFeaturesGrid {
