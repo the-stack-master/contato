@@ -1,7 +1,7 @@
 import { SanitySeo, ImageWithAlt } from "@/types/commonTypes";
 import { Metadata } from "next";
 
-export function generateMetadata(seo?: SanitySeo): Metadata {
+export function generateSeoMetadata(seo?: SanitySeo): Metadata {
   if (!seo) return {};
 
   const {

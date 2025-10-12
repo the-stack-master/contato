@@ -26,7 +26,29 @@ export async function getSupportPage(
       seo,
       isPublished,
       publishedAt,
-      _updatedAt
+      _updatedAt,
+      seo{
+    _type,
+    metaTitle,
+    metaDescription,
+    canonicalUrl,
+    focusKeyword,
+    keywords,
+    schemaType,
+    customSchema,
+    slug{ current },
+    openGraph{
+      title,
+      description,
+      type,
+      siteName,
+      image{ asset->{url}, alt }
+    },
+    noIndex,
+    noFollow,
+    priority,
+    changeFreq
+  },
     }
   `;
 

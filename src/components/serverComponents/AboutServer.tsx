@@ -2,11 +2,13 @@
 import { client } from "@/lib/sanity";
 import AboutSectionClient from "@/app/(main)/about/AboutClient";
 import {
+  AboutPage,
   CompanyStorySection,
   ContactHRSection,
   ImageAsset,
   TeamIntroSection,
 } from "@/types/aboutPageTypes";
+import { generateSeoMetadata } from "@/lib/generateMetadata";
 
 interface TeamMember {
   id: string;
@@ -32,11 +34,36 @@ export interface AboutData {
 const aboutPageQuery = `*[_type == "aboutPage"][0]{
   _id,
   title,
-  seoTitle,
-  seoDescription,
+  seo{
+    _type,
+    metaTitle,
+    metaDescription,
+    canonicalUrl,
+    focusKeyword,
+    keywords,
+    schemaType,
+    customSchema,
+    slug{ current },
+    openGraph{
+      title,
+      description,
+      type,
+      siteName,
+      image{ asset->{url}, alt }
+    },
+    noIndex,
+    noFollow,
+    priority,
+    changeFreq
+  },
   pageBuilder,
   isActive
 }`;
+
+export async function generateMetadata() {
+  const data = await client.fetch<AboutPage>(aboutPageQuery);
+  return generateSeoMetadata(data?.seo);
+}
 
 export default async function AboutSectionServer() {
   const data = await client.fetch<any>(aboutPageQuery);

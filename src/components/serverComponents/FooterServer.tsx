@@ -1,11 +1,11 @@
 import FooterClient from "@/app/(main)/Components/Footer";
 import { FooterDocument } from "@/types/footerTypes";
 import { getFooter } from "@/lib/sanity-queries/footerQuery";
-import { generateMetadata } from "@/lib/generateMetadata";
+import { generateSeoMetadata } from "@/lib/generateMetadata";
 
-export async function generateMetadataForHome() {
+export async function generateMetadata() {
   const footer = await getFooter();
-  return generateMetadata(footer?.seo);
+  return generateSeoMetadata(footer?.seo);
 }
 
 export default async function FooterServer() {

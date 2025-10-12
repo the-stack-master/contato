@@ -6,7 +6,28 @@ export async function getFooter(): Promise<FooterDocument | null> {
   const query = `*[_type == "footerDocument" && isActive == true] | order(displayOrder asc)[0]{
     _id,
     title,
-    seo,
+    seo{
+    _type,
+    metaTitle,
+    metaDescription,
+    canonicalUrl,
+    focusKeyword,
+    keywords,
+    schemaType,
+    customSchema,
+    slug{ current },
+    openGraph{
+      title,
+      description,
+      type,
+      siteName,
+      image{ asset->{url}, alt }
+    },
+    noIndex,
+    noFollow,
+    priority,
+    changeFreq
+  },
     footerHeader{
       heading,
       subHeading,

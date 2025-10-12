@@ -6,16 +6,16 @@ import VideoSection from "@/app/(main)/Components/VideoSection";
 import TestimonialsSectionClient from "@/app/(main)/Components/TestimonialsSection";
 import PricingSectionClient from "@/app/(main)/Components/PricingSection";
 import { getHomePage } from "@/lib/sanity-queries/homePageQuery";
-import { generateMetadata } from "@/lib/generateMetadata";
+import { generateSeoMetadata } from "@/lib/generateMetadata";
 import { HomePage } from "@/types/homeTypes";
 import { Video } from "@/types/videoTypes";
 import { getLatestVideos } from "@/lib/sanity-queries/videoListQuery";
 import { LogoDocument } from "@/types/commonTypes";
 import { getLogo } from "@/lib/sanity-queries/logoFetchQuery";
 
-export async function generateMetadataForHome() {
+export async function generateMetadata() {
   const homepage = await getHomePage();
-  return generateMetadata(homepage?.seo);
+  return generateSeoMetadata(homepage?.seo);
 }
 
 const HomePageServer = async () => {

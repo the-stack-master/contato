@@ -44,7 +44,28 @@ export async function getDocumentUploads({
     tags,
     status,
     featured,
-    seo,
+    seo{
+    _type,
+    metaTitle,
+    metaDescription,
+    canonicalUrl,
+    focusKeyword,
+    keywords,
+    schemaType,
+    customSchema,
+    slug{ current },
+    openGraph{
+      title,
+      description,
+      type,
+      siteName,
+      image{ asset->{url}, alt }
+    },
+    noIndex,
+    noFollow,
+    priority,
+    changeFreq
+  },
     internalNotes
   }
   [totalDocuments > 0]  // only keep uploads with at least one document

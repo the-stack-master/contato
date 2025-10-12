@@ -10,6 +10,28 @@ export async function getDocumentItemBySlug(
       _id,
       title,
       slug,
+      seo{
+    _type,
+    metaTitle,
+    metaDescription,
+    canonicalUrl,
+    focusKeyword,
+    keywords,
+    schemaType,
+    customSchema,
+    slug{ current },
+    openGraph{
+      title,
+      description,
+      type,
+      siteName,
+      image{ asset->{url}, alt }
+    },
+    noIndex,
+    noFollow,
+    priority,
+    changeFreq
+  },
       "document": documents[slug.current == $slug][0]{
         _key,
         title,

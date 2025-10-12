@@ -1,20 +1,21 @@
-import { getSignupPage } from "@/lib/sanity-queries/signUpPageQuery";
-import SignupForm from "../ui/SIgnUpForm";
-import { SignupPageDocument } from "@/types/signUpPageTypes";
-import { generateMetadata } from "@/lib/generateMetadata";
 import { SanityDocumentUpload } from "@/types/documentFetchTypes";
 import { getDocumentBySlugs } from "@/lib/sanity-queries/documentFetchQuery";
 
 import DocClient from "@/app/(main)/support/category/[slug]/[docSlug]/DocClient";
-
-// export async function generateMetadataForSignUp() {
-//   const signUpData = await getSignupPage();
-//   return generateMetadata(signUpData?.seo);
-// }
+import { generateSeoMetadata } from "@/lib/generateMetadata";
 
 interface DocumentServerProps {
   parentSlug: string;
   documentSlug: string;
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string; docSlug: string };
+}) {
+  const docData = await getDocumentBySlugs(params.slug, params.docSlug);
+  return generateSeoMetadata(docData?.seo);
 }
 
 export default async function DocumentServer({

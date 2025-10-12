@@ -35,7 +35,29 @@ export async function getDocumentBySlugs(
         uploadedBy,
         publishedAt,
         lastUpdated,
-        expiresAt
+        expiresAt,
+        seo{
+    _type,
+    metaTitle,
+    metaDescription,
+    canonicalUrl,
+    focusKeyword,
+    keywords,
+    schemaType,
+    customSchema,
+    slug{ current },
+    openGraph{
+      title,
+      description,
+      type,
+      siteName,
+      image{ asset->{url}, alt }
+    },
+    noIndex,
+    noFollow,
+    priority,
+    changeFreq
+  },
       }
     }
   `;

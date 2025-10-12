@@ -1,3 +1,5 @@
+import { SanitySeo } from "./commonTypes";
+
 export interface SanityAsset {
   _id: string;
   url: string;
@@ -41,4 +43,5 @@ export interface SanityDocumentUpload {
     current: string;
   };
   document?: SanityDocumentItem;
+  seo?: SanitySeo;
 }

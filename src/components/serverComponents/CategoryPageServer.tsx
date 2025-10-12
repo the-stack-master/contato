@@ -4,15 +4,19 @@ import SupportCategoryHeader from "@/app/(main)/support/category/SupportCategory
 import SupportArticlesList from "@/app/(main)/support/category/SupportArticlesList";
 import { getDocumentBySlug } from "@/lib/sanity-queries/categoryPageQuery";
 import { DocumentUpload } from "@/types/categoryPageTypes";
-import { generateMetadata } from "@/lib/generateMetadata";
-
-// export async function generateMetadataForHome() {
-//   const footer = await getDocumentBySlug(slug);
-//   return generateMetadata(footer?.seo);
-// }
+import { generateSeoMetadata } from "@/lib/generateMetadata";
 
 interface CategoryServerProps {
   slug?: string;
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const docData = await getDocumentBySlug(params.slug);
+  return generateSeoMetadata(docData?.seo);
 }
 
 export default async function CategoryServer({ slug }: CategoryServerProps) {

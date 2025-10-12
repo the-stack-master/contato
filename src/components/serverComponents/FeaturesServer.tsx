@@ -2,7 +2,8 @@
 import { client } from "@/lib/sanity";
 import FeaturesSectionClient from "@/app/(main)/features/FeaturesClient";
 import { ImageAsset } from "@/utils/getImageUrl";
-import { Metadata } from "next";
+import { SanitySeo } from "@/types/commonTypes";
+import { generateSeoMetadata } from "@/lib/generateMetadata";
 
 // === Revalidate every 60 seconds ===
 export const revalidate = 60;
@@ -119,10 +120,8 @@ export interface ExperienceConnectoCarousel {
 export interface FeaturesData {
   id: string;
   title: string;
-  seoTitle?: string;
-  seoDescription?: string;
+  seo?: SanitySeo;
   isActive: boolean;
-
   heroSection?: HeroCallToAction;
   featuresGrid?: FeaturesGrid;
   whatsNew?: WhatsNewSection;
@@ -134,42 +133,40 @@ export interface FeaturesData {
 const featuresPageQuery = `*[_type == "featuresPage"][0]{
   _id,
   title,
-  seoTitle,
-  seoDescription,
+  seo{
+    _type,
+    metaTitle,
+    metaDescription,
+    canonicalUrl,
+    focusKeyword,
+    keywords,
+    schemaType,
+    customSchema,
+    slug{ current },
+    openGraph{
+      title,
+      description,
+      type,
+      siteName,
+      image{ asset->{url}, alt }
+    },
+    noIndex,
+    noFollow,
+    priority,
+    changeFreq
+  },
   isActive,
   pageBuilder[]{...}
 }`;
 
 // === SEO Metadata ===
-export async function generateMetadata(): Promise<Metadata> {
-  const data = await client.fetch<any>(
+export async function generateMetadata() {
+  const data = await client.fetch<FeaturesData>(
     featuresPageQuery,
     {},
     { cache: "force-cache" }
   );
-
-  return {
-    title: data?.seoTitle || data?.title || "Features - NetworkPro",
-    description:
-      data?.seoDescription ||
-      "Explore NetworkPro features that help you grow your professional network efficiently.",
-    openGraph: {
-      title: data?.seoTitle || data?.title || "Features - NetworkPro",
-      description:
-        data?.seoDescription ||
-        "Discover how NetworkPro helps you expand your professional reach.",
-      url: "https://yourdomain.com/features",
-      siteName: "NetworkPro",
-      type: "website",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: data?.seoTitle || data?.title || "Features - NetworkPro",
-      description:
-        data?.seoDescription ||
-        "Discover how NetworkPro helps you expand your professional reach.",
-    },
-  };
+  return generateSeoMetadata(data?.seo);
 }
 
 // === Server Component ===
@@ -179,6 +176,8 @@ export default async function FeaturesSectionServer() {
     {},
     { cache: "force-cache" }
   );
+
+  console.log("Mapped Features Data:", data);
 
   if (!data) {
     return <div>Features page data not found.</div>;
@@ -205,18 +204,14 @@ export default async function FeaturesSectionServer() {
   const featuresData: FeaturesData = {
     id: data._id,
     title: data.title,
-    seoTitle: data.seoTitle,
-    seoDescription: data.seoDescription,
+    seo: data?.seo,
     isActive: data.isActive ?? false,
-
     heroSection: heroSectionRaw || undefined,
     featuresGrid: featuresGridRaw || undefined,
     whatsNew: whatsNewRaw || undefined,
     gallery: galleryRaw || undefined,
     carousel: carouselRaw || undefined,
   };
-
-  console.log("Mapped Features Data:", featuresData);
 
   return <FeaturesSectionClient featuresData={featuresData} />;
 }

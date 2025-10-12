@@ -1,13 +1,13 @@
 import { getSignupPage } from "@/lib/sanity-queries/signUpPageQuery";
 import SignupForm from "../ui/SIgnUpForm";
 import { SignupPageDocument } from "@/types/signUpPageTypes";
-import { generateMetadata } from "@/lib/generateMetadata";
+import { generateSeoMetadata } from "@/lib/generateMetadata";
 import { LogoDocument } from "@/types/commonTypes";
 import { getLogo } from "@/lib/sanity-queries/logoFetchQuery";
 
-export async function generateMetadataForSignUp() {
+export async function generateMetadata() {
   const signUpData = await getSignupPage();
-  return generateMetadata(signUpData?.seo);
+  return generateSeoMetadata(signUpData?.seo);
 }
 
 export default async function SignUpServer() {

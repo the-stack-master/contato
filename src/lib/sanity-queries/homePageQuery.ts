@@ -4,7 +4,28 @@ import { client } from "@/lib/sanity";
 export async function getHomePage(): Promise<HomePage | null> {
   const query = `*[_type == "homePage" && isActive == true][0]{
         title,
-        seo,
+        seo{
+    _type,
+    metaTitle,
+    metaDescription,
+    canonicalUrl,
+    focusKeyword,
+    keywords,
+    schemaType,
+    customSchema,
+    slug{ current },
+    openGraph{
+      title,
+      description,
+      type,
+      siteName,
+      image{ asset->{url}, alt }
+    },
+    noIndex,
+    noFollow,
+    priority,
+    changeFreq
+  },
         pageBuilder[]{
           _type,
           ...,

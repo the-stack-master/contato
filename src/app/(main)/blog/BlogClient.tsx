@@ -15,47 +15,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { PortableTextBlock } from "@portabletext/react";
-import { BlogPageHeader } from "@/types/blogTypes";
+import { BlogPageHeader, BlogPost } from "@/types/blogTypes";
 import { splitSentence } from "@/utils/stringFunctions";
-
-export type SanityImage = {
-  asset: {
-    _id: string;
-    url: string;
-  };
-  alt?: string;
-  caption?: string;
-};
-
-export type Category = {
-  title?: "string";
-  description?: "string";
-};
-
-export type BlogPost = {
-  _id: string;
-  _createdAt: string;
-  _updatedAt: string;
-  title: string;
-  tagline?: string;
-  slug: { current: string };
-  author?: string;
-  publishedDate: string;
-  excerpt?: string;
-  mainImage?: SanityImage;
-  subImages?: SanityImage[];
-  body: PortableTextBlock[];
-  tags?: string[];
-  category?: Category;
-  readingTime?: string;
-  isFeatured?: boolean;
-  seo?: {
-    title?: string;
-    description?: string;
-    keywords?: string[];
-  };
-};
 
 const POSTS_PER_PAGE = 6;
 

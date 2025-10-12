@@ -33,16 +33,27 @@ export async function getLatestVideos(): Promise<Video[] | null> {
         },
       
         seo{
-          metaTitle,
-          metaDescription,
-          focusKeyword,
-          canonicalUrl,
-          schema,
-          "openGraphImage": {
-            "url": openGraphImage.asset->url,
-            "alt": coalesce(openGraphImage.alt, "")
-          }
-        }
+    _type,
+    metaTitle,
+    metaDescription,
+    canonicalUrl,
+    focusKeyword,
+    keywords,
+    schemaType,
+    customSchema,
+    slug{ current },
+    openGraph{
+      title,
+      description,
+      type,
+      siteName,
+      image{ asset->{url}, alt }
+    },
+    noIndex,
+    noFollow,
+    priority,
+    changeFreq
+  },
       }`;
 
   const data = await client.fetch(query);

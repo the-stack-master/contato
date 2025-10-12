@@ -6,10 +6,47 @@ import { notFound } from "next/navigation";
 import { PortableText } from "@portabletext/react";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import Link from "next/link";
-import { BlogPost } from "../page";
+import { BlogPost } from "@/types/blogTypes";
+import { generateSeoMetadata } from "@/lib/generateMetadata";
 
 interface PageProps {
   params: { slug: string };
+}
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const query = `*[_type == "article" && slug.current == $slug][0]{
+    _type,
+    metaTitle,
+    metaDescription,
+    canonicalUrl,
+    focusKeyword,
+    keywords,
+    schemaType,
+    customSchema,
+    slug{ current },
+    openGraph{
+      title,
+      description,
+      type,
+      siteName,
+      image{ asset->{url}, alt }
+    },
+    noIndex,
+    noFollow,
+    priority,
+    changeFreq
+  }`;
+
+  const post: BlogPost | null = await client.fetch(query, {
+    slug: params.slug,
+  });
+
+  if (!post) return {};
+
+  return generateSeoMetadata(post?.seo);
 }
 
 // Generate static paths
@@ -39,7 +76,28 @@ export default async function BlogPostPage({ params }: PageProps) {
     category->{name, color},
     readingTime,
     isFeatured,
-    seo
+    seo{
+    _type,
+    metaTitle,
+    metaDescription,
+    canonicalUrl,
+    focusKeyword,
+    keywords,
+    schemaType,
+    customSchema,
+    slug{ current },
+    openGraph{
+      title,
+      description,
+      type,
+      siteName,
+      image{ asset->{url}, alt }
+    },
+    noIndex,
+    noFollow,
+    priority,
+    changeFreq
+  },
   }`;
 
   const post: BlogPost | null = await client.fetch(query, { slug });

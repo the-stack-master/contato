@@ -50,4 +50,5 @@ export interface VideoHeaderText {
   description: string;
   videoCategories: VideoCategoryFilter[];
   isActive: boolean;
+  seo?: SanitySeo;
 }

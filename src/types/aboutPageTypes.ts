@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { SanitySeo } from "./commonTypes";
+
 // About Page main type
 export interface AboutPage {
   _id?: string;
   _type: "aboutPage";
   title: string;
-  seoTitle?: string;
-  seoDescription?: string;
+  seo?: SanitySeo;
   pageBuilder: PageBuilderSection[];
   isActive?: boolean;
 }

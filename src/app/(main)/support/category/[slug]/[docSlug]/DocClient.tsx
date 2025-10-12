@@ -11,7 +11,6 @@ interface DocClientProps {
 }
 
 const DocClient = ({ docData }: DocClientProps) => {
-  console.log("----doc", docData);
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}

@@ -15,19 +15,27 @@ export async function getSignupPage(): Promise<SignupPageDocument | null> {
 
       // 🌐 SEO
       seo{
-        _type,
-        metaTitle,
-        metaDescription,
-        noIndex,
-        noFollow,
-        changeFreq,
-        priority,
-        schemaType,
-        openGraph{
-          type
-        },
-        slug
-      },
+    _type,
+    metaTitle,
+    metaDescription,
+    canonicalUrl,
+    focusKeyword,
+    keywords,
+    schemaType,
+    customSchema,
+    slug{ current },
+    openGraph{
+      title,
+      description,
+      type,
+      siteName,
+      image{ asset->{url}, alt }
+    },
+    noIndex,
+    noFollow,
+    priority,
+    changeFreq
+  },
 
       // ⚙️ Page Settings
       pageSettings{
