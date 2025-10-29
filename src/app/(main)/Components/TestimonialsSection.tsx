@@ -14,8 +14,6 @@ export default function TestimonialsSectionClient({ testimonialData }: Props) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start" });
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-  if (!testimonialData) return null;
-
   useEffect(() => {
     if (!emblaApi) return;
 
@@ -29,6 +27,8 @@ export default function TestimonialsSectionClient({ testimonialData }: Props) {
 
   const scrollPrev = () => emblaApi && emblaApi.scrollPrev();
   const scrollNext = () => emblaApi && emblaApi.scrollNext();
+
+  if (!testimonialData) return null;
 
   return (
     <section className="py-20 bg-white relative">
