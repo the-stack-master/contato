@@ -28,37 +28,6 @@ const FooterClient = ({ footerData }: FooterClientProps) => {
 
   return (
     <footer className="bg-white text-gray-900 w-full overflow-hidden">
-      {/* Header CTA */}
-      {footerData?.footerHeader && (
-        <div className="border-b border-gray-300">
-          <div className="max-w-4xl mx-auto px-4 py-12 text-center">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-[#f15A24]">
-              {footerData?.footerHeader?.heading}
-            </h2>
-            <p className="text-sm sm:text-base text-gray-700 mb-6 sm:mb-8">
-              {footerData?.footerHeader?.subHeading}
-            </p>
-            <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center">
-              {footerData?.footerHeader?.ctaButtons?.map((btn, i) => (
-                <Button
-                  key={i}
-                  size="lg"
-                  onClick={() => handleCtaClick(btn?.url)}
-                  variant={btn.isPrimary ? "default" : "outline"}
-                  className={`w-full sm:w-auto cursor-pointer ${
-                    btn.isPrimary
-                      ? "bg-gradient-to-r from-[#f15A24] to-[#d04f23] text-white"
-                      : "border-[#f15A24] text-[#f15A24]"
-                  }`}
-                >
-                  {btn.text}
-                </Button>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Newsletter */}
       <NewsLetter />
 

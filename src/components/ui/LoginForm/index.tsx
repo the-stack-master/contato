@@ -21,6 +21,7 @@ import { LogoDocument } from "@/types/commonTypes";
 import Image from "next/image";
 import getImageUrl from "@/utils/getImageUrl";
 import { LoginPage } from "@/types/loginTypes";
+import { motion } from "framer-motion";
 
 const emailSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
@@ -312,7 +313,6 @@ export function LoginForm({ loginContent, logoData }: LoginFormProps) {
             </p>
           </div>
         </div>
-
         {/* Right Section - Graphics + Content */}
         <div className="hidden lg:flex flex-1 bg-[#FFEDE6] items-center justify-center p-12 relative overflow-hidden">
           <div className="absolute inset-0 overflow-hidden">
@@ -339,13 +339,36 @@ export function LoginForm({ loginContent, logoData }: LoginFormProps) {
             </div>
           </div>
         </div>
-
         {/* Scroll Indicator */}
-        <div className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center text-[#f15A24] opacity-80">
-          <span className="text-xs font-medium select-none mb-1">
-            Scroll to see more
-          </span>
-          <ChevronDown className="w-5 h-5 animate-bounce" aria-hidden="true" />
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center text-[#f15A24] opacity-90">
+          {/* Mouse outline */}
+          <div className="relative w-[28px] h-[44px] border-2 border-[#f15A24] rounded-full flex justify-center items-start">
+            {/* Scroll wheel */}
+            <motion.div
+              className="absolute top-[8px] w-[4px] h-[8px] rounded-full bg-[#f15A24]"
+              animate={{ y: [0, 10, 0], opacity: [1, 0.4, 1] }}
+              transition={{
+                duration: 1.6,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          </div>
+
+          {/* Down arrows */}
+          <motion.div
+            animate={{ y: [0, 4, 0], opacity: [0.4, 1, 0.4] }}
+            transition={{
+              duration: 1.6,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 0.2,
+            }}
+            className="flex flex-col items-center mt-1"
+          >
+            <ChevronDown className="w-3 h-3" strokeWidth={2} />
+            <ChevronDown className="w-3 h-3 -mt-2" strokeWidth={2} />
+          </motion.div>
         </div>
       </div>
     </>

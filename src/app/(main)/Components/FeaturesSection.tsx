@@ -73,7 +73,7 @@ export default function FeaturesSectionClient({
       >
         <div className="text-center mb-20 max-w-3xl mx-auto">
           <motion.h2
-            className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 drop-shadow-sm"
+            className="text-3xl md:text-4xl font-bold text-gray-900 mb-4"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -96,17 +96,20 @@ export default function FeaturesSectionClient({
               key={feature.featureTitle + index}
               variants={cardVariants}
               whileHover="hover"
-              className={`group rounded-3xl overflow-hidden ${
-                index % 2 === 0 ? "bg-white/90" : "bg-white/70"
-              } shadow-md hover:shadow-lg border border-gray-100`}
+              className={`group relative overflow-visible rounded-[30px_15px_40px_20px] 
+              bg-gradient-to-tr ${index % 2 === 0 ? "from-white/90 to-orange-50" : "from-white/70 to-orange-100"} 
+              shadow-xl hover:shadow-2xl border border-gray-200
+              transition-shadow duration-300`}
             >
-              <Card className="border-0 bg-transparent shadow-none">
+              <Card className="border-0 bg-transparent shadow-none relative z-10">
                 <CardContent className="p-8">
                   <div className="mb-6 transition-transform duration-300 origin-center group-hover:scale-110">
-                    <IconComponent
-                      name={feature?.iconName}
-                      className="w-8 h-8 text-[#f15A24]"
-                    />
+                    <div className="w-12 h-12 rounded-full bg-[#f15A24]/20 flex items-center justify-center">
+                      <IconComponent
+                        name={feature?.iconName}
+                        className="w-6 h-6 text-[#f15A24]"
+                      />
+                    </div>
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-4">
                     {feature.featureTitle}
@@ -127,6 +130,11 @@ export default function FeaturesSectionClient({
                   </ul>
                 </CardContent>
               </Card>
+
+              {/* Blurred colored blob effect */}
+              <div
+                className={`absolute -top-10 -right-10 w-32 h-32 rounded-[50%_40%_60%_70%] bg-[#f15A24]/30 filter blur-3xl opacity-70 pointer-events-none`}
+              />
             </motion.div>
           ))}
         </div>

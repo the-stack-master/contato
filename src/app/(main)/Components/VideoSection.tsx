@@ -1,62 +1,82 @@
 "use client";
 
-import React, { useState, useRef, useLayoutEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
-import { Users, BarChart, Lightbulb, ClipboardList } from "lucide-react";
-import { PlatformLearning } from "@/types/homeTypes";
-import useNavigate from "@/hooks/useNavigate";
+import { ChevronRight, ChevronLeft } from "lucide-react";
+import useEmblaCarousel from "embla-carousel-react";
 import { Video } from "@/types/videoTypes";
+import { PlatformLearning } from "@/types/homeTypes";
 import VideoPlayer from "@/components/ui/VideoPlayer";
-import { IconComponent } from "@/components/ui/IconComponent";
-import { IconName } from "lucide-react/dynamic";
+import useNavigate from "@/hooks/useNavigate";
+import { motion } from "framer-motion";
 
 interface VideoSectionProps {
-  videoData: PlatformLearning | null;
+  videoData?: PlatformLearning | null;
   videoList: Video[] | null;
 }
 
-const VideoSection = ({ videoData, videoList }: VideoSectionProps) => {
+const VideoSection = ({ videoList, videoData }: VideoSectionProps) => {
   const navigate = useNavigate();
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [currentIndex, setCurrentIndex] = useState<number | null>(null);
+  const videoRefs = useRef<Map<number, HTMLDivElement>>(new Map());
 
-  const firstVideo = videoList?.length ? videoList[0] : null;
-  const [currentVideo, setCurrentVideo] = useState<Video | null>(firstVideo);
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: false,
+    align: "start",
+    dragFree: true,
+    containScroll: "trimSnaps",
+  });
 
-  // --- Height sync for video player and left panel
-  const videoWrapperRef = useRef<HTMLDivElement>(null);
-  const [videoHeight, setVideoHeight] = useState<number | undefined>();
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
+  const [canScrollNext, setCanScrollNext] = useState(true);
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
 
-  useLayoutEffect(() => {
-    const handleResize = () => {
-      if (videoWrapperRef.current) {
-        setVideoHeight(videoWrapperRef.current.getBoundingClientRect().height);
-      }
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [currentVideo]);
-
-  const getIcons = (iconName?: string) => {
-    switch (iconName) {
-      case "users":
-        return <Users className="w-5 h-5 sm:w-6 sm:h-6" />;
-      case "chart":
-        return <BarChart className="w-5 h-5 sm:w-6 sm:h-6" />;
-      case "map":
-        return <Lightbulb className="w-5 h-5 sm:w-6 sm:h-6" />;
-      case "book":
-        return <ClipboardList className="w-5 h-5 sm:w-6 sm:h-6" />;
-      default:
-        return <Lightbulb className="w-5 h-5 sm:w-6 sm:h-6" />;
-    }
-  };
-
-  const handleNavVideo = () => {
+  const handleNavVideo = useCallback(() => {
     navigate("/videos");
-  };
+  }, [navigate]);
 
-  // Determine which URL to pass to VideoPlayer
+  // --- Embla control setup
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    const onSelect = () => {
+      setSelectedIndex(emblaApi.selectedScrollSnap());
+      setCanScrollNext(emblaApi.canScrollNext());
+      setCanScrollPrev(emblaApi.canScrollPrev());
+    };
+
+    setScrollSnaps(emblaApi.scrollSnapList());
+    onSelect(); // initialize
+    emblaApi.on("select", onSelect);
+
+    return () => {
+      emblaApi.off("select", onSelect);
+    };
+  }, [emblaApi]);
+
+  // --- Stop video when out of view
+  useEffect(() => {
+    if (videoRefs.current.size === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const indexAttr = entry.target.getAttribute("data-index");
+          const idx = indexAttr ? parseInt(indexAttr, 10) : null;
+
+          if (idx !== null && !entry.isIntersecting && currentIndex === idx) {
+            setCurrentIndex(null);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    videoRefs.current.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [currentIndex]);
+
   const getVideoUrl = (video: Video) => {
     if (!video) return "";
     if (video.videoSource === "upload") return video.videoFileUrl ?? "";
@@ -65,103 +85,128 @@ const VideoSection = ({ videoData, videoList }: VideoSectionProps) => {
   };
 
   return (
-    <div className="w-full px-2 sm:px-6 lg:px-12 py-6 sm:py-12 bg-gray-50">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-8 items-start">
-        {/* Left Content */}
-        <div
-          className="lg:col-span-5 flex flex-col justify-start space-y-6 sm:space-y-8 p-4 sm:p-8 bg-white rounded-2xl shadow-[0_8px_24px_rgb(241,90,36,0.12)] border border-[#f15A2466] overflow-y-auto"
-          style={videoHeight ? { height: `${videoHeight}px` } : undefined}
-        >
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">
-            {videoData?.sectionHeading}
-          </h2>
-          <p className="text-gray-700 text-base sm:text-lg max-w-prose">
-            {videoData?.description}
-          </p>
-          <ul className="max-w-md space-y-3 sm:space-y-4">
-            {videoData?.features?.map(({ icon, title }, idx) => (
-              <li
-                key={idx}
-                className="flex items-center space-x-2 sm:space-x-3 text-gray-800 list-none transition-transform duration-300 hover:scale-105 text-sm sm:text-base"
-              >
-                <div className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 text-[#f15A24]">
-                  {/* {getIcons(icon)} */}
-                  <IconComponent name={icon as IconName} />
-                </div>
-                <span>{title}</span>
-              </li>
-            ))}
-          </ul>
-          <button
-            onClick={handleNavVideo}
-            className="w-fit bg-gradient-to-r from-[#f15A24] to-[#d04f23] cursor-pointer hover:from-[#d04f23] hover:to-[#f15A24] text-white font-semibold px-4 py-2 sm:px-6 sm:py-3 rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl active:scale-[0.98] text-base sm:text-lg"
-          >
-            Get Started
-          </button>
-        </div>
+    <section className="w-full px-2 sm:px-6 lg:px-12 py-8 sm:py-12 bg-gray-50 relative">
+      <motion.h2
+        className="text-2xl sm:text-3xl font-semibold text-gray-800 mb-8 text-center"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        {videoData?.sectionHeading}
+      </motion.h2>
 
-        {/* Right Content */}
-        <div className="lg:col-span-7 w-full flex items-center">
-          <div
-            className="aspect-video rounded-xl overflow-hidden shadow-lg w-full"
-            ref={videoWrapperRef}
+      <div className="relative">
+        {/* --- Prev Button --- */}
+        {canScrollPrev && (
+          <button
+            onClick={() => emblaApi?.scrollPrev()}
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-md p-2 rounded-full hover:scale-105 transition hidden sm:flex"
           >
-            {currentVideo && (
-              <VideoPlayer
-                video={{
-                  title: currentVideo.title,
-                  thumbnails: currentVideo.thumbnails ?? [],
-                  // Pass uploaded videos correctly
-                  videoFile:
-                    currentVideo.videoSource === "upload"
-                      ? { asset: { url: currentVideo.videoFileUrl ?? "" } }
-                      : undefined,
-                  // Pass YouTube videos
-                  videoUrl:
-                    currentVideo.videoSource === "url"
-                      ? currentVideo.videoUrl
-                      : undefined,
+            <ChevronLeft className="w-6 h-6 text-gray-700" />
+          </button>
+        )}
+
+        {/* --- Carousel --- */}
+        <div className="overflow-hidden" ref={emblaRef}>
+          <div className="flex gap-5">
+            {videoList?.map((video, idx) => (
+              <div
+                key={idx}
+                data-index={idx}
+                ref={(el) => {
+                  if (el) videoRefs.current.set(idx, el);
                 }}
-                isPlaying={isPlaying}
-                onPlayToggle={() => setIsPlaying((prev) => !prev)}
-              />
-            )}
+                className="relative flex-[0_0_85%] sm:flex-[0_0_45%] lg:flex-[0_0_28%] rounded-2xl overflow-hidden shadow-md group cursor-pointer transition-transform duration-300 hover:scale-[1.02] bg-white"
+                onClick={() => setCurrentIndex(idx)}
+              >
+                {currentIndex === idx ? (
+                  <div className="aspect-video w-full h-full">
+                    <VideoPlayer
+                      video={{
+                        title: video.title,
+                        thumbnails: video.thumbnails ?? [],
+                        videoFile:
+                          video.videoSource === "upload"
+                            ? { asset: { url: video.videoFileUrl ?? "" } }
+                            : undefined,
+                        videoUrl:
+                          video.videoSource === "url"
+                            ? video.videoUrl
+                            : undefined,
+                      }}
+                      isPlaying={true}
+                      onPlayToggle={() => setCurrentIndex(null)}
+                    />
+                  </div>
+                ) : (
+                  <>
+                    <div className="relative aspect-video w-full">
+                      <Image
+                        src={
+                          video?.thumbnails?.length
+                            ? video.thumbnails[0].url
+                            : "/placeholder-video.jpg"
+                        }
+                        alt={video.title}
+                        fill
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                        <div className="bg-white text-black px-3 py-2 rounded-full text-sm font-semibold shadow">
+                          ▶ Play
+                        </div>
+                      </div>
+                    </div>
+                    <div className="p-3 sm:p-4">
+                      <h3 className="text-sm sm:text-base font-semibold text-gray-800 truncate">
+                        {video.title}
+                      </h3>
+                      <p className="text-xs sm:text-sm text-gray-600 mt-1 line-clamp-2">
+                        {video.description ?? "Learn more about this topic"}
+                      </p>
+                    </div>
+                  </>
+                )}
+              </div>
+            ))}
+
+            {/* --- SEE MORE CARD --- */}
+            <div
+              className="flex-[0_0_85%] sm:flex-[0_0_45%] lg:flex-[0_0_28%] bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex flex-col items-center justify-center shadow-md cursor-pointer hover:shadow-lg hover:scale-[1.03] transition"
+              onClick={handleNavVideo}
+            >
+              <ChevronRight className="w-10 h-10 text-gray-600 group-hover:text-gray-800 transition" />
+              <p className="mt-2 text-gray-700 font-medium">See More</p>
+            </div>
           </div>
         </div>
+
+        {/* --- Next Button --- */}
+        {canScrollNext && (
+          <button
+            onClick={() => emblaApi?.scrollNext()}
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-md p-2 rounded-full hover:scale-105 transition hidden sm:flex"
+          >
+            <ChevronRight className="w-6 h-6 text-gray-700" />
+          </button>
+        )}
       </div>
 
-      {/* Playlist Thumbnails */}
-      <div className="mt-6 sm:mt-10 bg-gray-100 p-4 sm:p-6 rounded-xl shadow-inner">
-        <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-2 sm:mb-4">
-          Playlist
-        </h3>
-        <div className="flex space-x-4 sm:space-x-6 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
-          {videoList?.map((video, index) => (
-            <div
-              key={index}
-              className={`flex-none w-36 sm:w-48 cursor-pointer group ${
-                currentVideo === video
-                  ? "opacity-100"
-                  : "opacity-80 hover:opacity-100"
-              }`}
-              onClick={() => setCurrentVideo(video)}
-            >
-              <div className="relative w-full aspect-video rounded-lg overflow-hidden shadow-md group-hover:shadow-xl transition">
-                <Image
-                  src={video?.thumbnails?.length ? video.thumbnails[0].url : ""}
-                  alt={video.title}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-gray-700 font-medium truncate">
-                {video.title}
-              </p>
-            </div>
-          ))}
-        </div>
+      {/* --- Scroll Indicators --- */}
+      <div className="flex justify-center gap-2 mt-6">
+        {scrollSnaps.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => emblaApi?.scrollTo(index)}
+            className={`w-3 h-3 rounded-full transition-all ${
+              index === selectedIndex
+                ? "bg-gray-800 scale-110"
+                : "bg-gray-300 hover:bg-gray-400"
+            }`}
+          />
+        ))}
       </div>
-    </div>
+    </section>
   );
 };
 

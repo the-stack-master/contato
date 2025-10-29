@@ -20,6 +20,9 @@ import { AppShowcaseSection, HeroData } from "@/types/homeTypes";
 import { LogoDocument } from "@/types/commonTypes";
 import Image from "next/image";
 import getImageUrl from "@/utils/getImageUrl";
+import AppShowcase from "./AppShowcase";
+import { GooglePlayButton } from "@/components/ui/GooglePlayButton";
+import { AppStoreButton } from "@/components/ui/AppleStoreButton";
 
 interface HeroClientProps {
   heroData: HeroData | null;
@@ -167,35 +170,50 @@ const NewHeroSection = ({
 
             {/* Download Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              {heroData?.ctaButtons?.map((cta) => (
-                <Button
-                  key={cta?.buttonUrl}
-                  onClick={() => handleCTA(cta?.buttonUrl)}
-                  className={getCTAClasses(cta?.isPrimary ?? false)}
-                >
-                  {cta?.isPrimary ? (
-                    <Apple className="w-6 h-6 mr-3" />
-                  ) : (
-                    <Play className="w-6 h-6 mr-3" />
-                  )}
-                  <div className="flex flex-col items-center">
-                    {cta?.buttonText &&
-                      (() => {
-                        const words = cta.buttonText.split(" ");
-                        const top = words.slice(0, 3).join(" "); // first 3 words
-                        const bottom = words.slice(3).join(" "); // remaining words
-                        return (
-                          <>
-                            <div className="text-xs opacity-90">{top}</div>
-                            <div className="text-sm font-semibold">
-                              {bottom}
-                            </div>
-                          </>
-                        );
-                      })()}
-                  </div>
-                </Button>
-              ))}
+              {heroData?.ctaButtons?.map((cta) => {
+                // <Button
+                //   key={cta?.buttonUrl}
+                //   onClick={() => handleCTA(cta?.buttonUrl)}
+                //   className={getCTAClasses(cta?.isPrimary ?? false)}
+                // >
+                //   {cta?.isPrimary ? (
+                //     <Apple className="w-6 h-6 mr-3" />
+                //   ) : (
+                //     <Play className="w-6 h-6 mr-3" />
+                //   )}
+                //   <div className="flex flex-col items-center">
+                //     {cta?.buttonText &&
+                //       (() => {
+                //         const words = cta.buttonText.split(" ");
+                //         const top = words.slice(0, 3).join(" "); // first 3 words
+                //         const bottom = words.slice(3).join(" "); // remaining words
+                //         return (
+                //           <>
+                //             <div className="text-xs opacity-90">{top}</div>
+                //             <div className="text-sm font-semibold">
+                //               {bottom}
+                //             </div>
+                //           </>
+                //         );
+                //       })()}
+                //   </div>
+                // </Button>
+                if (cta?.isPrimary) {
+                  return (
+                    <AppStoreButton
+                      key={cta?.buttonUrl}
+                      href={cta?.buttonUrl}
+                    />
+                  );
+                } else {
+                  return (
+                    <GooglePlayButton
+                      key={cta?.buttonUrl}
+                      href={cta?.buttonUrl}
+                    />
+                  );
+                }
+              })}
             </div>
 
             {/* Secondary CTA */}
@@ -224,10 +242,11 @@ const NewHeroSection = ({
             style={{ minWidth: 0 }}
           >
             {/* Scroll container for phone + icons */}
-            <div className="flex items-center space-x-6 overflow-x-auto no-scrollbar px-4 sm:px-0 -mx-4 sm:mx-0 bg-transparent">
-              <PhoneSlideshow appShowcaseData={appShowcaseData} />
-              <RotatingIcons />
-            </div>
+            {/* <div className="flex items-center space-x-6 overflow-x-auto no-scrollbar px-4 sm:px-0 -mx-4 sm:mx-0 bg-transparent"> */}
+            {/* <PhoneSlideshow appShowcaseData={appShowcaseData} />
+              <RotatingIcons /> */}
+            <AppShowcase appShowcaseData={appShowcaseData} />
+            {/* </div> */}
           </div>
         </div>
       </div>

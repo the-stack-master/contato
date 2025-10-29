@@ -12,8 +12,8 @@ interface PhoneUiProps {
 }
 
 const PhoneUi = ({ image, rotation = 0, cropHeight = 0 }: PhoneUiProps) => {
-  const baseHeight = 640;
-  const baseWidth = 320;
+  const baseHeight = 512;
+  const baseWidth = 256;
 
   return (
     <div

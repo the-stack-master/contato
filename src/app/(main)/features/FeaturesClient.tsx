@@ -14,6 +14,8 @@ import { FeaturesData } from "@/components/serverComponents/FeaturesServer";
 import getImageUrl from "@/utils/getImageUrl";
 import { IconComponent } from "@/components/ui/IconComponent";
 import { IconName } from "lucide-react/dynamic";
+import { AppStoreButton } from "@/components/ui/AppleStoreButton";
+import { GooglePlayButton } from "@/components/ui/GooglePlayButton";
 
 const getFeaturesIcons = (iconVal?: string) => {
   switch (iconVal) {
@@ -30,43 +32,18 @@ const getFeaturesIcons = (iconVal?: string) => {
   }
 };
 
-const handleDownload = (platform: "appstore" | "googleplay") => {
+const getDownloadUrl = (platform: "appstore" | "googleplay") => {
   if (platform === "appstore") {
-    window.open(
-      "https://apps.apple.com/us/app/contato-ai-powered-networking/id6452725559",
-      "_blank"
-    );
+    return "https://apps.apple.com/us/app/contato-ai-powered-networking/id6452725559";
   } else {
-    window.open(
-      "https://play.google.com/store/apps/details?id=com.contactos.contato&pcampaignid=web_share",
-      "_blank"
-    );
+    return "https://play.google.com/store/apps/details?id=com.contactos.contato&pcampaignid=web_share";
   }
 };
 
 const AppDownloadButtons = ({ featuresData }: FeaturesDataProps) => (
   <div className="flex flex-col sm:flex-row gap-4">
-    <Button
-      onClick={() => handleDownload("appstore")}
-      className="h-14 px-8 bg-black hover:bg-gray-800 text-white font-medium transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95"
-    >
-      <Apple className="w-6 h-6 mr-3" />
-      <div className="text-left">
-        <div className="text-xs opacity-80">Download on the</div>
-        <div className="text-sm font-semibold">App Store</div>
-      </div>
-    </Button>
-
-    <Button
-      onClick={() => handleDownload("googleplay")}
-      className="h-14 px-8 bg-[#f15A24] hover:bg-orange-600 text-white font-medium transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95"
-    >
-      <Play className="w-6 h-6 mr-3" />
-      <div className="text-left">
-        <div className="text-xs opacity-90">Get it on</div>
-        <div className="text-sm font-semibold">Google Play</div>
-      </div>
-    </Button>
+    <AppStoreButton href={getDownloadUrl("appstore")} />
+    <GooglePlayButton href={getDownloadUrl("googleplay")} />
   </div>
 );
 
@@ -124,13 +101,12 @@ const FeaturesPage = ({ featuresData }: FeaturesDataProps) => {
         >
           {[...Array(3)].map((_, i) => {
             const rotations = [-12, 0, 12];
-            const offsets = [-200, 0, 200];
+            const offsets = [-150, 0, 150];
             return (
               <div
                 key={i}
                 style={{
                   position: "absolute",
-                  bottom: 0,
                   left: "50%",
                   transformOrigin: "bottom center",
                   transform: `translateX(-50%) translateX(${offsets[i]}px) rotate(${rotations[i]}deg)`,
@@ -191,44 +167,6 @@ const FeaturesPage = ({ featuresData }: FeaturesDataProps) => {
       {/* New Features  */}
       <section className="max-w-7xl mx-auto px-6 py-20 my-5 bg-gray-50 rounded-2xl shadow-sm space-y-12">
         <FeaturesScreenshotsSection featuresData={featuresData} />
-      </section>
-
-      {/* Screenshots Carousel Section */}
-      <section
-        aria-label="App Screenshots"
-        className="bg-gray-50 py-20 max-w-7xl mx-auto px-6 border-b border-gray-200 mb-24"
-      >
-        <h2 className="text-4xl font-bold mb-12 text-center text-[#f15A24]">
-          See More Screens
-        </h2>
-        <Swiper
-          modules={[Navigation, Autoplay]}
-          navigation
-          autoplay={{ delay: 3000, disableOnInteraction: false }}
-          spaceBetween={30}
-          slidesPerView={1}
-          loop
-          breakpoints={{
-            640: { slidesPerView: 1 },
-            768: { slidesPerView: 2 },
-            1024: { slidesPerView: 3 },
-          }}
-        >
-          {featuresData?.gallery?.screenImages?.map((src, i) => (
-            <SwiperSlide key={i}>
-              <div className="relative w-full h-160 rounded-lg shadow-md overflow-hidden">
-                <Image
-                  src={getImageUrl(src)}
-                  alt={`Screenshot ${i + 1}`}
-                  layout="fill"
-                  objectFit="cover"
-                  priority={i < 3} // optionally prioritize first few images
-                  className="rounded-lg"
-                />
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
       </section>
 
       {/* Full Feature List Section */}
