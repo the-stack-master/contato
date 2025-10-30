@@ -44,7 +44,7 @@ export default function LatestFeaturesSection({
           <div className="flex items-center gap-3 mb-6">
             <div className="h-px w-12 bg-blue-500" />
             <span className="text-blue-400 text-sm font-medium tracking-widest uppercase">
-              What's New
+              What&apos;s New
             </span>
           </div>
           <h2 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight tracking-tight">
