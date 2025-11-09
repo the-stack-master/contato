@@ -124,7 +124,9 @@ const ExpandingCardsSection: React.FC = () => {
         style={{ opacity: overlayOpacity }}
       >
         <h2 className="text-5xl font-bold text-white mb-2">Latest Features</h2>
-        <p className="text-gray-400 text-lg">Scroll to explore what's new</p>
+        <p className="text-gray-400 text-lg">
+          Scroll to explore what&apos;s new
+        </p>
       </motion.div>
 
       {/* Heading */}
