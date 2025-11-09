@@ -17,10 +17,6 @@ const cardContent = [
     icon: Sparkles,
     screenshot:
       "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=300&h=400&fit=crop",
-    stats: [
-      { label: "Accuracy", value: "98%" },
-      { label: "Time Saved", value: "5hrs/wk" },
-    ],
     gradient: "from-[#fff3ec] via-[#fff0e7] to-white",
   },
   {
@@ -34,7 +30,6 @@ const cardContent = [
     icon: QrCode,
     image:
       "https://images.unsplash.com/photo-1611078489935-0cb964de46d6?w=800&h=400&fit=crop",
-    buttonText: "Try Now",
     gradient: "from-white to-[#fff6f1]",
   },
   {
@@ -111,10 +106,10 @@ const ExpandingCardsSection: React.FC = () => {
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start 80%", "end 20%"],
+    offset: ["start 80%", "end 30%"],
   });
 
-  // ✅ Updated positions (balanced for 1920×1080 & 1366×768)
+  // ✅ Balanced card positions for 1920×1080 & 1366×768
   const positions = [
     { x: [-160, -540], y: [-80, -100] },
     { x: [180, 520], y: [-90, -130] },
@@ -124,9 +119,7 @@ const ExpandingCardsSection: React.FC = () => {
     { x: [-10, -220], y: [-80, -100] },
   ];
 
-  // ✅ Smoother responsive scaling
-  // ✅ Smoother responsive scaling (fine-tuned)
-  // ✅ Fine-tuned responsive scaling
+  // ✅ Responsive scaling for different screen sizes
   const layoutScale =
     width >= 1800
       ? 0.94
@@ -140,6 +133,7 @@ const ExpandingCardsSection: React.FC = () => {
               ? 0.78
               : 0.74;
 
+  // ✅ Scroll animations
   const overlayOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
   const headingOpacity = useTransform(scrollYProgress, [0.25, 0.45], [0, 1]);
   const buttonOpacity = useTransform(scrollYProgress, [0.4, 0.6], [0, 1]);
@@ -149,43 +143,46 @@ const ExpandingCardsSection: React.FC = () => {
   return (
     <div
       ref={sectionRef}
-      className="relative bg-gradient-to-br from-black via-[#111] to-black py-16 overflow-hidden flex flex-col items-center justify-center"
+      className="relative bg-gradient-to-br from-[#fff5ed] via-[#ffe9d6] to-[#ffd9b8] py-16 overflow-hidden flex flex-col items-center justify-center"
     >
-      {/* Overlay Intro */}
+      {/* ✨ Softer ambient glows for depth */}
+      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-[#f15a24]/10 blur-[120px] rounded-full"></div>
+      <div className="absolute bottom-[-5%] right-[-10%] w-[450px] h-[450px] bg-[#ffb47b]/15 blur-[110px] rounded-full"></div>
+      <div className="absolute top-[40%] left-[50%] w-[700px] h-[450px] -translate-x-1/2 bg-white/10 blur-[160px] rounded-full opacity-50"></div>
+
+      {/* 🎨 Very subtle radial vignette for soft contrast */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.25)_0%,rgba(255,195,150,0.15)_45%,rgba(255,170,100,0.08)_80%,rgba(255,160,80,0.05)_100%)] pointer-events-none"></div>
+
+      {/* 🪶 Overlay Intro */}
       <motion.div
         className="absolute left-1/2 top-[35%] -translate-x-1/2 text-center z-10 pointer-events-none"
         style={{ opacity: overlayOpacity }}
       >
-        <h2 className="text-5xl font-bold text-white mb-2">Latest Features</h2>
-        <p className="text-gray-400 text-lg">
+        <h2 className="text-5xl font-bold text-[#1a1a1a] mb-2 drop-shadow-sm">
+          Latest Features
+        </h2>
+        <p className="text-[#4b4b4b] text-lg">
           Scroll to explore what&apos;s new
         </p>
       </motion.div>
 
-      {/* Heading */}
+      {/* 🧭 Section Heading */}
       <motion.div
         className="text-center z-10 mb-12"
         style={{ opacity: headingOpacity, y: headingY }}
       >
-        <h2 className="text-4xl md:text-5xl font-bold text-white mb-3">
+        <h2 className="text-4xl md:text-5xl font-bold text-[#1a1a1a] mb-3 leading-tight">
           Discover Our Smart Digital Tools
         </h2>
-        <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+        <p className="text-[#4b4b4b] text-lg max-w-2xl mx-auto">
           Explore intelligent features designed to simplify your workflow and
           elevate your connections — all in one seamless experience.
         </p>
       </motion.div>
 
-      {/* ✅ Animated Layout */}
-      {/* ✅ Animated Layout */}
+      {/* 🪄 Animated Cards Layout */}
       <motion.div
-        className="
-    relative hidden md:flex
-    w-full max-w-[1400px]
-    h-[84vh]
-    items-center justify-center
-    transition-all duration-700 ease-in-out px-6
-  "
+        className="relative hidden md:flex w-full max-w-[1400px] h-[84vh] items-center justify-center transition-all duration-700 ease-in-out px-6"
         style={{ scale: layoutScale, transformOrigin: "center top" }}
       >
         {/* CARD 1 — AI Contact Insights */}
@@ -245,7 +242,11 @@ const ExpandingCardsSection: React.FC = () => {
             opacity: useTransform(scrollYProgress, [0.1, 0.3], [0, 1]),
           }}
         >
-          <motion.div className="h-full bg-gradient-to-br from-white to-[#fff5ef] rounded-3xl shadow-xl overflow-hidden text-black border border-[#f15a24]/10">
+          <motion.div
+            whileHover={{ scale: 1.05, y: -10 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            className="h-full bg-gradient-to-br from-white to-[#fff5ef] rounded-3xl shadow-xl overflow-hidden text-black border border-[#f15a24]/10"
+          >
             <div className="relative h-32 overflow-hidden">
               <img
                 src={cardContent[1].image}
@@ -352,6 +353,8 @@ const ExpandingCardsSection: React.FC = () => {
           }}
         >
           <motion.div
+            whileHover={{ scale: 1.05, y: -10 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
             className={`h-full bg-gradient-to-br ${cardContent[3].gradient} rounded-3xl shadow-xl overflow-hidden text-black border border-[#f15a24]/10`}
           >
             <div className="p-5 flex flex-col h-full relative">
@@ -411,7 +414,11 @@ const ExpandingCardsSection: React.FC = () => {
             opacity: useTransform(scrollYProgress, [0.1, 0.3], [0, 1]),
           }}
         >
-          <motion.div className="h-full bg-gradient-to-br from-white to-[#fff7f2] rounded-3xl shadow-2xl overflow-hidden text-black border border-[#f15a24]/10">
+          <motion.div
+            whileHover={{ scale: 1.05, y: -10 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            className="h-full bg-gradient-to-br from-white to-[#fff7f2] rounded-3xl shadow-2xl overflow-hidden text-black border border-[#f15a24]/10"
+          >
             <div className="relative h-[320px] overflow-hidden">
               <img
                 src="https://contato.app/assets/images/screenshots/analytics-insights.png"
@@ -520,7 +527,7 @@ const ExpandingCardsSection: React.FC = () => {
         </motion.div>
       </motion.div>
 
-      {/* ✅ Mobile Layout unchanged */}
+      {/* 📱 Mobile Layout */}
       <div className="hidden max-[899px]:flex flex-col gap-6 px-4 mt-8 w-full max-w-md mx-auto">
         {cardContent.map((card) => (
           <div
@@ -540,8 +547,10 @@ const ExpandingCardsSection: React.FC = () => {
                   })}
                 </div>
               </div>
-              <h3 className="text-xl font-bold mb-1">{card.title}</h3>
-              <p className="text-gray-600 text-sm mb-3">{card.subtitle}</p>
+              <h3 className="text-xl font-bold mb-1 text-[#1a1a1a]">
+                {card.title}
+              </h3>
+              <p className="text-[#4b4b4b] text-sm mb-3">{card.subtitle}</p>
               {(card.screenshot || card.image) && (
                 <div className="rounded-2xl overflow-hidden mb-3 border border-[#f15a24]/10">
                   <img
@@ -551,7 +560,7 @@ const ExpandingCardsSection: React.FC = () => {
                   />
                 </div>
               )}
-              <p className="text-gray-700 text-sm mb-3 leading-relaxed">
+              <p className="text-[#4b4b4b] text-sm mb-3 leading-relaxed">
                 {card.description}
               </p>
             </div>
@@ -559,7 +568,7 @@ const ExpandingCardsSection: React.FC = () => {
         ))}
       </div>
 
-      {/* CTA Button */}
+      {/* 🚀 CTA Button */}
       <motion.div
         className="mt-28 z-20 flex justify-center"
         style={{ opacity: buttonOpacity, y: buttonY }}
@@ -595,7 +604,7 @@ const ExpandingCardsSection: React.FC = () => {
               className="text-lg md:text-xl font-medium tracking-wide bg-clip-text text-transparent"
               style={{
                 backgroundImage:
-                  "linear-gradient(90deg, #ffffff 0%, #f15a24 35%, #ffb47b 60%, #ffffff 100%)",
+                  "linear-gradient(90deg, #1a1a1a 0%, #f15a24 40%, #ffb47b 70%, #1a1a1a 100%)",
                 backgroundSize: "200% 100%",
                 WebkitBackgroundClip: "text",
               }}
