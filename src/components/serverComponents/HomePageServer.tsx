@@ -244,8 +244,8 @@ const HomePageServer = async () => {
         appShowcaseData={appShowCaseData}
         logoData={logoData}
       />
-      {/* <AboutSection /> */}
-      <ContatoSection />
+      <AboutSection />
+      {/* <ContatoSection /> */}
       <StatsSection statsData={statsData} />
       {/* <FeaturesSectionClient featureData={featureData} /> */}
       {/* <LatestFeaturesSection features={featuresData.latest} /> */}

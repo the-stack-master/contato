@@ -119,7 +119,7 @@ export function AboutSection() {
 
             {/* Main Heading */}
             <div className="space-y-6">
-              <h2 className="text-4xl lg:text-6xl font-bold leading-tight">
+              <h2 className="text-4xl lg:text-5xl font-bold leading-tight">
                 <span className="text-gray-900">The Future of</span>
                 <br />
                 <span className="bg-gradient-to-r from-[#f15A24] to-orange-600 bg-clip-text text-transparent">

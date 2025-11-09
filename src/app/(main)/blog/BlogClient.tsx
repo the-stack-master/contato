@@ -81,7 +81,7 @@ export default function BlogClient({ blogHeaderData }: BlogClientProps) {
       {/* Hero Section */}
       <section className="relative overflow-hidden py-10 bg-white">
         <div className="container mx-auto px-4 text-center max-w-5xl">
-          <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6">
+          <h1 className="text-5xl md:text-5xl font-bold text-gray-900 mb-6">
             {splitSentence(blogHeaderData?.heading, 2)?.firstPart}{" "}
             <span
               style={{

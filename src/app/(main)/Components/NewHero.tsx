@@ -126,8 +126,8 @@ const NewHeroSection = ({
                 <Image
                   src={getImageUrl(logoData?.mainLogo?.image?.asset?.url ?? "")}
                   alt={logoData?.smallLogo?.altText || "Company Logo"}
-                  width={100} // match w-16
-                  height={100} // match h-16
+                  width={200} // match w-16
+                  height={200} // match h-16
                   className="object-contain"
                 />
               </span>
