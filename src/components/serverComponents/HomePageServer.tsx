@@ -14,6 +14,8 @@ import { LogoDocument } from "@/types/commonTypes";
 import { getLogo } from "@/lib/sanity-queries/logoFetchQuery";
 import LatestFeaturesSection from "@/app/(main)/Components/LatestFeaturesSection";
 import { AboutSection } from "@/app/(main)/Components/AboutAppSection";
+import NewFeaturesSection from "@/app/(main)/Components/NewFeaturesSection";
+import ContatoSection from "./VisionSection";
 
 export async function generateMetadata() {
   const homepage = await getHomePage();
@@ -242,10 +244,12 @@ const HomePageServer = async () => {
         appShowcaseData={appShowCaseData}
         logoData={logoData}
       />
-      <AboutSection />
+      {/* <AboutSection /> */}
+      <ContatoSection />
       <StatsSection statsData={statsData} />
       {/* <FeaturesSectionClient featureData={featureData} /> */}
-      <LatestFeaturesSection features={featuresData.latest} />
+      {/* <LatestFeaturesSection features={featuresData.latest} /> */}
+      <NewFeaturesSection />
       <VideoSection videoData={videoData} videoList={videos} />
       <TestimonialsSectionClient testimonialData={testimonialData} />
       <PricingSectionClient pricingData={pricingData} />

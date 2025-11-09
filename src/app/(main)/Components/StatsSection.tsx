@@ -8,7 +8,7 @@ const StatsSection = ({ statsData }: StatsSectionProps) => {
   return (
     <section className="py-20 bg-white">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
+        <div className="text-center ">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             {statsData?.sectionHeading}
           </h2>
@@ -17,7 +17,7 @@ const StatsSection = ({ statsData }: StatsSectionProps) => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {statsData?.statistics?.map((stat, index) => (
             <div
               key={index}
@@ -29,7 +29,7 @@ const StatsSection = ({ statsData }: StatsSectionProps) => {
               <p className="text-gray-600 font-medium">{stat.label}</p>
             </div>
           ))}
-        </div>
+        </div> */}
 
         {/* Logo strip */}
         {/* <div className="mt-20 pt-16 border-t border-gray-300">
