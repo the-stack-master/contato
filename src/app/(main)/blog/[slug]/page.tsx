@@ -114,7 +114,7 @@ export default async function BlogPostPage({ params }: PageProps) {
     <div className="min-h-screen bg-white">
       {/* Hero Section + Back Button */}
       <section className="pt-6 pb-16 px-6 bg-gradient-to-br from-gray-50 to-white overflow-hidden">
-        <div className="max-w-4xl mx-auto flex flex-col gap-6">
+        <div className="max-w-4xl mx-auto flex flex-col mt-5">
           {/* Back Button */}
           <Link
             href="/blog"
@@ -126,10 +126,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
           {/* Category & Meta */}
           {post.category && (
-            <div className="flex flex-wrap items-center gap-4">
-              {/* <span className="px-4 py-2 rounded-full text-sm font-semibold text-white bg-orange-500">
-                {post.category?.title}
-              </span> */}
+            <div className="flex flex-wrap items-center gap-4 mt-10">
               <div className="flex items-center space-x-4 text-gray-600">
                 <div className="flex items-center space-x-1">
                   <Calendar className="w-4 h-4" />
@@ -148,7 +145,7 @@ export default async function BlogPostPage({ params }: PageProps) {
           )}
 
           {/* Title */}
-          <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 mb-4 leading-tight">
+          <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 mb-1 leading-tight">
             {post.title}
           </h1>
 
@@ -161,7 +158,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
           {/* Tags */}
           {post.tags && post.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 mt-1">
               {post.tags.map((tag, i) => (
                 <span
                   key={i}
@@ -178,7 +175,7 @@ export default async function BlogPostPage({ params }: PageProps) {
       {/* Main Blog Image */}
       {post.mainImage && (
         <section className="px-6 -mt-8">
-          <div className="max-w-4xl mx-auto relative overflow-hidden rounded-3xl shadow-2xl">
+          <div className="max-w-4xl mx-auto relative overflow-hidden rounded-3xl">
             <img
               src={urlFor(post.mainImage).width(1200).url()}
               alt={post.title}

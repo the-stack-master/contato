@@ -24,7 +24,7 @@ export default async function HomeLayout({
       {/* Header */}
       <Header />
 
-      <div className="px-4 sm:px-6 lg:px-8 xl:px-12">{children}</div>
+      <div>{children}</div>
 
       <FooterServer />
     </main>

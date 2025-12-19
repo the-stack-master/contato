@@ -175,162 +175,164 @@ export function AboutSection() {
           {/* Right Side - Interactive Visual */}
           <div
             className={cn(
-              "flex-1 relative transition-all duration-1000 transform delay-300",
+              "flex-1 relative transition-all duration-1000 transform delay-300 hidden min-[1100px]:block",
               isVisible
                 ? "opacity-100 translate-x-0"
                 : "opacity-0 translate-x-12"
             )}
           >
-            {/* Central Hub */}
-            <div className="relative w-80 h-80 mx-auto">
-              {/* Main Circle */}
-              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white to-gray-50 shadow-2xl border border-gray-100 flex items-center justify-center">
-                <div className="w-24 h-24 bg-gradient-to-br from-[#f15A24] to-orange-600 rounded-full flex items-center justify-center shadow-lg">
-                  <Target className="w-12 h-12 text-white" />
+            <div className="origin-center scale-100 xl:scale-100 lg:scale-95 md:scale-90">
+              {/* Central Hub */}
+              <div className="relative w-80 h-80 mx-auto">
+                {/* Main Circle */}
+                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white to-gray-50 shadow-2xl border border-gray-100 flex items-center justify-center">
+                  <div className="w-24 h-24 bg-gradient-to-br from-[#f15A24] to-orange-600 rounded-full flex items-center justify-center shadow-lg">
+                    <Target className="w-12 h-12 text-white" />
+                  </div>
                 </div>
-              </div>
 
-              {/* Orbiting Highlights */}
-              {highlights.map((highlight, index) => {
-                const IconComponent = highlight.icon;
-                const angle = index * 90 - 45; // Spread around circle
-                const radius = 140;
-                const x = Math.cos((angle * Math.PI) / 180) * radius;
-                const y = Math.sin((angle * Math.PI) / 180) * radius;
-                const isActive = activeHighlight === index;
+                {/* Orbiting Highlights */}
+                {highlights.map((highlight, index) => {
+                  const IconComponent = highlight.icon;
+                  const angle = index * 90 - 45; // Spread around circle
+                  const radius = 140;
+                  const x = Math.cos((angle * Math.PI) / 180) * radius;
+                  const y = Math.sin((angle * Math.PI) / 180) * radius;
+                  const isActive = activeHighlight === index;
 
-                return (
-                  <div
-                    key={index}
-                    className={cn(
-                      "absolute w-20 h-20 transition-all duration-500 transform",
-                      isActive ? "scale-110" : "scale-100"
-                    )}
-                    style={{
-                      left: `calc(50% + ${x}px - 2.5rem)`,
-                      top: `calc(50% + ${y}px - 2.5rem)`,
-                    }}
-                  >
-                    {/* Connecting Line */}
+                  return (
                     <div
+                      key={index}
                       className={cn(
-                        "absolute w-px bg-gradient-to-r transition-all duration-500",
-                        isActive
-                          ? `${highlight.color} opacity-40`
-                          : "from-gray-200 to-transparent opacity-20"
+                        "absolute w-20 h-20 transition-all duration-500 transform",
+                        isActive ? "scale-110" : "scale-100"
                       )}
                       style={{
-                        height: `${radius - 40}px`,
-                        left: "50%",
-                        top: "50%",
-                        transformOrigin: "top",
-                        transform: `rotate(${angle + 180}deg) translateX(-50%)`,
+                        left: `calc(50% + ${x}px - 2.5rem)`,
+                        top: `calc(50% + ${y}px - 2.5rem)`,
                       }}
-                    />
-
-                    {/* Highlight Circle */}
-                    <div
-                      className={cn(
-                        "relative w-full h-full rounded-full transition-all duration-500 flex items-center justify-center shadow-lg",
-                        isActive
-                          ? `bg-gradient-to-br ${highlight.color} shadow-xl`
-                          : "bg-white border-2 border-gray-200"
-                      )}
                     >
-                      <IconComponent
+                      {/* Connecting Line */}
+                      <div
                         className={cn(
-                          "w-8 h-8 transition-colors duration-500",
-                          isActive ? "text-white" : "text-gray-400"
+                          "absolute w-px bg-gradient-to-r transition-all duration-500",
+                          isActive
+                            ? `${highlight.color} opacity-40`
+                            : "from-gray-200 to-transparent opacity-20"
                         )}
+                        style={{
+                          height: `${radius - 70}px`,
+                          left: "50%",
+                          top: "50%",
+                          transformOrigin: "top",
+                          // transform: `rotate(${angle + 180}deg) translateX(-50%)`,
+                        }}
                       />
-                    </div>
 
-                    {/* Floating Label */}
-                    <div
-                      className={cn(
-                        "absolute top-full mt-3 left-1/2 transform -translate-x-1/2 transition-all duration-500",
-                        isActive
-                          ? "opacity-100 translate-y-0"
-                          : "opacity-0 translate-y-2"
-                      )}
-                    >
-                      <div className="px-3 py-1 bg-white rounded-full shadow-md border border-gray-100 whitespace-nowrap">
-                        <span className="text-xs font-medium text-gray-700">
-                          {highlight.text}
-                        </span>
+                      {/* Highlight Circle */}
+                      <div
+                        className={cn(
+                          "relative w-full h-full rounded-full transition-all duration-500 flex items-center justify-center shadow-lg",
+                          isActive
+                            ? `bg-gradient-to-br ${highlight.color} shadow-xl`
+                            : "bg-white border-2 border-gray-200"
+                        )}
+                      >
+                        <IconComponent
+                          className={cn(
+                            "w-8 h-8 transition-colors duration-500",
+                            isActive ? "text-white" : "text-gray-400"
+                          )}
+                        />
+                      </div>
+
+                      {/* Floating Label */}
+                      <div
+                        className={cn(
+                          "absolute top-full mt-3 left-1/2 transform -translate-x-1/2 transition-all duration-500",
+                          isActive
+                            ? "opacity-100 translate-y-0"
+                            : "opacity-0 translate-y-2"
+                        )}
+                      >
+                        <div className="px-3 py-1 bg-white rounded-full shadow-md border border-gray-100 whitespace-nowrap">
+                          <span className="text-xs font-medium text-gray-700">
+                            {highlight.text}
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
 
-              {/* Pulsing Rings */}
-              <div className="absolute inset-0 rounded-full border-2 border-[#f15A24]/20 animate-ping"></div>
+                {/* Pulsing Rings */}
+                <div className="absolute inset-0 rounded-full border-2 border-[#f15A24]/20 animate-ping"></div>
+                <div
+                  className="absolute inset-4 rounded-full border border-[#f15A24]/10 animate-pulse"
+                  style={{ animationDelay: "1s" }}
+                ></div>
+
+                {/* Additional Floating Elements */}
+                <div className="absolute -inset-8">
+                  <div
+                    className="absolute top-0 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-gradient-to-r from-[#f15A24]/30 to-orange-500/30 rounded-full animate-pulse"
+                    style={{ animationDelay: "2s" }}
+                  ></div>
+                  <div
+                    className="absolute bottom-0 right-1/4 w-2 h-2 bg-gradient-to-r from-blue-500/30 to-cyan-400/30 rounded-full animate-pulse"
+                    style={{ animationDelay: "3s" }}
+                  ></div>
+                  <div
+                    className="absolute left-0 top-1/3 w-2.5 h-2.5 bg-gradient-to-r from-purple-500/30 to-pink-400/30 rounded-full animate-pulse"
+                    style={{ animationDelay: "4s" }}
+                  ></div>
+                </div>
+              </div>
+
+              {/* Stats Floating Cards */}
               <div
-                className="absolute inset-4 rounded-full border border-[#f15A24]/10 animate-pulse"
-                style={{ animationDelay: "1s" }}
-              ></div>
-
-              {/* Additional Floating Elements */}
-              <div className="absolute -inset-8">
-                <div
-                  className="absolute top-0 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-gradient-to-r from-[#f15A24]/30 to-orange-500/30 rounded-full animate-pulse"
-                  style={{ animationDelay: "2s" }}
-                ></div>
-                <div
-                  className="absolute bottom-0 right-1/4 w-2 h-2 bg-gradient-to-r from-blue-500/30 to-cyan-400/30 rounded-full animate-pulse"
-                  style={{ animationDelay: "3s" }}
-                ></div>
-                <div
-                  className="absolute left-0 top-1/3 w-2.5 h-2.5 bg-gradient-to-r from-purple-500/30 to-pink-400/30 rounded-full animate-pulse"
-                  style={{ animationDelay: "4s" }}
-                ></div>
-              </div>
-            </div>
-
-            {/* Stats Floating Cards */}
-            <div
-              className="absolute -bottom-12 -left-12 bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-5 border border-gray-100/50 animate-float"
-              style={{ animationDelay: "2s" }}
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-400 rounded-2xl flex items-center justify-center shadow-lg">
-                  <Users className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <div className="text-xl font-bold text-gray-900">50K+</div>
-                  <div className="text-sm text-gray-500">Active Teams</div>
+                className="absolute -bottom-0 -left-15 bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-5 border border-gray-100/50 animate-float"
+                style={{ animationDelay: "2s" }}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-400 rounded-2xl flex items-center justify-center shadow-lg">
+                    <Users className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <div className="text-xl font-bold text-gray-900">50K+</div>
+                    <div className="text-sm text-gray-500">Active Teams</div>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div
-              className="absolute -top-12 -right-12 bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-5 border border-gray-100/50 animate-float"
-              style={{ animationDelay: "4s" }}
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-2xl flex items-center justify-center shadow-lg">
-                  <Layers className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <div className="text-xl font-bold text-gray-900">99.9%</div>
-                  <div className="text-sm text-gray-500">Uptime</div>
+              <div
+                className="absolute -top-15 -right-2 bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-5 border border-gray-100/50 animate-float"
+                style={{ animationDelay: "4s" }}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-2xl flex items-center justify-center shadow-lg">
+                    <Layers className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <div className="text-xl font-bold text-gray-900">99.9%</div>
+                    <div className="text-sm text-gray-500">Uptime</div>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Additional floating stat */}
-            <div
-              className="absolute top-1/2 -left-16 bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-4 border border-gray-100/50 animate-float"
-              style={{ animationDelay: "6s" }}
-            >
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-400 rounded-xl flex items-center justify-center shadow-lg">
-                  <Zap className="w-4 h-4 text-white" />
-                </div>
-                <div>
-                  <div className="text-lg font-bold text-gray-900">2.5s</div>
-                  <div className="text-xs text-gray-500">Avg Response</div>
+              {/* Additional floating stat */}
+              <div
+                className="absolute top-5 -left-16 bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-4 border border-gray-100/50 animate-float"
+                style={{ animationDelay: "6s" }}
+              >
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-400 rounded-xl flex items-center justify-center shadow-lg">
+                    <Zap className="w-4 h-4 text-white" />
+                  </div>
+                  <div>
+                    <div className="text-lg font-bold text-gray-900">2.5s</div>
+                    <div className="text-xs text-gray-500">Avg Response</div>
+                  </div>
                 </div>
               </div>
             </div>

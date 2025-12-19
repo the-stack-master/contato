@@ -142,12 +142,12 @@ export function LoginForm({ loginContent, logoData }: LoginFormProps) {
           <div className="w-full max-w-sm space-y-6 lg:space-y-8 animate-in fade-in-50 slide-in-from-left-5 duration-700">
             {/* Logo/Brand */}
             <div className="text-center space-y-2">
-              <div className="mx-auto flex items-center justify-center mb-6  animate-in zoom-in-50 duration-500 delay-200 overflow-hidden">
+              <div className="mx-auto flex items-center justify-center mb-2  animate-in zoom-in-50 duration-500 delay-200 overflow-hidden">
                 <Image
                   src={getImageUrl(logoData?.mainLogo?.image?.asset?.url ?? "")}
                   alt={logoData?.mainLogo?.altText || "Company Logo"}
-                  width={100} // match w-16
-                  height={100} // match h-16
+                  width={200} // match w-16
+                  height={200} // match h-16
                   className="object-contain"
                 />
               </div>
@@ -192,11 +192,12 @@ export function LoginForm({ loginContent, logoData }: LoginFormProps) {
                     placeholder="Enter your email address"
                     {...emailForm.register("email")}
                     className={cn(
-                      "h-12 bg-white border-[#f15A24] focus:border-[#f15A24] focus:ring-[#f15A24] focus:ring-2 focus:ring-offset-0 focus:outline-none transition-all duration-200 shadow-sm text-gray-800",
+                      "h-12 mt-1 shadow-sm transition-all duration-200",
                       emailForm.formState.errors.email &&
-                        "border-red-500 focus:border-red-500 focus:ring-red-500"
+                        "ring-2 ring-red-500 border-gray-300"
                     )}
                   />
+
                   {emailForm.formState.errors.email && (
                     <p className="text-sm text-red-600 animate-in fade-in-50 slide-in-from-left-2 duration-300">
                       {emailForm.formState.errors.email.message}
@@ -206,12 +207,14 @@ export function LoginForm({ loginContent, logoData }: LoginFormProps) {
 
                 <Button
                   type="submit"
+                  variant="primary"
+                  size="md"
                   disabled={isLoading}
-                  className="w-full h-12 bg-gradient-to-r from-[#f15A24] to-[#d04f23] hover:from-[#d04f23] hover:to-[#f15A24] text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                  className="w-full"
                 >
                   {isLoading ? (
                     <div className="flex items-center">
-                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
                       Sending code...
                     </div>
                   ) : (
@@ -263,7 +266,9 @@ export function LoginForm({ loginContent, logoData }: LoginFormProps) {
                 <Button
                   type="submit"
                   disabled={isLoading || otpValue.length < 6}
-                  className="w-full h-12 bg-gradient-to-r from-[#f15A24] to-[#d04f23] hover:from-[#d04f23] hover:to-[#f15A24] text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
+                  variant="primary"
+                  size="md"
+                  className="w-full"
                 >
                   {isLoading ? (
                     <div className="flex items-center">

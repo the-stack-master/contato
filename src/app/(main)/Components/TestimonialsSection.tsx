@@ -3,7 +3,15 @@ import { useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { UserTestimonials } from "@/types/homeTypes";
-import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Star,
+  Quote,
+  ChevronLeft,
+  ChevronRight,
+  TextQuote,
+  LucideQuote,
+  UserStar,
+} from "lucide-react";
 import { motion } from "framer-motion";
 
 interface Props {
@@ -32,7 +40,7 @@ export default function TestimonialsSectionClient({ testimonialData }: Props) {
 
   return (
     <section className="py-20 bg-white relative">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-6">
         <div className="text-center mb-16 max-w-3xl mx-auto">
           <motion.h2
             className="text-3xl md:text-4xl font-bold text-gray-900 mb-4"
@@ -63,7 +71,7 @@ export default function TestimonialsSectionClient({ testimonialData }: Props) {
                   >
                     <Card className="group border-0 bg-white shadow-lg rounded-2xl relative overflow-hidden cursor-pointer hover:shadow-[0_8px_25px_rgba(241,90,36,0.3)] transition-shadow duration-500">
                       <CardContent className="p-8 relative z-10">
-                        <Quote className="w-8 h-8 text-[#f15A24]/30 mb-6" />
+                        <UserStar className="w-8 h-8 text-[#f15A24]/30 mb-6" />
 
                         <div className="flex mb-4">
                           {[...Array(testimonial.rating)].map((_, i) => (
@@ -107,13 +115,13 @@ export default function TestimonialsSectionClient({ testimonialData }: Props) {
           {/* Navigation buttons */}
           <button
             onClick={scrollPrev}
-            className="absolute top-1/2 left-0 transform -translate-y-1/2 bg-white/80 hover:bg-[#f15A24] hover:text-white text-[#f15A24] p-2 rounded-full shadow-md transition-colors"
+            className="absolute top-1/2 -left-8 transform -translate-y-1/2 bg-white/80 hover:bg-[#f15A24] hover:text-white text-[#f15A24] p-2 rounded-full shadow-md transition-colors"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           <button
             onClick={scrollNext}
-            className="absolute top-1/2 right-0 transform -translate-y-1/2 bg-white/80 hover:bg-[#f15A24] hover:text-white text-[#f15A24] p-2 rounded-full shadow-md transition-colors"
+            className="absolute top-1/2 -right-8 transform -translate-y-1/2 bg-white/80 hover:bg-[#f15A24] hover:text-white text-[#f15A24] p-2 rounded-full shadow-md transition-colors"
           >
             <ChevronRight className="w-5 h-5" />
           </button>

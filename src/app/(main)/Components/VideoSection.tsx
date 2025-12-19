@@ -9,6 +9,7 @@ import { PlatformLearning } from "@/types/homeTypes";
 import VideoPlayer from "@/components/ui/VideoPlayer";
 import useNavigate from "@/hooks/useNavigate";
 import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
 
 interface VideoSectionProps {
   videoData?: PlatformLearning | null;
@@ -36,7 +37,7 @@ const VideoSection = ({ videoList, videoData }: VideoSectionProps) => {
     navigate("/videos");
   }, [navigate]);
 
-  // --- Embla control setup
+  // Embla setup
   useEffect(() => {
     if (!emblaApi) return;
 
@@ -47,7 +48,7 @@ const VideoSection = ({ videoList, videoData }: VideoSectionProps) => {
     };
 
     setScrollSnaps(emblaApi.scrollSnapList());
-    onSelect(); // initialize
+    onSelect();
     emblaApi.on("select", onSelect);
 
     return () => {
@@ -55,7 +56,7 @@ const VideoSection = ({ videoList, videoData }: VideoSectionProps) => {
     };
   }, [emblaApi]);
 
-  // --- Stop video when out of view
+  // Stop video when out of view
   useEffect(() => {
     if (videoRefs.current.size === 0) return;
 
@@ -77,15 +78,8 @@ const VideoSection = ({ videoList, videoData }: VideoSectionProps) => {
     return () => observer.disconnect();
   }, [currentIndex]);
 
-  const getVideoUrl = (video: Video) => {
-    if (!video) return "";
-    if (video.videoSource === "upload") return video.videoFileUrl ?? "";
-    if (video.videoSource === "url") return video.videoUrl ?? "";
-    return "";
-  };
-
   return (
-    <section className="w-full px-2 sm:px-6 lg:px-12 py-8 sm:py-12 bg-gray-50 relative">
+    <section className="w-full px-5 sm:px-10 lg:px-16 py-8 sm:py-12 bg-gray-50 relative">
       <motion.h2
         className="text-2xl sm:text-3xl font-semibold text-gray-800 mb-8 text-center"
         initial={{ opacity: 0, y: -20 }}
@@ -96,17 +90,17 @@ const VideoSection = ({ videoList, videoData }: VideoSectionProps) => {
       </motion.h2>
 
       <div className="relative">
-        {/* --- Prev Button --- */}
+        {/* Prev button */}
         {canScrollPrev && (
           <button
             onClick={() => emblaApi?.scrollPrev()}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-md p-2 rounded-full hover:scale-105 transition hidden sm:flex"
+            className="absolute -left-12 top-1/2 -translate-y-1/2 z-10 bg-white shadow-md p-2 rounded-full hover:scale-105 transition hidden sm:flex"
           >
             <ChevronLeft className="w-6 h-6 text-gray-700" />
           </button>
         )}
 
-        {/* --- Carousel --- */}
+        {/* Carousel */}
         <div className="overflow-hidden" ref={emblaRef}>
           <div className="flex gap-5">
             {videoList?.map((video, idx) => (
@@ -170,29 +164,29 @@ const VideoSection = ({ videoList, videoData }: VideoSectionProps) => {
               </div>
             ))}
 
-            {/* --- SEE MORE CARD --- */}
+            {/* Optional See More card (still fine) */}
             <div
               className="flex-[0_0_85%] sm:flex-[0_0_45%] lg:flex-[0_0_28%] bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex flex-col items-center justify-center shadow-md cursor-pointer hover:shadow-lg hover:scale-[1.03] transition"
               onClick={handleNavVideo}
             >
-              <ChevronRight className="w-10 h-10 text-gray-600 group-hover:text-gray-800 transition" />
+              <ChevronRight className="w-10 h-10 text-gray-600 transition" />
               <p className="mt-2 text-gray-700 font-medium">See More</p>
             </div>
           </div>
         </div>
 
-        {/* --- Next Button --- */}
+        {/* Next button */}
         {canScrollNext && (
           <button
             onClick={() => emblaApi?.scrollNext()}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-md p-2 rounded-full hover:scale-105 transition hidden sm:flex"
+            className="absolute -right-12 top-1/2 -translate-y-1/2 z-10 bg-white shadow-md p-2 rounded-full hover:scale-105 transition hidden sm:flex"
           >
             <ChevronRight className="w-6 h-6 text-gray-700" />
           </button>
         )}
       </div>
 
-      {/* --- Scroll Indicators --- */}
+      {/* Scroll indicators */}
       <div className="flex justify-center gap-2 mt-6">
         {scrollSnaps.map((_, index) => (
           <button
@@ -205,6 +199,19 @@ const VideoSection = ({ videoList, videoData }: VideoSectionProps) => {
             }`}
           />
         ))}
+      </div>
+
+      {/* 🔥 PRIMARY CTA — visible on all devices */}
+      <div className="mt-6 flex justify-center">
+        <Button
+          onClick={handleNavVideo}
+          variant="primary"
+          size="md"
+          className="rounded-full px-8 flex items-center gap-2"
+        >
+          View all videos
+          <ChevronRight className="w-4 h-4" />
+        </Button>
       </div>
     </section>
   );

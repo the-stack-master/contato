@@ -8,12 +8,12 @@ interface HeroImage {
 interface PhoneUiProps {
   image: HeroImage;
   rotation?: number;
-  cropHeight?: number; // number of pixels to reduce height (cutoff)
+  cropHeight?: number;
 }
 
 const PhoneUi = ({ image, rotation = 0, cropHeight = 0 }: PhoneUiProps) => {
-  const baseHeight = 512;
-  const baseWidth = 256;
+  const baseHeight = 480; // reduced from 512
+  const baseWidth = 240; // reduced from 256
 
   return (
     <div
@@ -24,8 +24,8 @@ const PhoneUi = ({ image, rotation = 0, cropHeight = 0 }: PhoneUiProps) => {
         transform: `rotate(${rotation}deg)`,
         borderRadius: "3rem",
         position: "relative",
-        boxShadow: "0 0 0 4px #1f2937", // to mimic phone border edge - adjust color and size to blend
-        backgroundColor: "#1f2937", // same as gray-900 background to cover gaps
+        boxShadow: "0 0 0 4px #1f2937",
+        backgroundColor: "#1f2937",
       }}
     >
       <div
@@ -34,7 +34,7 @@ const PhoneUi = ({ image, rotation = 0, cropHeight = 0 }: PhoneUiProps) => {
           height: baseHeight,
           width: "100%",
           overflow: "hidden",
-          boxShadow: "inset 0 0 10px #fff", // soft white inset shadow to mask edges
+          boxShadow: "inset 0 0 10px #fff",
         }}
       >
         <div className="w-full h-full bg-white rounded-[3rem] overflow-hidden relative">
@@ -42,20 +42,20 @@ const PhoneUi = ({ image, rotation = 0, cropHeight = 0 }: PhoneUiProps) => {
           <div className="h-12 bg-gray-50 flex items-center justify-between px-6 text-sm font-medium text-gray-900">
             <span>9:41</span>
             <div className="flex items-center space-x-1">
-              <div className="w-4 h-2 bg-gray-900 rounded-sm"></div>
+              <div className="w-4 h-2 bg-gray-900 rounded-sm" />
               <div className="w-6 h-3 border border-gray-900 rounded-sm">
-                <div className="w-4 h-1.5 bg-gray-900 rounded-sm m-0.5"></div>
+                <div className="w-4 h-1.5 bg-gray-900 rounded-sm m-0.5" />
               </div>
             </div>
           </div>
 
-          {/* Slideshow */}
+          {/* Image */}
           <div className="w-full h-[calc(100%-3rem)] relative">
             <Image
               src={image?.url}
-              alt={`slide-${image?.caption}`}
+              alt={image?.caption || "phone-screen"}
               fill
-              className="object-cover transition-opacity duration-700 opacity-100"
+              className="object-cover"
             />
           </div>
         </div>

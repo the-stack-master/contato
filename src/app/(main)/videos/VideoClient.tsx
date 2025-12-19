@@ -12,10 +12,12 @@ import {
   Search,
   ChevronLeft,
   ChevronRight,
+  X,
 } from "lucide-react";
 import { cn } from "@/utils/classNames";
 import VideoPlayer from "@/components/ui/VideoPlayer";
 import { VideoHeaderText } from "@/types/videoTypes";
+import { Input } from "@/components/ui/input";
 
 export type SanityImage = {
   asset: { _id: string; url: string };
@@ -191,111 +193,189 @@ const VideoClient = ({ videoHeaderData }: VideoClientProps) => {
   return (
     <div className="min-h-screen bg-white" ref={containerRef}>
       {/* Title + Subtitle */}
-      <section className="max-w-7xl mx-auto px-6 py-20 flex flex-col lg:flex-row gap-12">
-        <div className="lg:w-1/2 text-center lg:text-left flex flex-col justify-center">
-          <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-[#f15A24]/10 to-orange-100/50 px-6 py-3 rounded-full mb-8">
-            <Play className="w-5 h-5 text-[#f15A24]" />
-            <span className="text-[#f15A24] font-semibold">
-              {videoHeaderData?.title}
-            </span>
-          </div>
-          <h1 className="text-5xl lg:text-6xl font-black text-gray-900 mb-6 leading-tight">
-            {videoHeaderData?.mainHeading} <br />
-            <span className="bg-gradient-to-r from-[#f15A24] via-orange-500 to-red-500 bg-clip-text text-transparent">
-              {videoHeaderData?.highlightedText}
-            </span>
-          </h1>
-          <p className="text-xl text-gray-600 leading-relaxed max-w-lg">
-            {videoHeaderData?.description}
-          </p>
-        </div>
+      <section className="relative">
+        {/* Subtle background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-orange-50/30 via-white to-white pointer-events-none" />
 
-        {/* Featured Videos */}
-        {featuredVideos.length > 0 && (
-          <div className="lg:w-1/2">
-            <div className="text-center mb-8 lg:text-left">
-              <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
+        <div
+          className="
+      relative
+      max-w-7xl mx-auto
+      px-6 py-12
+      grid grid-cols-1 lg:grid-cols-2
+      gap-10
+      items-start
+    "
+        >
+          {/* LEFT CONTENT */}
+          <div className="flex flex-col justify-center items-center lg:items-start text-center lg:text-left">
+            {/* Pill */}
+            <div
+              className="
+          inline-flex w-fit items-center gap-2
+          bg-[#f15A24]/10
+          px-4 py-2
+          rounded-full
+          mb-5
+          mx-auto lg:mx-0
+        "
+            >
+              <Play className="w-4 h-4 !text-[#f15A24]" />
+              <span className="text-sm font-semibold !text-[#f15A24]">
+                {videoHeaderData?.title}
+              </span>
+            </div>
+
+            {/* Heading */}
+            <h1 className="text-4xl lg:text-5xl font-black !text-gray-900 leading-tight mb-3 mt-5">
+              {videoHeaderData?.mainHeading}
+              <br />
+              <span className="!text-[#f15A24]">
+                {videoHeaderData?.highlightedText}
+              </span>
+            </h1>
+
+            {/* Description */}
+            <p className="text-lg !text-gray-600 leading-relaxed max-w-xl mx-auto lg:mx-0">
+              {videoHeaderData?.description}
+            </p>
+          </div>
+
+          {/* RIGHT – FEATURED VIDEO */}
+          {featuredVideos.length > 0 && (
+            <div className="flex flex-col items-center lg:items-start">
+              {/* Heading aligned with pill */}
+              <h2 className="text-lg font-semibold !text-gray-900 mb-3">
                 Featured Videos
               </h2>
-            </div>
 
-            <div className="relative group overflow-hidden rounded-3xl shadow-2xl">
-              <VideoPlayer
-                video={featuredVideos[featuredIndex]}
-                isPlaying={
-                  featuredPlaying === featuredVideos[featuredIndex]._id
-                }
-                onPlayToggle={() =>
-                  setFeaturedPlaying(
+              {/* Constrained video container */}
+              <div
+                className="
+            relative
+            w-full
+            max-w-[480px]
+            aspect-video
+            rounded-2xl
+            overflow-hidden
+            bg-white
+            border border-gray-200
+            shadow-md
+          "
+              >
+                <VideoPlayer
+                  video={featuredVideos[featuredIndex]}
+                  isPlaying={
                     featuredPlaying === featuredVideos[featuredIndex]._id
-                      ? null
-                      : featuredVideos[featuredIndex]._id
-                  )
-                }
-              />
+                  }
+                  onPlayToggle={() =>
+                    setFeaturedPlaying(
+                      featuredPlaying === featuredVideos[featuredIndex]._id
+                        ? null
+                        : featuredVideos[featuredIndex]._id
+                    )
+                  }
+                />
 
-              {featuredVideos.length > 1 && (
-                <>
-                  <Button
-                    onClick={prevFeatured}
-                    className="absolute left-4 top-1/2 transform -translate-y-1/2 w-12 h-12 rounded-full bg-white/20 border border-white/30"
-                  >
-                    <ChevronLeft className="w-6 h-6 text-white" />
-                  </Button>
-                  <Button
-                    onClick={nextFeatured}
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 w-12 h-12 rounded-full bg-white/20 border border-white/30"
-                  >
-                    <ChevronRight className="w-6 h-6 text-white" />
-                  </Button>
-                </>
-              )}
+                {/* Controls */}
+                {featuredVideos.length > 1 && (
+                  <>
+                    <button
+                      onClick={prevFeatured}
+                      aria-label="Previous video"
+                      className="
+                  absolute left-3 top-1/2 -translate-y-1/2
+                  z-10
+                  flex items-center justify-center
+                  w-10 h-10
+                  rounded-full
+                  bg-black/50 backdrop-blur-sm
+                  hover:bg-black/70
+                  transition
+                  cursor-pointer
+                "
+                    >
+                      <ChevronLeft className="w-5 h-5 text-white" />
+                    </button>
+
+                    <button
+                      onClick={nextFeatured}
+                      aria-label="Next video"
+                      className="
+                  absolute right-3 top-1/2 -translate-y-1/2
+                  z-10
+                  flex items-center justify-center
+                  w-10 h-10
+                  rounded-full
+                  bg-black/50 backdrop-blur-sm
+                  hover:bg-black/70
+                  transition
+                  cursor-pointer
+                "
+                    >
+                      <ChevronRight className="w-5 h-5 text-white" />
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </section>
 
       {/* Grid Videos */}
       <section className="relative py-16 px-6 max-w-7xl mx-auto">
-        <div className="flex flex-row gap-4 justify-start items-center mb-8 w-full overflow-x-auto">
-          <div className="relative flex-none min-w-[280px] max-w-[400px] flex-grow">
+        {/* Search */}
+        <div className="mb-12 flex justify-center">
+          <div
+            className="
+        relative w-full max-w-xl
+        bg-white/80 backdrop-blur
+        rounded-2xl
+        border border-gray-200
+        shadow-sm
+      "
+          >
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search videos..."
+
+            <Input
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-12 pr-6 py-4 w-full bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#f15A24]/20 focus:border-[#f15A24]"
+              placeholder="Search videos…"
+              className="
+          h-14 pl-12 pr-12
+          
+        "
             />
-          </div>
 
-          {/* <div className="flex gap-2 justify-start flex-none max-w-[600px]">
-            {categories.map((category) => (
-              <Button
-                key={category.id}
-                onClick={() => setSelectedCategory(category.id)}
-                variant={
-                  selectedCategory === category.id ? "default" : "outline"
-                }
-                className={cn(
-                  "h-12 px-6 rounded-2xl font-medium",
-                  selectedCategory === category.id
-                    ? "bg-[#f15A24] text-white shadow-lg"
-                    : "border-gray-200 hover:border-[#f15A24] hover:text-[#f15A24]"
-                )}
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="
+            absolute right-4 top-1/2 -translate-y-1/2
+            text-gray-400 hover:text-[#f15A24]
+            transition
+          "
+                aria-label="Clear search"
               >
-                <category.icon className="w-4 h-4 mr-2" />
-                {category.label}
-              </Button>
-            ))}
-          </div> */}
+                <X className="w-5 h-5" />
+              </button>
+            )}
+          </div>
         </div>
 
+        {/* Videos Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {videos.map((video) => (
             <div
               key={video._id}
-              className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-[1.02]"
+              className="
+          group bg-white rounded-2xl overflow-hidden
+          border border-gray-200
+          shadow-sm hover:shadow-xl
+          transition-all duration-300
+          hover:-translate-y-1
+        "
             >
               <VideoPlayer
                 video={video}
@@ -304,17 +384,20 @@ const VideoClient = ({ videoHeaderData }: VideoClientProps) => {
                   setGridPlaying(gridPlaying === video._id ? null : video._id)
                 }
               />
-              <div className="p-6">
+
+              <div className="p-6 mt-2">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-medium uppercase text-[#f15A24]">
+                  <span className="text-xs font-semibold uppercase !text-[#f15A24]">
                     {video.category?.title || "General"}
                   </span>
-                  <span className="text-xs text-gray-500">
+                  <span className="!text-xs text-gray-500">
                     {video.duration}
                   </span>
                 </div>
-                <h3 className="text-lg font-semibold mb-2">{video.title}</h3>
-                <p className="text-gray-500 text-sm line-clamp-2">
+
+                <h3 className="mt-3">{video.title}</h3>
+
+                <p className="!text-sm !text-gray-600 line-clamp-2">
                   {video.description}
                 </p>
               </div>
@@ -322,20 +405,10 @@ const VideoClient = ({ videoHeaderData }: VideoClientProps) => {
           ))}
         </div>
 
+        {/* Load More */}
         {hasMore && (
-          <div className="mt-8 text-center">
-            <Button
-              onClick={loadMore}
-              className="
-                px-8 py-3
-                bg-gradient-to-r from-[#f15A24] to-[#ff7f50] 
-                text-white font-semibold 
-                rounded-lg shadow-md 
-                hover:shadow-lg hover:scale-105 
-                transition-transform duration-300 ease-in-out
-                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#f15A24]
-              "
-            >
+          <div className="mt-12 text-center">
+            <Button variant={"primary"} onClick={loadMore}>
               Load More
             </Button>
           </div>

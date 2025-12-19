@@ -17,3 +17,54 @@ body {
   color: var(--foreground);
   font-family: var(--font-nunito-sans), sans-serif;
 }
+
+/* ================================
+   Global Typography
+================================ */
+
+h1 {
+  @apply text-4xl sm:text-5xl font-semibold leading-tight text-gray-900;
+}
+
+h2 {
+  @apply text-2xl sm:text-3xl font-semibold leading-snug text-gray-900;
+}
+
+h3 {
+  @apply text-xl font-semibold text-gray-900;
+}
+
+p {
+  @apply text-lg leading-relaxed text-gray-600;
+}
+
+label {
+  @apply text-base font-medium text-gray-700;
+}
+
+small {
+  @apply text-sm text-gray-500;
+}
+
+/* Remove Chrome autofill inner shadow & corner artifacts */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px white inset !important;
+  box-shadow: 0 0 0 1000px white inset !important;
+  -webkit-text-fill-color: #111827 !important;
+  border-radius: 0.5rem; /* must match input radius */
+}
+
+/* Fully neutralize Chrome input focus artifacts */
+input {
+  appearance: none;
+  -webkit-appearance: none;
+  outline-offset: 0;
+  background-clip: padding-box;
+}
+
+input {
+  border-radius: 0.5rem;
+}

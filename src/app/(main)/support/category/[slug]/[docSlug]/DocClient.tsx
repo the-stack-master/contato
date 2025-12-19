@@ -1,10 +1,16 @@
 "use client";
 import React from "react";
 import SanityFileViewer from "./SanityFileViewer";
-import { ArrowLeft } from "lucide-react";
+import {
+  ArrowLeft,
+  MailQuestionMark,
+  MessageCircle,
+  ShieldQuestionMark,
+} from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { SanityDocumentUpload } from "@/types/documentFetchTypes";
+import { Button } from "@/components/ui/button";
 
 interface DocClientProps {
   docData: SanityDocumentUpload | null;
@@ -18,23 +24,23 @@ const DocClient = ({ docData }: DocClientProps) => {
       transition={{ duration: 0.6 }}
     >
       {/* Back Button */}
+
       <Link
         href={`/support`}
-        className="inline-flex items-center text-[#f15A24] hover:text-orange-600 font-semibold mb-8 transition-colors duration-300"
+        className="inline-flex items-center gap-2 px-3 py-1 bg-white border border-orange-500 rounded-lg
+         text-orange-500 shadow-sm hover:bg-orange-100 hover:scale-105 transition-all font-medium w-max mb-6"
       >
-        <ArrowLeft className="w-4 h-4 mr-2" />
+        <ArrowLeft className="w-4 h-4" />
         Back to support
       </Link>
 
       {/* Article Header */}
-      <div className="mb-12">
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-          {docData?.document?.title}
-        </h1>
+      <div className="mb-3">
+        <h1>{docData?.document?.title}</h1>
 
         {/* {article.description && ( */}
         {docData?.document?.subtitle && (
-          <p className="text-xl text-gray-600 mb-6 leading-relaxed">
+          <p className="!text-xl !text-gray-600 mb-0 leading-relaxed">
             {docData?.document?.subtitle}
           </p>
         )}
@@ -45,18 +51,33 @@ const DocClient = ({ docData }: DocClientProps) => {
       <SanityFileViewer docId={docData?.document?.file?.asset?.url} />
 
       {/* Help Footer */}
-      <div className="mt-12 p-6 bg-gradient-to-r from-orange-50 to-red-50 rounded-2xl border border-orange-100">
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">
-          Was this article helpful?
-        </h3>
-        <p className="text-gray-600 mb-4">
-          Let us know if you have any questions or need further assistance.
-        </p>
-        <Link
-          href="/support"
-          className="inline-block bg-gradient-to-r from-[#f15A24] to-orange-500 hover:from-orange-600 hover:to-red-500 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg"
-        >
-          Browse More Articles
+      <div
+        className="
+    mt-16 p-8 md:p-10
+    rounded-2xl
+    bg-gradient-to-br from-[#fff6f2] via-white to-white
+    border border-[#f15A24]/20
+    flex flex-col md:flex-row md:items-center md:justify-between
+    gap-6
+  "
+      >
+        {/* Text */}
+        <div>
+          <h3 className="flex items-center gap-2 text-xl font-semibold !text-gray-900">
+            <ShieldQuestionMark className="w-5 h-5 text-[#f15A24]" />
+            Was this article helpful?
+          </h3>
+
+          <p className="text-sm md:text-base !text-gray-600 max-w-md">
+            Explore more guides or get help from our support resources.
+          </p>
+        </div>
+
+        {/* CTA */}
+        <Link href="/support">
+          <Button variant="primary" size="md" className="rounded-xl px-6">
+            Browse more articles
+          </Button>
         </Link>
       </div>
     </motion.div>

@@ -1,54 +1,11 @@
 "use client";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Check, Crown, Zap, Building } from "lucide-react";
+import { Check, Crown, Leaf, Settings, Star, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { PricingPlans } from "@/types/homeTypes";
-
-interface PricingFeature {
-  text: string;
-  included?: boolean;
-}
-
-interface PricingPlan {
-  planName: string;
-  planSubtitle?: string;
-  price: string;
-  pricePeriod?: string;
-  description: string;
-  features: PricingFeature[];
-  buttonText: string;
-  buttonUrl?: string;
-  isPopular: boolean;
-  badgeText?: string;
-  planIcon?: string;
-}
-
-interface PricingBlock {
-  _id: string;
-  title?: string;
-  pricingPlans: PricingPlan[];
-}
-
-interface PricingFooterFeature {
-  text: string;
-  icon?: string;
-}
-
-interface PricingFooter {
-  _id: string;
-  title?: string;
-  mainText?: string;
-  features: PricingFooterFeature[];
-  isActive: boolean;
-}
-
-interface PricingHeader {
-  _id: string;
-  heading?: string;
-  subHeading?: string;
-}
+import { PricingPlan, PricingPlans } from "@/types/homeTypes";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   pricingData: PricingPlans | null;
@@ -57,67 +14,71 @@ interface Props {
 export default function PricingSectionClient({ pricingData }: Props) {
   if (!pricingData) return null;
 
+  const getIcon = (planData: PricingPlan) => {
+    if (planData?.isPopular) {
+      return <Crown className="w-6 h-6 text-[#f15A24]" />;
+    }
+    if (planData?.planType?.toLowerCase() === "free") {
+      return <Leaf className="w-6 h-6 text-[#f15A24]" />;
+    }
+    if (planData?.planType?.toLowerCase() === "custom") {
+      return <Settings className="w-6 h-6 text-[#f15A24]" />;
+    }
+
+    return <Zap className="w-6 h-6 text-[#f15A24]" />;
+  };
+
   return (
     <section id="pricing" className="py-20 bg-black text-white">
-      <div className="container mx-auto px-4 text-center max-w-4xl mx-auto mb-16">
+      {/* HEADER */}
+      <div className="container mx-auto px-4 text-center max-w-4xl mb-16">
         <motion.h2
-          className="text-3xl md:text-4xl font-bold mb-4 drop-shadow-md"
+          className="text-3xl md:text-4xl font-bold mb-4 !text-white"
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
-          {pricingData?.sectionHeading}
+          {pricingData.sectionHeading}
         </motion.h2>
 
-        <p className="text-lg text-gray-300">
-          {pricingData?.sectionDescription}
-        </p>
+        <p className="text-lg !text-white">{pricingData.sectionDescription}</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-        {pricingData?.plans.map((plan, index) => (
+      {/* PLANS */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto px-4 items-stretch">
+        {pricingData.plans.map((plan, index) => (
           <motion.div
-            key={`${plan.planName}-${index}`}
-            whileHover={{ scale: 1.05 }}
+            className={plan.isPopular ? "md:scale-[1.05]" : ""}
             transition={{ type: "spring", stiffness: 200, damping: 20 }}
-            className="rounded-3xl"
           >
             <Card
-              className={`group relative overflow-hidden rounded-3xl border ${
+              className={`relative h-full overflow-hidden rounded-3xl border transition-all duration-300 ${
                 plan.isPopular
-                  ? "bg-[#1a1a1a] shadow-lg border-[#f15A24] scale-105"
+                  ? "bg-[#1a1a1a] border-[#f15A24] shadow-xl"
                   : "bg-[#111111] border-gray-700"
-              } transition-all duration-300`}
+              }`}
             >
+              {/* MOST POPULAR BADGE */}
               {plan.isPopular && (
-                <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-[#f15A24] to-[#d04f23] text-white text-sm font-semibold text-center py-2 rounded-b-xl z-10">
-                  {"Most Popular"}
+                <div className="absolute top-0 inset-x-0 bg-gradient-to-r from-[#f15A24] to-[#d04f23] text-white text-sm font-semibold text-center py-2 rounded-t-3xl">
+                  Most Popular
                 </div>
               )}
 
+              {/* HEADER */}
               <CardHeader
-                className={`text-center ${plan.isPopular ? "pt-14" : "pt-10"}`}
+                className={`text-center ${plan.isPopular ? "pt-16" : "pt-12"}`}
               >
-                <div className="flex items-center justify-center mb-4">
-                  <div className="text-[#f15A24] group-hover:scale-110 transition-transform duration-300">
-                    <Zap className="w-6 h-6 text-[#f15A24]" />
-                  </div>
-                </div>
+                <div className="flex justify-center mb-4">{getIcon(plan)}</div>
 
                 <h3
-                  className={`text-2xl font-bold ${
+                  className={`text-2xl font-bold mb-2 ${
                     plan.isPopular ? "text-[#f15A24]" : "text-white"
-                  } mb-2`}
+                  }`}
                 >
                   {plan.planName}
                 </h3>
-
-                {/* {plan.planSubtitle && (
-                  <p className="text-sm text-gray-400 mb-1">
-                    {plan.planSubtitle}
-                  </p>
-                )} */}
 
                 <div className="mb-4">
                   <span
@@ -135,62 +96,61 @@ export default function PricingSectionClient({ pricingData }: Props) {
                 <p className="text-gray-400 text-sm">{plan.description}</p>
               </CardHeader>
 
-              <CardContent className="px-8 pb-8">
-                <ul className="space-y-3 mb-8">
-                  {plan.features?.map((feature, i) => (
+              {/* CONTENT */}
+              <CardContent className="px-8 pb-8 flex flex-col h-full">
+                <ul className="space-y-3 mb-8 flex-1">
+                  {plan?.features?.map((feature, i) => (
                     <li
                       key={i}
-                      className={`flex items-start text-sm text-gray-300`}
+                      className="flex items-start text-sm text-gray-300"
                     >
-                      <Check className="w-5 h-5 text-[#f15A24] mr-3 flex-shrink-0 mt-0.5" />
+                      <Check className="w-5 h-5 text-[#f15A24] mr-3 mt-0.5" />
                       {feature}
                     </li>
                   ))}
                 </ul>
-                {plan.buttonUrl?.startsWith("/") ? (
-                  <Link
-                    href={plan.buttonUrl}
-                    className={`inline-block w-full text-lg font-semibold transition-all duration-300 text-center py-3 rounded-lg ${
-                      plan.isPopular
-                        ? "bg-gradient-to-r from-[#f15A24] to-[#d04f23] hover:shadow-lg text-white"
-                        : "text-[#f15A24] border border-[#f15A24] hover:bg-[#f15A24]/10"
-                    }`}
+
+                {/* BUTTON */}
+                {plan.isPopular ? (
+                  <Button
+                    asChild
+                    variant="primary"
+                    size="md"
+                    className="w-full rounded-xl shadow-lg hover:shadow-xl transition-all"
                   >
-                    {plan.buttonText}
-                  </Link>
+                    <Link href={plan.buttonUrl ?? "#"}>{plan.buttonText}</Link>
+                  </Button>
                 ) : (
-                  <p
-                    onClick={() =>
-                      window.open(
-                        plan.buttonUrl,
-                        "_blank",
-                        "noopener,noreferrer"
-                      )
-                    }
-                    className={`cursor-pointer inline-block w-full text-lg font-semibold transition-all duration-300 text-center py-3 rounded-lg ${
-                      plan.isPopular
-                        ? "bg-gradient-to-r from-[#f15A24] to-[#d04f23] hover:shadow-lg text-white"
-                        : "text-[#f15A24] border border-[#f15A24] hover:bg-[#f15A24]/10"
-                    }`}
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="md"
+                    className="
+                      w-full rounded-xl font-medium
+                      border-[#f15A24] text-[#f15A24]
+                      hover:bg-gradient-to-r hover:from-[#f15A24] hover:to-[#d04f23]
+                      hover:text-white
+                      hover:border-transparent
+                      transition-all
+                    "
                   >
-                    {plan.buttonText}
-                  </p>
+                    <Link href={plan.buttonUrl ?? "#"}>{plan.buttonText}</Link>
+                  </Button>
                 )}
               </CardContent>
 
-              {/* Decorative gradient */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[#f15A24] to-[#d04f23] rounded-full blur-3xl opacity-10 group-hover:scale-150 transition-transform duration-500 pointer-events-none"></div>
+              {/* DECORATIVE GLOW */}
+              {plan.isPopular && (
+                <div className="pointer-events-none absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[#f15A24] to-[#d04f23] blur-3xl opacity-10" />
+              )}
             </Card>
           </motion.div>
         ))}
       </div>
 
-      {/* Footer Section */}
-
-      <div className="max-w-4xl mx-auto text-gray-400 mt-16 px-4 space-y-6 text-center">
-        <div>
-          <p className="mb-4">{pricingData.bottomText}</p>
-        </div>
+      {/* FOOTER */}
+      <div className="max-w-4xl mx-auto text-white/70 mt-16 px-4 text-center">
+        {pricingData.bottomText}
       </div>
     </section>
   );

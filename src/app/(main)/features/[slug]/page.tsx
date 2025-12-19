@@ -454,10 +454,10 @@ export default function FeatureDetailPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-white via-orange-50 to-red-50 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">
+          <h1 className="text-3xl font-bold !text-gray-900 mb-4">
             Feature Not Found
           </h1>
-          <Link href="/" className="text-[#f15A24] hover:text-orange-600">
+          <Link href="/" className="!text-[#f15A24] hover:!text-[#d04f23]">
             Return to Home
           </Link>
         </div>
@@ -472,309 +472,179 @@ export default function FeatureDetailPage() {
       {/* Organic Background Shapes */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <motion.div
-          className="absolute -top-1/2 -right-1/4 w-[800px] h-[800px] bg-gradient-to-br from-orange-200/30 to-red-200/20 opacity-60 blur-3xl"
+          className="absolute -top-1/2 -right-1/4 w-[800px] h-[800px]
+            bg-gradient-to-br from-[#f15A24]/25 to-[#d04f23]/20 blur-3xl"
+          animate={{ rotate: [0, 360], scale: [1, 1.1, 1] }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
           style={{
             borderRadius: "60% 40% 30% 70% / 60% 30% 70% 40%",
           }}
-          animate={{
-            rotate: [0, 360],
-            scale: [1, 1.1, 1],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "linear",
-          }}
         />
+
         <motion.div
-          className="absolute -bottom-1/2 -left-1/4 w-[600px] h-[600px] bg-gradient-to-tr from-orange-300/20 to-amber-200/20 opacity-50 blur-3xl"
+          className="absolute -bottom-1/2 -left-1/4 w-[600px] h-[600px]
+            bg-gradient-to-tr from-[#f15A24]/20 to-[#d04f23]/15 blur-3xl"
+          animate={{ rotate: [360, 0], scale: [1.1, 1, 1.1] }}
+          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
           style={{
             borderRadius: "30% 70% 70% 30% / 30% 30% 70% 70%",
-          }}
-          animate={{
-            rotate: [360, 0],
-            scale: [1.1, 1, 1.1],
-          }}
-          transition={{
-            duration: 25,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        />
-        <motion.div
-          className="absolute top-1/4 left-1/3 w-[400px] h-[400px] bg-gradient-to-bl from-orange-200/30 to-red-100/20 opacity-40 blur-2xl"
-          style={{
-            borderRadius: "70% 30% 50% 50% / 60% 40% 60% 40%",
-          }}
-          animate={{
-            rotate: [0, -360],
-            x: [0, 50, 0],
-            y: [0, -30, 0],
-          }}
-          transition={{
-            duration: 30,
-            repeat: Infinity,
-            ease: "linear",
           }}
         />
       </div>
 
-      {/* Navigation */}
-      <nav className="relative z-10 p-8">
-        <Link
-          href="/"
-          className="inline-flex items-center text-gray-600 hover:text-gray-900 font-medium transition-colors duration-300 bg-white/80 backdrop-blur-sm px-6 py-3 rounded-full shadow-lg hover:shadow-xl"
-        >
-          <ArrowLeft className="w-5 h-5 mr-2" />
-          Back to Home
-        </Link>
-      </nav>
-
       {/* Hero Section */}
-      <section className="relative z-10 px-8 pb-20">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              className="space-y-8"
+      <section className="relative z-10 py-20 px-6 sm:px-8 pb-20">
+        <div
+          className="
+      max-w-7xl mx-auto
+      grid grid-cols-1 lg:grid-cols-2
+      gap-12 lg:gap-16
+      items-center
+    "
+        >
+          {/* Left Content */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            className="
+        space-y-6 sm:space-y-8
+        max-w-3xl
+        mx-auto lg:mx-0
+        text-center lg:text-left
+      "
+          >
+            {/* <motion.div
+              className="
+          inline-flex items-center px-6 sm:px-8 py-3 sm:py-4
+          bg-gradient-to-r from-[#f15A24] to-[#d04f23]
+          !text-white shadow-2xl
+        "
+              style={{ borderRadius: "50px 20px 50px 20px" }}
             >
-              <motion.div
-                className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-[#f15A24] to-orange-500 text-white font-medium shadow-2xl"
-                style={{
-                  borderRadius: "50px 20px 50px 20px",
-                }}
-                whileHover={{ scale: 1.05 }}
-              >
-                <IconComponent className="w-5 h-5 mr-3" />
+              <IconComponent className="w-5 h-5 mr-3" />
+              Feature Spotlight
+            </motion.div> */}
+            <div
+              className="
+          inline-flex w-fit items-center gap-2
+          bg-[#f15A24]/10
+          px-4 py-2
+          rounded-full
+          mb-5
+          mx-auto lg:mx-0
+        "
+            >
+              <IconComponent className="w-5 h-5 mr-3 !text-[#f15A24]" />
+              <span className="text-sm font-semibold !text-[#f15A24]">
                 Feature Spotlight
-              </motion.div>
+              </span>
+            </div>
 
-              <h1 className="text-6xl md:text-7xl font-bold text-gray-900 leading-tight">
-                {feature.title}
-              </h1>
-
-              <p className="text-2xl text-gray-600 leading-relaxed">
-                {feature.subtitle}
-              </p>
-
-              <p className="text-lg text-gray-700 leading-relaxed">
-                {feature.description}
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-6">
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Button
-                    size="lg"
-                    className="bg-gradient-to-r from-[#f15A24] to-orange-500 hover:opacity-90 text-white px-10 py-6 text-xl font-semibold shadow-2xl border-0"
-                    style={{
-                      borderRadius: "30px 10px 30px 10px",
-                    }}
-                  >
-                    Try This Feature
-                  </Button>
-                </motion.div>
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="border-2 border-gray-300 text-gray-700 hover:bg-gray-50 px-10 py-6 text-xl font-semibold shadow-xl bg-white/80 backdrop-blur-sm"
-                    style={{
-                      borderRadius: "10px 30px 10px 30px",
-                    }}
-                  >
-                    Watch Demo
-                  </Button>
-                </motion.div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative"
+            <h1
+              className="
+          text-4xl sm:text-5xl md:text-6xl lg:text-7xl
+          font-bold !text-gray-900 leading-tight
+        "
             >
-              <div className="relative">
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-orange-300/30 to-red-300/30 opacity-50 blur-2xl"
-                  style={{
-                    borderRadius: "60% 40% 30% 70% / 60% 30% 70% 40%",
-                  }}
-                  animate={{
-                    rotate: [0, 360],
-                  }}
-                  transition={{
-                    duration: 20,
-                    repeat: Infinity,
-                    ease: "linear",
-                  }}
-                />
-                <img
-                  src={feature.heroImage}
-                  alt={feature.title}
-                  className="relative w-full h-96 object-cover shadow-2xl"
-                  style={{
-                    borderRadius: "40% 60% 70% 30% / 40% 70% 30% 60%",
-                  }}
-                />
+              {feature.title}
+            </h1>
 
-                {/* Floating Stats */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.6 }}
-                  className="absolute -bottom-8 -left-8 bg-white/90 backdrop-blur-sm p-8 shadow-2xl"
-                  style={{
-                    borderRadius: "30px 60px 30px 60px",
-                  }}
-                >
-                  <div className="flex items-center space-x-6">
-                    <div
-                      className="w-16 h-16 bg-gradient-to-r from-[#f15A24] to-orange-500 flex items-center justify-center"
-                      style={{
-                        borderRadius: "50% 20% 50% 20%",
-                      }}
-                    >
-                      <IconComponent className="w-8 h-8 text-white" />
-                    </div>
-                    <div>
-                      <div className="text-3xl font-bold text-gray-900">
-                        {feature.stats[0].number}
-                      </div>
-                      <div className="text-sm text-gray-600">
-                        {feature.stats[0].label}
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              </div>
-            </motion.div>
-          </div>
+            <p
+              className="
+          text-lg sm:text-xl md:text-2xl
+          !text-gray-600 leading-relaxed
+        "
+            >
+              {feature.subtitle}
+            </p>
+
+            <p
+              className="
+          text-base sm:text-lg
+          !text-gray-700 leading-relaxed
+        "
+            >
+              {feature.description}
+            </p>
+          </motion.div>
+
+          {/* Right Image — hidden below lg */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="hidden lg:block"
+          >
+            <img
+              src={feature.heroImage}
+              alt={feature.title}
+              className="w-full h-[360px] xl:h-[400px] object-cover shadow-2xl"
+              style={{
+                borderRadius: "40% 60% 70% 30% / 40% 70% 30% 60%",
+              }}
+            />
+          </motion.div>
         </div>
       </section>
 
       {/* Benefits Section */}
-      <section className="relative z-10 py-40 overflow-hidden bg-slate-900">
-        <div className="max-w-7xl mx-auto px-8 relative">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="mb-24"
-          >
-            <div className="flex items-center gap-3 mb-6">
-              <div className="h-px w-12 bg-blue-500" />
-              <span className="text-blue-400 text-sm font-medium tracking-widest uppercase">
-                Key Benefits
-              </span>
-            </div>
-            <h2 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight tracking-tight">
-              Why You&apos;ll Love
-              <br />
-              This Feature
-            </h2>
-            <p className="text-xl text-slate-400 max-w-2xl leading-relaxed">
-              Experience the advantages that set this apart
-            </p>
-          </motion.div>
+      <section className="relative z-10 py-40 bg-[#121212]">
+        <div className="max-w-7xl mx-auto px-8">
+          <h2 className="text-5xl md:text-7xl font-bold !text-white mb-20 leading-tight">
+            Why You’ll Love
+            <br />
+            This Feature
+          </h2>
 
-          <div className="space-y-2">
+          <div className="space-y-6">
             {feature.benefits.map((benefit, index) => (
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{
-                  duration: 0.6,
-                  delay: index * 0.1,
-                }}
-                className="group relative"
+                className="
+            relative bg-[#1a1a1a]/80 backdrop-blur-sm
+            border border-[#f15A24]/30
+            p-8 overflow-hidden
+          "
               >
-                <div className="relative bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 hover:border-blue-500/50 transition-all duration-300 overflow-hidden">
-                  <div className="flex items-center gap-6 p-6 md:p-8">
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 font-mono text-sm">
-                      {String(index + 1).padStart(2, "0")}
-                    </div>
+                {/* subtle orange accent */}
+                <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-[#f15A24] to-[#d04f23]" />
 
-                    <p className="text-lg md:text-xl text-slate-200 leading-relaxed flex-1">
-                      {benefit}
-                    </p>
-
-                    <div className="hidden md:block flex-shrink-0 w-2 h-2 rounded-full bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  </div>
-
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-blue-500/5 to-blue-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
-                </div>
-              </motion.div>
+                <p className="text-xl !text-gray-200 leading-relaxed pl-4">
+                  {benefit}
+                </p>
+              </div>
             ))}
           </div>
         </div>
-
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_110%)] opacity-20" />
       </section>
 
-      {/* How It Works - Accordion */}
+      {/* How It Works */}
       <section className="relative z-10 py-32">
         <div className="max-w-7xl mx-auto px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-20"
-          >
-            <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-8">
-              How It Works
-            </h2>
-            <p className="text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-              A seamless experience designed for your success.
-            </p>
-          </motion.div>
-
+          <h2 className="text-5xl md:text-6xl font-bold !text-gray-900 mb-12 text-center">
+            How It Works
+          </h2>
           <FeatureAccordion items={feature.howItWorksSteps} />
         </div>
       </section>
 
-      {/* Feature Details Points */}
+      {/* Feature Details */}
       <section className="relative z-10 py-32">
         <div className="max-w-7xl mx-auto px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-20"
-          >
-            <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-8">
-              Key Features
-            </h2>
-            <p className="text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-              Discover the powerful capabilities that set this feature apart.
-            </p>
-          </motion.div>
-
+          <h2 className="text-5xl md:text-6xl font-bold !text-gray-900 mb-12 text-center">
+            Key Features
+          </h2>
           <FeatureDetailsPoints points={feature.detailPoints} />
         </div>
       </section>
 
-      {/* More Info Section */}
+      {/* More Info */}
       <MoreInfoSection
         title={feature.moreInfo.title}
         subtitle={feature.moreInfo.subtitle}
         paragraphs={feature.moreInfo.paragraphs}
       />
-
-      {/* CTA Section */}
     </div>
   );
 }

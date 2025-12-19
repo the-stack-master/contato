@@ -17,6 +17,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { BlogPageHeader, BlogPost } from "@/types/blogTypes";
 import { splitSentence } from "@/utils/stringFunctions";
+import { cn } from "@/utils/classNames";
 
 const POSTS_PER_PAGE = 6;
 
@@ -79,7 +80,7 @@ export default function BlogClient({ blogHeaderData }: BlogClientProps) {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-10 bg-white">
+      <section className="relative overflow-hidden pb-5 pt-20 bg-white">
         <div className="container mx-auto px-4 text-center max-w-5xl">
           <h1 className="text-5xl md:text-5xl font-bold text-gray-900 mb-6">
             {splitSentence(blogHeaderData?.heading, 2)?.firstPart}{" "}
@@ -101,39 +102,42 @@ export default function BlogClient({ blogHeaderData }: BlogClientProps) {
       </section>
 
       {/* Search + Posts Section */}
-      <section className="py-10">
-        <div className="container mx-auto px-4 max-w-6xl">
-          {/* Search Icon / Bar */}
-          <div className="flex justify-end mb-10">
-            {!searchOpen ? (
-              <button
-                onClick={() => setSearchOpen(true)}
-                className="p-3 rounded-full bg-gradient-to-r from-[#f15A24] to-[#ff7f50] text-white shadow-md hover:scale-105 transition"
-                aria-label="Open Search"
-              >
-                <Search className="h-6 w-6" />
-              </button>
-            ) : (
-              <div className="relative w-full max-w-lg transition-all duration-300">
-                <Input
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search posts..."
-                  className="pl-12 h-14 text-lg border-2 border-[#f15A24]/10 bg-white/90 rounded-2xl shadow-lg"
-                  autoFocus
-                />
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#f15A24]" />
+      <section className="px-6 pb-10 pt-5">
+        <div className="max-w-6xl mx-auto">
+          {/* Search Header */}
+          <div className="flex justify-center mb-12">
+            <div className="relative w-full max-w-xl">
+              <Input
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search posts..."
+                className="
+            pl-12 h-14 text-base"
+                autoFocus
+              />
+
+              {/* Search Icon */}
+              <Search
+                className={cn(
+                  "absolute left-4 top-1/2 -translate-y-1/2 transition-colors",
+                  searchQuery ? "text-[#f15A24]" : "text-gray-400"
+                )}
+              />
+
+              {/* Clear Button */}
+              {searchQuery && (
                 <button
-                  onClick={() => {
-                    setSearchQuery("");
-                    setSearchOpen(false);
-                  }}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#f15A24]"
+                  onClick={() => setSearchQuery("")}
+                  className="
+              absolute right-4 top-1/2 -translate-y-1/2
+              text-gray-400 hover:text-[#f15A24]
+              transition-colors
+            "
                 >
                   <X className="h-5 w-5" />
                 </button>
-              </div>
-            )}
+              )}
+            </div>
           </div>
 
           {/* Posts Grid */}
@@ -153,8 +157,8 @@ export default function BlogClient({ blogHeaderData }: BlogClientProps) {
                       })`,
                     }}
                   />
-                  <CardHeader className="pb-2 px-4 pt-3">
-                    <div className="flex items-center justify-between mb-2">
+                  <CardHeader className="pb-0 px-4 pt-3">
+                    <div className="flex items-center justify-between mb-5 mt-3">
                       <Badge className="border-[#f15A24]/30 text-[#f15A24] bg-[#f15A24]/5 text-xs px-2 py-0.5">
                         {post.category?.title || "General"}
                       </Badge>
@@ -167,17 +171,17 @@ export default function BlogClient({ blogHeaderData }: BlogClientProps) {
                       {post.title}
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="pt-1 px-4 pb-4">
-                    <CardDescription className="mb-3 line-clamp-2 text-gray-700 text-sm">
+                  <CardContent className="pt-0 px-4 pb-4">
+                    <CardDescription className="mb-3 line-clamp-2 text-gray-700 !text-sm">
                       {post?.excerpt}
                     </CardDescription>
-                    <div className="flex items-center gap-3 text-xs text-gray-500">
+                    <div className="flex items-center gap-3 text-xs text-gray-500 mt-4">
                       <div className="flex items-center gap-1">
                         <User className="h-3 w-3 text-[#f15A24]" />
                         {post.author || "Unknown"}
                       </div>
                       <div className="flex items-center gap-1">
-                        <Calendar className="h-3 w-3" />
+                        <Calendar className="h-3 w-3 text-[#f15A24]" />
                         {new Date(post.publishedDate).toDateString()}
                       </div>
                     </div>

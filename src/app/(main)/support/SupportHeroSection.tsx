@@ -28,7 +28,7 @@ export default function SupportHeroSection({
         />
       </div>
 
-      <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center -mt-8">
+      <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -36,7 +36,7 @@ export default function SupportHeroSection({
         >
           {/* Icon + Title */}
           <div className="flex flex-col md:flex-row items-center justify-center mb-4 md:mb-6 gap-3">
-            <div className="w-16 h-16 bg-gradient-to-r from-[#f15A24] to-orange-500 rounded-3xl flex items-center justify-center shadow-2xl">
+            <div className="w-12 h-12 bg-gradient-to-r from-[#f15A24] to-orange-500 rounded-3xl flex items-center justify-center shadow-2xl">
               <HelpCircle className="w-8 h-8 text-white" />
             </div>
             <h1 className="text-2xl md:text-4xl font-extrabold leading-snug">

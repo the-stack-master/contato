@@ -46,7 +46,7 @@ export default function SanityFileViewer({ docId }: FileViewerProps) {
     <div className="min-h-screen bg-white px-0 pt-12 pb-24 flex flex-col items-center">
       {/* Error Message */}
       {error && (
-        <p className="mb-8 p-3 text-red-700 bg-red-50 w-full max-w-3xl rounded text-center font-medium">
+        <p className="mb-8 p-3 !text-red-700 bg-red-50 w-full max-w-3xl rounded text-center font-medium">
           {error}
         </p>
       )}

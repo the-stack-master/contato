@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 "use client";
 
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export default function ContactForm() {
   const [loading, setLoading] = useState(false);
@@ -12,33 +13,28 @@ export default function ContactForm() {
 
   const validate = (data: Record<string, any>) => {
     const err: Record<string, string> = {};
-    if (!data.firstName || data.firstName.trim().length < 2) {
+
+    if (!data.firstName || data.firstName.trim().length < 2)
       err.firstName = "First name must be at least 2 characters";
-    }
-    if (!data.lastName || data.lastName.trim().length < 2) {
+
+    if (!data.lastName || data.lastName.trim().length < 2)
       err.lastName = "Last name must be at least 2 characters";
-    }
+
     if (
       !data.email ||
       !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(data.email.trim())
-    ) {
+    )
       err.email = "Invalid email address";
-    }
-    if (!data.phone || data.phone.trim().length < 2) {
-      err.phone = "Phone number required";
-    }
-    if (!data.phone || data.phone.trim().length < 2) {
-      err.phone = "Phone number required";
-    }
-    if (!data.business || data.business.trim().length < 2) {
-      err.business = "Business name required";
-    }
-    if (!data.comment || data.comment.trim().length < 2) {
-      err.comment = "Comment required";
-    }
-    if (data.phone && !/^\+?[\d\s()-]{7,}$/i.test(data.phone.trim())) {
+
+    if (!data.phone || !/^\+?[\d\s()-]{7,}$/i.test(data.phone.trim()))
       err.phone = "Invalid phone number";
-    }
+
+    if (!data.business || data.business.trim().length < 2)
+      err.business = "Business name required";
+
+    if (!data.comments || data.comments.trim().length < 2)
+      err.comment = "Comment required";
+
     return err;
   };
 
@@ -46,12 +42,12 @@ export default function ContactForm() {
     e.preventDefault();
     setStatus(null);
 
-    const formElement = e.currentTarget; // Save ref before async
-    const formData = new FormData(formElement);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
-    const validationErrors = validate(data);
 
-    if (Object.keys(validationErrors).length > 0) {
+    const validationErrors = validate(data);
+    if (Object.keys(validationErrors).length) {
       setErrors(validationErrors);
       return;
     }
@@ -68,19 +64,17 @@ export default function ContactForm() {
 
       if (res.ok) {
         setStatus("success");
-        formElement.reset(); // safe reset here
+        form.reset();
       } else {
         setStatus("error");
       }
-    } catch (err) {
-      console.error(err);
+    } catch {
       setStatus("error");
     } finally {
       setLoading(false);
     }
   };
 
-  // Hide toast after 3 seconds
   useEffect(() => {
     if (status) {
       const timer = setTimeout(() => setStatus(null), 3000);
@@ -88,15 +82,22 @@ export default function ContactForm() {
     }
   }, [status]);
 
+  const clearError = (name: string) =>
+    setErrors((prev) => {
+      const copy = { ...prev };
+      delete copy[name];
+      return copy;
+    });
+
   return (
     <section className="py-20 bg-gray-50">
-      <div className="container mx-auto px-6 max-w-4xl">
+      <div className="max-w-4xl mx-auto px-6">
         {/* Heading */}
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold bg-gradient-to-r from-[#f15A24] via-orange-500 to-red-500 bg-clip-text text-transparent">
+          <h1 className="text-5xl md:text-6xl font-bold !text-[#f15A24] mb-3 leading-tight">
             Get In Touch
-          </h2>
-          <p className="text-gray-600 mt-2 text-lg">
+          </h1>
+          <p className="text-lg !text-gray-600">
             Feel free to reach out and stay connected with us.
           </p>
         </div>
@@ -107,141 +108,175 @@ export default function ContactForm() {
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="bg-white p-10 rounded-3xl border border-gray-200 grid grid-cols-1 md:grid-cols-2 gap-8 relative"
+          className="
+            bg-white
+            p-10
+            border border-gray-200
+            grid grid-cols-1 md:grid-cols-2 gap-8
+            relative
+            rounded-none
+          "
         >
           {/* First Name */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-3">
+            <label className="block text-sm font-semibold !text-gray-700 mb-2">
               First Name
             </label>
-            <input
+            <Input
               name="firstName"
-              type="text"
+              onChange={() => clearError("firstName")}
               placeholder="Enter first name"
-              className={`w-full px-5 py-3 border rounded-2xl bg-gray-50 focus:ring-4 focus:ring-[#f15A24]/30 focus:border-[#f15A24] outline-none transition ${
-                errors.firstName ? "border-red-500" : "border-gray-300"
+              className={`h-12 rounded-xl !text-sm ${
+                errors.firstName ? "border-red-500" : ""
               }`}
             />
             {errors.firstName && (
-              <p className="mt-1 text-red-500 text-xs">{errors.firstName}</p>
+              <p className="mt-1 !text-[11px] !text-red-400 leading-snug">
+                {errors.firstName}
+              </p>
             )}
           </div>
 
           {/* Last Name */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-3">
+            <label className="block text-sm font-semibold !text-gray-700 mb-2">
               Last Name
             </label>
-            <input
+            <Input
               name="lastName"
-              type="text"
+              onChange={() => clearError("lastName")}
               placeholder="Enter last name"
-              className={`w-full px-5 py-3 border rounded-2xl bg-gray-50 focus:ring-4 focus:ring-[#f15A24]/30 focus:border-[#f15A24] outline-none transition ${
-                errors.lastName ? "border-red-500" : "border-gray-300"
+              className={`h-12 rounded-xl !text-sm ${
+                errors.lastName ? "border-red-500" : ""
               }`}
             />
             {errors.lastName && (
-              <p className="mt-1 text-red-500 text-xs">{errors.lastName}</p>
+              <p className="mt-1 !text-[11px] !text-red-400 leading-snug">
+                {errors.lastName}
+              </p>
             )}
           </div>
 
           {/* Email */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-3">
+            <label className="block text-sm font-semibold !text-gray-700 mb-2">
               E-Mail
             </label>
-            <input
+            <Input
               name="email"
               type="email"
+              onChange={() => clearError("email")}
               placeholder="Enter email"
-              className={`w-full px-5 py-3 border rounded-2xl bg-gray-50 focus:ring-4 focus:ring-[#f15A24]/30 focus:border-[#f15A24] outline-none transition ${
-                errors.email ? "border-red-500" : "border-gray-300"
+              className={`h-12 rounded-xl !text-sm ${
+                errors.email ? "border-red-500" : ""
               }`}
             />
             {errors.email && (
-              <p className="mt-1 text-red-500 text-xs">{errors.email}</p>
+              <p className="mt-1 !text-[11px] !text-red-400 leading-snug">
+                {errors.email}
+              </p>
             )}
           </div>
 
           {/* Phone */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-3">
+            <label className="block text-sm font-semibold !text-gray-700 mb-2">
               Phone Number
             </label>
-            <input
+            <Input
               name="phone"
-              type="tel"
+              onChange={() => clearError("phone")}
               placeholder="Enter phone number"
-              className={`w-full px-5 py-3 border rounded-2xl bg-gray-50 focus:ring-4 focus:ring-[#f15A24]/30 focus:border-[#f15A24] outline-none transition ${
-                errors.phone ? "border-red-500" : "border-gray-300"
+              className={`h-12 rounded-xl !text-sm ${
+                errors.phone ? "border-red-500" : ""
               }`}
             />
             {errors.phone && (
-              <p className="mt-1 text-red-500 text-xs">{errors.phone}</p>
+              <p className="mt-1 !text-[11px] !text-red-400 leading-snug">
+                {errors.phone}
+              </p>
             )}
           </div>
 
-          {/* Business Name */}
+          {/* Business */}
           <div className="md:col-span-2">
-            <label className="block text-sm font-semibold text-gray-700 mb-3">
+            <label className="block text-sm font-semibold !text-gray-700 mb-2">
               Business Name
             </label>
-            <input
+            <Input
               name="business"
-              type="text"
+              onChange={() => clearError("business")}
               placeholder="Enter business name"
-              className="w-full px-5 py-3 border border-gray-300 rounded-2xl bg-gray-50 focus:ring-4 focus:ring-[#f15A24]/30 focus:border-[#f15A24] outline-none transition"
+              className={`h-12 rounded-xl !text-sm ${
+                errors.business ? "border-red-500" : ""
+              }`}
             />
             {errors.business && (
-              <p className="mt-1 text-red-500 text-xs">{errors.business}</p>
+              <p className="mt-1 !text-[11px] !text-red-400 leading-snug">
+                {errors.business}
+              </p>
             )}
           </div>
 
           {/* Comments */}
           <div className="md:col-span-2">
-            <label className="block text-sm font-semibold text-gray-700 mb-3">
+            <label className="block text-sm font-semibold !text-gray-700 mb-2">
               Comments
             </label>
             <textarea
               name="comments"
               rows={4}
+              onChange={() => clearError("comment")}
               placeholder="Write your message..."
-              className="w-full px-5 py-3 border border-gray-300 rounded-2xl bg-gray-50 focus:ring-4 focus:ring-[#f15A24]/30 focus:border-[#f15A24] outline-none transition resize-none"
+              className={`
+                flex w-full
+                px-4 py-3
+                min-h-[120px]
+                rounded-lg
+                border ${errors.comment ? "border-red-500" : "border-gray-300"}
+                bg-white
+                !text-sm text-gray-900
+                placeholder:text-gray-400
+                resize-none
+                focus:ring-2 focus:ring-[#f15A24]
+                focus:border-transparent
+                focus:outline-none
+                disabled:cursor-not-allowed disabled:opacity-50
+              `}
             />
             {errors.comment && (
-              <p className="mt-1 text-red-500 text-xs">{errors.comment}</p>
+              <p className="mt-1 !text-[11px] !text-red-400 leading-snug">
+                {errors.comment}
+              </p>
             )}
           </div>
 
-          {/* Submit Button */}
+          {/* Submit */}
           <div className="md:col-span-2 flex justify-end">
-            <button
+            <Button
+              variant={"primary"}
               type="submit"
+              size="lg"
               disabled={loading}
-              className={`px-10 py-4 bg-gradient-to-r from-[#f15A24] via-orange-500 to-red-500 text-white font-bold rounded-2xl transition transform ${
-                loading
-                  ? "opacity-70 cursor-not-allowed"
-                  : "hover:scale-105 hover:brightness-110"
-              }`}
             >
               {loading ? "Sending..." : "Submit"}
-            </button>
+            </Button>
           </div>
 
-          {/* Toast Messages */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: status ? 1 : 0, y: status ? 0 : 20 }}
-            transition={{ duration: 0.3 }}
-            className={`absolute bottom-6 left-1/2 -translate-x-1/2 px-8 py-4 rounded-full font-semibold text-white shadow-lg ${
-              status === "success" ? "bg-green-600" : "bg-red-600"
-            }`}
-          >
-            {status === "success" &&
-              "✅ Your message has been sent successfully!"}
-            {status === "error" &&
-              "❌ Something went wrong. Please try again later."}
-          </motion.div>
+          {/* Toast */}
+          {status && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`absolute bottom-6 left-1/2 -translate-x-1/2 px-8 py-4 rounded-full font-semibold text-white shadow-lg ${
+                status === "success" ? "bg-green-600" : "bg-red-600"
+              }`}
+            >
+              {status === "success"
+                ? "✅ Your message has been sent successfully!"
+                : "❌ Something went wrong. Please try again."}
+            </motion.div>
+          )}
         </motion.form>
       </div>
     </section>

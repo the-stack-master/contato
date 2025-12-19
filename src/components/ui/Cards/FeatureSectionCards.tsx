@@ -112,7 +112,7 @@ const ExpandingCardsSection: React.FC = () => {
   // ✅ Balanced card positions for 1920×1080 & 1366×768
   const positions = [
     { x: [-160, -540], y: [-80, -100] },
-    { x: [180, 520], y: [-90, -130] },
+    { x: [180, 520], y: [-90, -150] },
     { x: [-180, -380], y: [100, 300] },
     { x: [180, 520], y: [200, 250] },
     { x: [0, 135], y: [180, 70] },
@@ -128,7 +128,7 @@ const ExpandingCardsSection: React.FC = () => {
         : width >= 1400
           ? 0.86
           : width >= 1200
-            ? 0.82
+            ? 0.8
             : width >= 1000
               ? 0.78
               : 0.74;
@@ -182,7 +182,7 @@ const ExpandingCardsSection: React.FC = () => {
 
       {/* 🪄 Animated Cards Layout */}
       <motion.div
-        className="relative hidden md:flex w-full max-w-[1400px] h-[84vh] items-center justify-center transition-all duration-700 ease-in-out px-6"
+        className="relative hidden min-[1200px]:flex w-full max-w-[1400px] h-[84vh] items-center justify-center px-6"
         style={{ scale: layoutScale, transformOrigin: "center top" }}
       >
         {/* CARD 1 — AI Contact Insights */}
@@ -234,7 +234,7 @@ const ExpandingCardsSection: React.FC = () => {
 
         {/* CARD 2 — Instant QR Sharing */}
         <motion.div
-          className="absolute w-[350px] md:w-[360px] lg:w-[370px] h-auto min-h-[320px]"
+          className="absolute w-[350px] md:w-[360px] lg:w-[370px] h-[420px] md:h-[330px] lg:h-[340px]"
           style={{
             x: useTransform(scrollYProgress, [0.15, 0.5], positions[1].x),
             y: useTransform(scrollYProgress, [0.15, 0.5], positions[1].y),
@@ -292,7 +292,7 @@ const ExpandingCardsSection: React.FC = () => {
         >
           <motion.div
             whileHover={{ scale: 1.05, y: -10 }}
-            className={`h-full bg-gradient-to-br ${cardContent[2].gradient} rounded-3xl shadow-2xl overflow-hidden border border-[#333] text-white`}
+            className={`h-full bg-gradient-to-br ${cardContent[2].gradient} rounded-3xl shadow-2xl overflow-hidden border border-[#333] !text-white`}
           >
             <div className="p-6 h-full flex flex-col">
               <div className="flex items-center justify-between mb-4">
@@ -303,16 +303,16 @@ const ExpandingCardsSection: React.FC = () => {
                     })}
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold">
+                    <h3 className="text-xl font-bold !text-white">
                       {cardContent[2].title}
                     </h3>
-                    <p className="text-gray-400 text-sm">
+                    <p className="!text-gray-400 text-sm">
                       {cardContent[2].subtitle}
                     </p>
                   </div>
                 </div>
                 <div
-                  className={`${cardContent[2].badgeColor} text-white text-xs font-bold px-3 py-1.5 rounded-full`}
+                  className={`${cardContent[2].badgeColor} !text-white text-xs font-bold px-3 py-1.5 rounded-full`}
                 >
                   {cardContent[2].badge}
                 </div>
@@ -324,10 +324,12 @@ const ExpandingCardsSection: React.FC = () => {
                     key={i}
                     className="bg-[#2a2a2a] rounded-xl p-3 border border-[#444]"
                   >
-                    <p className="text-2xl font-bold text-[#ffb47b] mb-1">
+                    <p className="text-2xl font-bold !text-[#ffb47b] mb-1">
                       {metric.value}
                     </p>
-                    <p className="text-xs text-gray-400 mb-2">{metric.label}</p>
+                    <p className="text-xs !text-gray-400 mb-2">
+                      {metric.label}
+                    </p>
                     <div className="text-green-400 text-xs font-semibold">
                       {metric.change}
                     </div>
@@ -335,7 +337,7 @@ const ExpandingCardsSection: React.FC = () => {
                 ))}
               </div>
 
-              <p className="text-gray-300 text-sm leading-relaxed">
+              <p className="!text-gray-300 text-sm leading-relaxed">
                 {cardContent[2].description}
               </p>
             </div>
@@ -344,7 +346,7 @@ const ExpandingCardsSection: React.FC = () => {
 
         {/* CARD 4 — Multi-Card Profiles */}
         <motion.div
-          className="absolute w-[350px] md:w-[360px] lg:w-[370px] h-auto min-h-[340px]"
+          className="absolute w-[350px] md:w-[360px] lg:w-[370px] h-[420px] md:h-[430px] lg:h-[440px]"
           style={{
             x: useTransform(scrollYProgress, [0.15, 0.5], positions[3].x),
             y: useTransform(scrollYProgress, [0.15, 0.5], positions[3].y),
@@ -528,7 +530,7 @@ const ExpandingCardsSection: React.FC = () => {
       </motion.div>
 
       {/* 📱 Mobile Layout */}
-      <div className="hidden max-[899px]:flex flex-col gap-6 px-4 mt-8 w-full max-w-md mx-auto">
+      <div className="flex min-[1200px]:hidden flex-col gap-6 px-4 mt-8 w-full max-w-md mx-auto">
         {cardContent.map((card) => (
           <div
             key={card.id}

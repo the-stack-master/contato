@@ -15,7 +15,5 @@ export default async function LoginPageServer() {
   const loginContent: LoginPage | null = await getLoginPage();
   const logoData: LogoDocument | null = await getLogo();
 
-  console.log("ddd login", loginContent);
-
   return <LoginForm loginContent={loginContent} logoData={logoData} />;
 }
