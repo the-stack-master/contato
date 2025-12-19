@@ -164,7 +164,7 @@ export function LoginForm({ loginContent, logoData }: LoginFormProps) {
                   </span>{" "}
                   <button
                     onClick={handleBackToEmail}
-                    className="text-xs text-gray-500 hover:text-[#f15A24] underline transition-colors ml-1"
+                    className="!text-xs text-gray-500 hover:text-[#f15A24] underline transition-colors ml-1 cursor-pointer"
                   >
                     (change)
                   </button>
@@ -321,12 +321,12 @@ export function LoginForm({ loginContent, logoData }: LoginFormProps) {
         {/* Right Section - Graphics + Content */}
         <div className="hidden lg:flex flex-1 bg-[#FFEDE6] items-center justify-center p-12 relative overflow-hidden">
           <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute top-20 right-20 w-64 h-64 bg-[#f15A24]/10 rounded-full blur-xl animate-pulse"></div>
-            <div className="absolute bottom-20 left-20 w-48 h-48 bg-[#f15A24]/15 rounded-full blur-xl animate-pulse delay-1000"></div>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-[#f15A24]/20 rounded-full blur-xl animate-pulse delay-500"></div>
-            <div className="absolute top-32 left-32 w-16 h-16 bg-[#f15A24]/30 rounded-2xl rotate-12 animate-bounce delay-300"></div>
-            <div className="absolute bottom-32 right-32 w-20 h-20 bg-[#d04f23]/25 rounded-full animate-bounce delay-700"></div>
-            <div className="absolute top-1/2 right-20 w-12 h-12 bg-[#ffad87]/20 rounded-lg rotate-45 animate-bounce delay-1000"></div>
+            <div className="absolute top-20 right-20 w-64 h-64 bg-[#f15A24]/10 rounded-full blur-xl "></div>
+            <div className="absolute bottom-20 left-20 w-48 h-48 bg-[#f15A24]/15 rounded-full blur-xl "></div>
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-[#f15A24]/20 rounded-full blur-xl "></div>
+            <div className="absolute top-32 left-32 w-16 h-16 bg-[#f15A24]/30 rounded-2xl rotate-12 "></div>
+            <div className="absolute bottom-32 right-32 w-20 h-20 bg-[#d04f23]/25 rounded-full "></div>
+            <div className="absolute top-1/2 right-20 w-12 h-12 bg-[#ffad87]/20 rounded-lg rotate-45 "></div>
           </div>
 
           <div className="relative z-10 max-w-lg text-center space-y-8">
