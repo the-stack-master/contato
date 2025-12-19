@@ -49,6 +49,7 @@ export default function PricingSectionClient({ pricingData }: Props) {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto px-4 items-stretch">
         {pricingData.plans.map((plan, index) => (
           <motion.div
+            key={plan.planType}
             className={plan.isPopular ? "md:scale-[1.05]" : ""}
             transition={{ type: "spring", stiffness: 200, damping: 20 }}
           >
