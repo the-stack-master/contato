@@ -75,7 +75,7 @@ export default function PricingSectionClient({ pricingData }: Props) {
 
                 <h3
                   className={`text-2xl font-bold mb-2 ${
-                    plan.isPopular ? "text-[#f15A24]" : "text-white"
+                    plan.isPopular ? "!text-[#f15A24]" : "!text-white"
                   }`}
                 >
                   {plan.planName}

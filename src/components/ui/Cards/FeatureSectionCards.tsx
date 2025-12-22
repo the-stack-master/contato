@@ -46,7 +46,7 @@ const cardContent = [
       { label: "Clicks", value: "3.2k", change: "+18%" },
       { label: "Saves", value: "892", change: "+35%" },
     ],
-    gradient: "from-[#1a1a1a] to-[#2e2e2e]",
+    gradient: "from-[#2a2a2a] to-[#3a3a3a]",
   },
   {
     id: 4,
@@ -534,12 +534,14 @@ const ExpandingCardsSection: React.FC = () => {
         {cardContent.map((card) => (
           <div
             key={card.id}
-            className={`bg-gradient-to-br ${card.gradient} rounded-3xl shadow-lg overflow-hidden text-black border border-[#f15a24]/10`}
+            className={`bg-gradient-to-br ${
+              card.id === 3 ? "from-[#fff7f2] to-[#fff0e7]" : card.gradient
+            } rounded-3xl shadow-lg overflow-hidden text-black border border-[#f15a24]/10`}
           >
             <div className="p-5">
               <div className="flex items-center justify-between mb-3">
                 <div
-                  className={`${card.badgeColor} text-white text-xs font-bold px-3 py-1.5 rounded-full`}
+                  className={`${card.badgeColor} !text-white text-xs font-bold px-3 py-1.5 rounded-full`}
                 >
                   {card.badge}
                 </div>
@@ -549,10 +551,8 @@ const ExpandingCardsSection: React.FC = () => {
                   })}
                 </div>
               </div>
-              <h3 className="text-xl font-bold mb-1 text-[#1a1a1a]">
-                {card.title}
-              </h3>
-              <p className="text-[#4b4b4b] text-sm mb-3">{card.subtitle}</p>
+              <h3 className="!text-[#1a1a1a]">{card.title}</h3>
+              <p className="!text-[#4b4b4b] !text-sm mb-3">{card.subtitle}</p>
               {(card.screenshot || card.image) && (
                 <div className="rounded-2xl overflow-hidden mb-3 border border-[#f15a24]/10">
                   <img
@@ -562,7 +562,7 @@ const ExpandingCardsSection: React.FC = () => {
                   />
                 </div>
               )}
-              <p className="text-[#4b4b4b] text-sm mb-3 leading-relaxed">
+              <p className="!text-[#4b4b4b] text-sm mb-3 leading-relaxed">
                 {card.description}
               </p>
             </div>
