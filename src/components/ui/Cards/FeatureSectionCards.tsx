@@ -154,21 +154,33 @@ const ExpandingCardsSection: React.FC = () => {
       {/* 🎨 Very subtle radial vignette for soft contrast */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.25)_0%,rgba(255,195,150,0.15)_45%,rgba(255,170,100,0.08)_80%,rgba(255,160,80,0.05)_100%)] pointer-events-none"></div>
 
-      
+
 
       {/* 🧭 Section Heading */}
-      <motion.div
-        className="text-center z-10 mb-4 px-6"
-        style={{ opacity: isMobile ? 1 : headingOpacity, y: isMobile ? 0 : headingY }}
-      >
-        <h2 className="text-4xl md:text-5xl font-bold text-[#1a1a1a] mb-3 leading-tight">
-          Discover Our Smart Digital Tools
-        </h2>
-        <p className="text-[#4b4b4b] text-lg max-w-2xl mx-auto">
-          Explore intelligent features designed to simplify your workflow and
-          elevate your connections — all in one seamless experience.
-        </p>
-      </motion.div>
+      {isMobile ? (
+        <div className="text-center z-10 mb-4 px-6">
+          <h2 className="text-4xl md:text-5xl font-bold text-[#1a1a1a] mb-3 leading-tight">
+            Discover Our Smart Digital Tools
+          </h2>
+          <p className="text-[#4b4b4b] text-lg max-w-2xl mx-auto">
+            Explore intelligent features designed to simplify your workflow and
+            elevate your connections — all in one seamless experience.
+          </p>
+        </div>
+      ) : (
+        <motion.div
+          className="text-center z-10 mb-4 px-6"
+          style={{ opacity: headingOpacity, y: headingY }}
+        >
+          <h2 className="text-4xl md:text-5xl font-bold text-[#1a1a1a] mb-3 leading-tight">
+            Discover Our Smart Digital Tools
+          </h2>
+          <p className="text-[#4b4b4b] text-lg max-w-2xl mx-auto">
+            Explore intelligent features designed to simplify your workflow and
+            elevate your connections — all in one seamless experience.
+          </p>
+        </motion.div>
+      )}
 
       {/* 🪄 Animated Cards Layout */}
       <motion.div
@@ -524,9 +536,8 @@ const ExpandingCardsSection: React.FC = () => {
         {cardContent.map((card) => (
           <div
             key={card.id}
-            className={`bg-gradient-to-br ${
-              card.id === 3 ? "from-[#fff7f2] to-[#fff0e7]" : card.gradient
-            } rounded-3xl shadow-lg overflow-hidden text-black border border-[#f15a24]/10`}
+            className={`bg-gradient-to-br ${card.id === 3 ? "from-[#fff7f2] to-[#fff0e7]" : card.gradient
+              } rounded-3xl shadow-lg overflow-hidden text-black border border-[#f15a24]/10`}
           >
             <div className="p-5">
               <div className="flex items-center justify-between mb-3">
