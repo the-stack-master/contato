@@ -44,7 +44,7 @@ export default function FooterSocialLinks({
             href={s.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-gray-600 hover:text-[#f15A24] transition-colors text-xl"
+            className="text-gray-600 hover:text-[#f15A24] transition-colors !text-3xl sm:!text-2xl"
             aria-label={s.platformName || s.platform}
           >
             {platformIcons[s.platform] || platformIcons.other}

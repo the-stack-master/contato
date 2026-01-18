@@ -38,20 +38,18 @@ export default function BlogClient({ blogHeaderData }: BlogClientProps) {
     setLoading(true);
     const start = (pageNumber - 1) * POSTS_PER_PAGE;
 
-    const query = `*[_type == "article" ${
-      searchQuery
-        ? `&& (title match "${searchQuery}*" || description match "${searchQuery}*")`
-        : ""
-    }] | order(publishedAt desc) [${start}...${start + POSTS_PER_PAGE}]{
+    const query = `*[_type == "article" ${searchQuery
+      ? `&& (title match "${searchQuery}*" || description match "${searchQuery}*")`
+      : ""
+      }] | order(publishedAt desc) [${start}...${start + POSTS_PER_PAGE}]{
       _id, title, slug, author, publishedDate,
       excerpt, mainImage{ asset->, alt }, category, readingTime
     }`;
 
-    const countQuery = `count(*[_type == "article" ${
-      searchQuery
-        ? `&& (title match "${searchQuery}*" || description match "${searchQuery}*")`
-        : ""
-    }])`;
+    const countQuery = `count(*[_type == "article" ${searchQuery
+      ? `&& (title match "${searchQuery}*" || description match "${searchQuery}*")`
+      : ""
+      }])`;
 
     const [newPosts, totalCount]: [BlogPost[], number] = await Promise.all([
       client.fetch(query),
@@ -80,7 +78,7 @@ export default function BlogClient({ blogHeaderData }: BlogClientProps) {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative overflow-hidden pb-5 pt-20 bg-white">
+      <section className="relative overflow-hidden py-16 bg-gradient-to-b from-orange-50/60 to-white">
         <div className="container mx-auto px-4 text-center max-w-5xl">
           <h1 className="text-5xl md:text-5xl font-bold text-gray-900 mb-6">
             {splitSentence(blogHeaderData?.heading, 2)?.firstPart}{" "}
@@ -102,10 +100,10 @@ export default function BlogClient({ blogHeaderData }: BlogClientProps) {
       </section>
 
       {/* Search + Posts Section */}
-      <section className="px-6 pb-10 pt-5">
+      <section className="px-6">
         <div className="max-w-6xl mx-auto">
           {/* Search Header */}
-          <div className="flex justify-center mb-12">
+          <div className="flex justify-center">
             <div className="relative w-full max-w-xl">
               <Input
                 value={searchQuery}
@@ -113,7 +111,7 @@ export default function BlogClient({ blogHeaderData }: BlogClientProps) {
                 placeholder="Search posts..."
                 className="
             pl-12 h-14 text-base"
-                autoFocus
+
               />
 
               {/* Search Icon */}
@@ -141,7 +139,7 @@ export default function BlogClient({ blogHeaderData }: BlogClientProps) {
           </div>
 
           {/* Posts Grid */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-16 py-16">
             {posts.map((post) => (
               <Link
                 key={post._id}
@@ -152,9 +150,8 @@ export default function BlogClient({ blogHeaderData }: BlogClientProps) {
                   <div
                     className="h-44 relative bg-cover bg-center rounded-t-2xl"
                     style={{
-                      backgroundImage: `url(${
-                        post.mainImage?.asset?.url || "/api/placeholder/400/300"
-                      })`,
+                      backgroundImage: `url(${post.mainImage?.asset?.url || "/api/placeholder/400/300"
+                        })`,
                     }}
                   />
                   <CardHeader className="pb-0 px-4 pt-3">

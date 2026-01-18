@@ -29,9 +29,9 @@ export default function PricingSectionClient({ pricingData }: Props) {
   };
 
   return (
-    <section id="pricing" className="py-20 bg-black text-white">
+    <section id="pricing" className="py-16 bg-black text-white">
       {/* HEADER */}
-      <div className="container mx-auto px-4 text-center max-w-4xl mb-16">
+      <div className="container mx-auto px-4 text-center max-w-4xl mb-8">
         <motion.h2
           className="text-3xl md:text-4xl font-bold mb-4 !text-white"
           initial={{ opacity: 0, y: -20 }}
@@ -46,7 +46,7 @@ export default function PricingSectionClient({ pricingData }: Props) {
       </div>
 
       {/* PLANS */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto px-4 items-stretch">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-1 md:!gap-8 max-w-6xl mx-auto px-6 items-stretch">
         {pricingData.plans.map((plan, index) => (
           <motion.div
             key={plan.planType}
@@ -54,11 +54,10 @@ export default function PricingSectionClient({ pricingData }: Props) {
             transition={{ type: "spring", stiffness: 200, damping: 20 }}
           >
             <Card
-              className={`relative h-full overflow-hidden rounded-3xl border transition-all duration-300 ${
-                plan.isPopular
-                  ? "bg-[#1a1a1a] border-[#f15A24] shadow-xl"
-                  : "bg-[#111111] border-gray-700"
-              }`}
+              className={`relative h-11/12 overflow-hidden rounded-3xl border transition-all duration-300 ${plan.isPopular
+                ? "bg-[#1a1a1a] border-[#f15A24] shadow-xl"
+                : "bg-[#111111] border-gray-700"
+                }`}
             >
               {/* MOST POPULAR BADGE */}
               {plan.isPopular && (
@@ -67,66 +66,65 @@ export default function PricingSectionClient({ pricingData }: Props) {
                 </div>
               )}
 
-              {/* HEADER */}
-              <CardHeader
-                className={`text-center ${plan.isPopular ? "pt-16" : "pt-12"}`}
-              >
-                <div className="flex justify-center mb-4">{getIcon(plan)}</div>
-
-                <h3
-                  className={`text-2xl font-bold mb-2 ${
-                    plan.isPopular ? "!text-[#f15A24]" : "!text-white"
-                  }`}
+              <div className={`h-full flex flex-col items-center justify-center ${plan?.isPopular ? "pt-16" : "pt-12"} pb-8`}>
+                {/* HEADER */}
+                <CardHeader
+                  className={`text-center`}
                 >
-                  {plan.planName}
-                </h3>
+                  <div className="flex justify-center mb-8">{getIcon(plan)}</div>
 
-                <div className="mb-4">
-                  <span
-                    className={`text-4xl font-bold ${
-                      plan.isPopular ? "text-[#f15A24]" : "text-white"
-                    }`}
+                  <h3
+                    className={`text-2xl font-bold mb-1 ${plan.isPopular ? "!text-[#f15A24]" : "!text-white"
+                      }`}
                   >
-                    {plan.price}
-                  </span>
-                  {plan.priceUnit && (
-                    <span className="text-gray-400 ml-2">{plan.priceUnit}</span>
-                  )}
-                </div>
+                    {plan.planName}
+                  </h3>
 
-                <p className="text-gray-400 text-sm">{plan.description}</p>
-              </CardHeader>
-
-              {/* CONTENT */}
-              <CardContent className="px-8 pb-8 flex flex-col h-full">
-                <ul className="space-y-3 mb-8 flex-1">
-                  {plan?.features?.map((feature, i) => (
-                    <li
-                      key={i}
-                      className="flex items-start text-sm text-gray-300"
+                  <div className="mb-1">
+                    <span
+                      className={`text-4xl font-bold ${plan.isPopular ? "text-[#f15A24]" : "text-white"
+                        }`}
                     >
-                      <Check className="w-5 h-5 text-[#f15A24] mr-3 mt-0.5" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
+                      {plan.price}
+                    </span>
+                    {plan.priceUnit && (
+                      <span className="text-gray-400 ml-2">{plan.priceUnit}</span>
+                    )}
+                  </div>
 
-                {/* BUTTON */}
-                {plan.isPopular ? (
-                  <Button
-                    asChild
-                    variant="primary"
-                    size="md"
-                    className="w-full rounded-xl shadow-lg hover:shadow-xl transition-all"
-                  >
-                    <Link href={plan.buttonUrl ?? "#"}>{plan.buttonText}</Link>
-                  </Button>
-                ) : (
-                  <Button
-                    asChild
-                    variant="outline"
-                    size="md"
-                    className="
+                  <p className="text-gray-400 text-sm">{plan.description}</p>
+                </CardHeader>
+
+                {/* CONTENT */}
+                <CardContent className="px-8 pb-8 flex flex-col h-full">
+                  <ul className="space-y-3 mb-8 flex-1">
+                    {plan?.features?.map((feature, i) => (
+                      <li
+                        key={i}
+                        className="flex items-start text-sm text-gray-300"
+                      >
+                        <Check className="w-5 h-5 text-[#f15A24] mr-3 mt-0.5" />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* BUTTON */}
+                  {plan.isPopular ? (
+                    <Button
+                      asChild
+                      variant="primary"
+                      size="md"
+                      className="w-full rounded-xl shadow-lg hover:shadow-xl transition-all"
+                    >
+                      <Link href={plan.buttonUrl ?? "#"}>{plan.buttonText}</Link>
+                    </Button>
+                  ) : (
+                    <Button
+                      asChild
+                      variant="outline"
+                      size="md"
+                      className="
                       w-full rounded-xl font-medium
                       border-[#f15A24] text-[#f15A24]
                       hover:bg-gradient-to-r hover:from-[#f15A24] hover:to-[#d04f23]
@@ -134,11 +132,12 @@ export default function PricingSectionClient({ pricingData }: Props) {
                       hover:border-transparent
                       transition-all
                     "
-                  >
-                    <Link href={plan.buttonUrl ?? "#"}>{plan.buttonText}</Link>
-                  </Button>
-                )}
-              </CardContent>
+                    >
+                      <Link href={plan.buttonUrl ?? "#"}>{plan.buttonText}</Link>
+                    </Button>
+                  )}
+                </CardContent>
+              </div>
 
               {/* DECORATIVE GLOW */}
               {plan.isPopular && (
@@ -150,9 +149,10 @@ export default function PricingSectionClient({ pricingData }: Props) {
       </div>
 
       {/* FOOTER */}
-      <div className="max-w-4xl mx-auto text-white/70 mt-16 px-4 text-center">
+      <div className="max-w-4xl mx-auto text-white/70 -mt-10 md:-mt-5 px-8 text-center italic text-xs">
         {pricingData.bottomText}
       </div>
+
     </section>
   );
 }

@@ -48,14 +48,14 @@ const NewsLetter = () => {
   };
 
   return (
-    <section className="bg-gray-50 py-12 sm:py-16 text-center">
+    <section className="bg-gray-100 py-16 text-center w-full">
       <div className="max-w-4xl mx-auto px-4">
         {/* ✅ Use h2 – matches app hierarchy */}
-        <h2 className="text-2xl sm:text-3xl font-semibold text-[#f15A24] mb-2">
+        <h2 className="text-2xl sm:text-3xl font-semibold text-[#f15A24] mb-1">
           Subscribe to our Newsletter
         </h2>
 
-        <p className="text-gray-600 mb-6 sm:mb-8 text-sm sm:text-base">
+        <p className="text-gray-600 mb-2 text-sm sm:text-base">
           Stay updated with the latest news and offers.
         </p>
 
@@ -71,8 +71,19 @@ const NewsLetter = () => {
               setEmail(e.target.value);
               if (error) setError("");
             }}
-            className="h-12 sm:h-14 w-full sm:flex-grow px-4 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#f15A24] focus:outline-none"
+            className="
+    h-12 sm:h-14
+    w-full sm:flex-grow
+    px-4
+    rounded-lg
+    border border-gray-300
+    text-lg font-semibold
+    placeholder:text-lg placeholder:font-semibold
+    focus:ring-2 focus:ring-[#f15A24]
+    focus:outline-none
+  "
           />
+
 
           {/* ✅ Reusable button, matches Continue */}
           <Button
@@ -81,7 +92,7 @@ const NewsLetter = () => {
             size="md"
             className="h-12 sm:h-14 px-6 sm:px-8 rounded-lg"
           >
-            Subscribe
+            <p className="!text-white">Subscribe</p>
           </Button>
         </form>
 

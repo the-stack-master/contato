@@ -74,14 +74,14 @@ const Header = () => {
         {/* Logo */}
         <div
           onClick={() => navigate("/")}
-          className="flex items-center cursor-pointer"
+          className="flex items-center cursor-pointer pl-2"
         >
           {logo ? (
             <Image
               src={getImageUrl(logo.mainLogo?.image?.asset?.url ?? "")}
               alt={logo.mainLogo?.altText || "Company Logo"}
               width={120}
-              height={50}
+              height={120}
               className="object-contain"
             />
           ) : (
@@ -159,12 +159,12 @@ const Header = () => {
 
         {/* Right side */}
         <div className="flex items-center space-x-4">
-          <button
+          {!mobileMenuOpen ? <button
             onClick={() => (window.location.href = "/")}
             className="font-semibold text-[16px] text-[#1f2937] hover:text-[#f15A24] transition-colors"
           >
             Sign In
-          </button>
+          </button> : null}
 
           {/* Mobile toggle */}
           <button

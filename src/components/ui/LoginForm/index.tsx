@@ -146,12 +146,12 @@ export function LoginForm({ loginContent, logoData }: LoginFormProps) {
                 <Image
                   src={getImageUrl(logoData?.mainLogo?.image?.asset?.url ?? "")}
                   alt={logoData?.mainLogo?.altText || "Company Logo"}
-                  width={200} // match w-16
-                  height={200} // match h-16
+                  width={150} // match w-16
+                  height={150} // match h-16
                   className="object-contain"
                 />
               </div>
-              <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 animate-in fade-in-50 slide-in-from-bottom-3 duration-500 delay-300">
+              <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 animate-in fade-in-50 slide-in-from-bottom-3 duration-500 delay-300 mt-10">
                 {step === "email"
                   ? loginContent?.title
                   : loginContent?.otpTitle}
@@ -194,7 +194,7 @@ export function LoginForm({ loginContent, logoData }: LoginFormProps) {
                     className={cn(
                       "h-12 mt-1 shadow-sm transition-all duration-200",
                       emailForm.formState.errors.email &&
-                        "ring-2 ring-red-500 border-gray-300"
+                      "ring-2 ring-red-500 border-gray-300"
                     )}
                   />
 
@@ -210,7 +210,7 @@ export function LoginForm({ loginContent, logoData }: LoginFormProps) {
                   variant="primary"
                   size="md"
                   disabled={isLoading}
-                  className="w-full"
+                  className="w-full text-lg"
                 >
                   {isLoading ? (
                     <div className="flex items-center">

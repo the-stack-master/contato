@@ -32,9 +32,6 @@ const FooterClient = ({ footerData, logoData }: FooterClientProps) => {
         {/* Address Section (LEFT) */}
         {footerData?.footerAddressBlock && (
           <div className="w-full lg:w-[35%] flex-shrink-0">
-            {/* <h3 className="font-semibold text-[#f15A24] mb-3 sm:mb-4">
-              {footerData.footerAddressBlock.companyName}
-            </h3> */}
             <div className="flex items-center space-x-3">
               <Image
                 src={getImageUrl(logoData?.mainLogo?.image?.asset?.url ?? "")}
@@ -45,17 +42,17 @@ const FooterClient = ({ footerData, logoData }: FooterClientProps) => {
               />
             </div>
 
-            <p className="text-gray-700 mb-4 sm:mb-6">
+            <p className="text-gray-700 mb-4 sm:mb-6 mt-4">
               {footerData.footerAddressBlock.description}
             </p>
 
             <div className="space-y-3 text-gray-700 text-sm sm:text-base">
               {footerData.footerAddressBlock.contactInfo?.email && (
-                <div className="flex items-start">
-                  <Mail className="w-4 h-4 mt-1 mr-3 text-[#f15A24]" />
+                <div className="flex items-center">
+                  <Mail className="w-5 h-5 mt-1 mr-3 text-[#f15A24]" />
                   <a
                     href={`mailto:${footerData.footerAddressBlock.contactInfo.email}`}
-                    className="break-all"
+                    className="break-all !text-lg"
                   >
                     {footerData.footerAddressBlock.contactInfo.email}
                   </a>
@@ -64,15 +61,15 @@ const FooterClient = ({ footerData, logoData }: FooterClientProps) => {
 
               {footerData.footerAddressBlock.contactInfo?.phone && (
                 <div className="flex items-start">
-                  <Phone className="w-4 h-4 mt-1 mr-3 text-[#f15A24]" />
-                  <span>{footerData.footerAddressBlock.contactInfo.phone}</span>
+                  <Phone className="w-5 h-5 mt-1 mr-3 text-[#f15A24]" />
+                  <span className="!text-lg">{footerData.footerAddressBlock.contactInfo.phone}</span>
                 </div>
               )}
 
               {footerData.footerAddressBlock.contactInfo?.address && (
                 <div className="flex items-start">
-                  <MapPin className="w-4 h-4 mt-1 mr-3 text-[#f15A24]" />
-                  <span>
+                  <MapPin className="w-5 h-5 mt-1 mr-3 text-[#f15A24]" />
+                  <span className="!text-lg">
                     {footerData.footerAddressBlock.contactInfo.address.street},{" "}
                     {footerData.footerAddressBlock.contactInfo.address.city}
                   </span>
@@ -83,10 +80,10 @@ const FooterClient = ({ footerData, logoData }: FooterClientProps) => {
         )}
 
         {/* Navigation Columns (RIGHT – grouped) */}
-        <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 gap-x-12 gap-y-10">
+        <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-8">
           {footerData?.footerNavLinksBlock?.navigationColumns?.map((col, i) => (
             <div key={i} className="flex flex-col">
-              <h3 className="font-semibold text-[#f15A24] mb-2 sm:mb-3">
+              <h3 className="!font-bold !md:font-semibold !text-[#f15A24] mb-2 sm:mb-3">
                 {col.columnTitle}
               </h3>
 
@@ -103,10 +100,11 @@ const FooterClient = ({ footerData, logoData }: FooterClientProps) => {
                         href={href}
                         target={link.openInNewTab ? "_blank" : "_self"}
                         rel="noopener noreferrer"
-                        className="text-gray-700 hover:text-[#f15A24] transition-colors"
+                        className="!text-gray-700 !text-base hover:!text-[#f15A24] transition-colors"
                       >
                         {link.text}
                       </a>
+
                     </li>
                   );
                 })}
@@ -134,8 +132,8 @@ const FooterClient = ({ footerData, logoData }: FooterClientProps) => {
       </div>
 
       {/* Copyright */}
-      <div className="text-center border-t border-gray-300 py-4 sm:py-6 text-sm">
-        <p className="text-gray-500">
+      <div className="text-center border-t border-gray-300 py-4 sm:py-6 !text-xs">
+        <p className="text-gray-500 !text-xs">
           {footerData?.footerCopyrightText?.showCopyrightSymbol && "© "}
           {footerData?.footerCopyrightText?.autoUpdateYear
             ? new Date().getFullYear()
@@ -145,7 +143,7 @@ const FooterClient = ({ footerData, logoData }: FooterClientProps) => {
         </p>
 
         {footerData?.footerCopyrightText?.additionalText && (
-          <p className="text-gray-400 text-xs sm:text-sm mt-1 sm:mt-2">
+          <p className="text-gray-400 !text-xs sm:!text-sm mt-1 sm:mt-2">
             {footerData?.footerCopyrightText?.additionalText}
           </p>
         )}

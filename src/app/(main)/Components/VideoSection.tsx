@@ -79,7 +79,7 @@ const VideoSection = ({ videoList, videoData }: VideoSectionProps) => {
   }, [currentIndex]);
 
   return (
-    <section className="w-full px-5 sm:px-10 lg:px-16 py-8 sm:py-12 bg-gray-50 relative">
+    <section className="w-full px-5 sm:px-10 lg:px-16 py-16 sm:py-12 bg-gray-100 relative">
       <motion.h2
         className="text-2xl sm:text-3xl font-semibold text-gray-800 mb-8 text-center"
         initial={{ opacity: 0, y: -20 }}
@@ -192,7 +192,7 @@ const VideoSection = ({ videoList, videoData }: VideoSectionProps) => {
           <button
             key={index}
             onClick={() => emblaApi?.scrollTo(index)}
-            className={`w-3 h-3 rounded-full transition-all ${
+            className={`w-2 h-2 rounded-full transition-all ${
               index === selectedIndex
                 ? "bg-gray-800 scale-110"
                 : "bg-gray-300 hover:bg-gray-400"

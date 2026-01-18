@@ -34,18 +34,7 @@ const DocClient = ({ docData }: DocClientProps) => {
         Back to support
       </Link>
 
-      {/* Article Header */}
-      <div className="mb-3">
-        <h1>{docData?.document?.title}</h1>
 
-        {/* {article.description && ( */}
-        {docData?.document?.subtitle && (
-          <p className="!text-xl !text-gray-600 mb-0 leading-relaxed">
-            {docData?.document?.subtitle}
-          </p>
-        )}
-        {/* )} */}
-      </div>
 
       {/* Article Content */}
       <SanityFileViewer docId={docData?.document?.file?.asset?.url} />

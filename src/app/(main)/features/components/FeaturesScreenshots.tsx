@@ -56,45 +56,78 @@ const FeaturesScreenshotsSection = ({ featuresData }: FeaturesDataProps) => {
   if (isMobile) {
     const screenshot = screenshots[selectedIndex];
     return (
-      <section className="py-12 bg-gradient-to-br from-gray-50 to-orange-50 px-6">
-        <div className="max-w-sm mx-auto relative rounded-3xl overflow-hidden shadow-lg">
-          <img
-            src={getImageUrl(screenshot.slideImage || "")}
-            alt={screenshot.slideTitle}
-            className="w-full h-[380px] object-cover"
-          />
-          <div className="absolute inset-0 p-6 flex flex-col justify-center text-white bg-black/75">
-            <h3 className="text-xl font-bold mb-2">{screenshot.slideTitle}</h3>
-            <p className="mb-3 text-sm opacity-90">
-              {screenshot.slideDescription}
-            </p>
-            <ul className="list-disc list-inside space-y-1 text-sm">
-              {screenshot?.features?.map((feat, idx) => (
-                <li key={idx}>{feat?.featureName}</li>
-              ))}
-            </ul>
+      <section className="py-12 px-6">
+        <motion.div className="text-center mb-14">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            {splitSentence(featuresData?.carousel?.sectionHeading)?.firstPart}{" "}
+            <span className="bg-gradient-to-r from-[#f15A24] to-orange-500 bg-clip-text text-transparent">
+              {
+                splitSentence(featuresData?.carousel?.sectionHeading)
+                  ?.secondPart
+              }
+            </span>
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            {featuresData?.carousel?.sectionDescription}
+          </p>
+        </motion.div>
+        <div className="overflow-hidden" ref={emblaRef}>
+          <div className="flex">
+            {screenshots.map((screenshot, index) => (
+              <div key={index} className="flex-[0_0_100%] px-2">
+                <div className="max-w-sm mx-auto relative rounded-3xl overflow-hidden shadow-lg">
+                  <img
+                    src={getImageUrl(screenshot.slideImage || "")}
+                    alt={screenshot.slideTitle}
+                    className="w-full h-[480px] object-cover"
+                  />
+
+                  <div className="absolute inset-0 flex flex-col justify-end">
+                    {/* Gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
+
+                    {/* Text panel */}
+                    <div className="relative p-5 bg-black/65 backdrop-blur-xl rounded-b-3xl">
+                      {/* Title */}
+                      <h3 className="text-lg font-extrabold mb-1 !text-[#FFE6D5]">
+                        {screenshot.slideTitle}
+                      </h3>
+
+                      {/* Description */}
+                      <p className="text-sm font-medium leading-snug mb-2 !text-gray-200">
+                        {screenshot.slideDescription}
+                      </p>
+
+                      {/* Features */}
+                      <ul className="list-disc list-inside space-y-1 text-xs text-gray-300">
+                        {screenshot?.features?.map((feat, idx) => (
+                          <li key={idx}>{feat?.featureName}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+
+
+
+
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
-        <div className="flex justify-center gap-6 mt-8">
-          <button
-            onClick={() =>
-              setSelectedIndex(
-                (p) => (p - 1 + screenshots.length) % screenshots.length
-              )
-            }
-            className="p-3 rounded-full bg-white shadow-md"
-          >
-            <ChevronLeft />
-          </button>
-          <button
-            onClick={() =>
-              setSelectedIndex((p) => (p + 1) % screenshots.length)
-            }
-            className="p-3 rounded-full bg-white shadow-md"
-          >
-            <ChevronRight />
-          </button>
+        {/* Mobile dots */}
+        <div className="flex justify-center gap-2 mt-6">
+          {scrollSnaps.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => emblaApi?.scrollTo(index)}
+              className={`w-2.5 h-2.5 rounded-full transition-all ${index === selectedIndex
+                ? "bg-[#f15A24] scale-125"
+                : "bg-gray-300"
+                }`}
+            />
+          ))}
         </div>
       </section>
     );
@@ -201,11 +234,10 @@ const FeaturesScreenshotsSection = ({ featuresData }: FeaturesDataProps) => {
             <button
               key={index}
               onClick={() => scrollTo(index)}
-              className={`w-3 h-3 rounded-full ${
-                index === selectedIndex
-                  ? "bg-[#f15A24] scale-125"
-                  : "bg-gray-300"
-              }`}
+              className={`w-3 h-3 rounded-full ${index === selectedIndex
+                ? "bg-[#f15A24] scale-125"
+                : "bg-gray-300"
+                }`}
             />
           ))}
         </div>

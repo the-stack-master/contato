@@ -57,8 +57,8 @@ const NewHeroSection = ({
               <Image
                 src={getImageUrl(logoData?.mainLogo?.image?.asset?.url ?? "")}
                 alt={logoData?.smallLogo?.altText || "Company Logo"}
-                width={140}
-                height={40}
+                width={120}
+                height={120}
                 className="object-contain bg"
               />
             </div>
@@ -67,7 +67,7 @@ const NewHeroSection = ({
             <div className="space-y-5">
               <h1 className="leading-tight">
                 {heroData?.mainHeading}&nbsp;
-                <span className="text-[#f15A24] font-bold">
+                <span className="text-[#f15A24] font-extrabold md:font-bold">
                   {heroData?.highlightedWord}
                 </span>
                 <br />
@@ -97,7 +97,7 @@ const NewHeroSection = ({
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-row gap-4 justify-center sm:justify-start">
               {heroData?.ctaButtons?.map((cta) =>
                 cta?.isPrimary ? (
                   <AppStoreButton key={cta?.buttonUrl} href={cta?.buttonUrl} />

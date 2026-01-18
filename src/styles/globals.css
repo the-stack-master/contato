@@ -23,18 +23,23 @@ body {
 ================================ */
 
 h1 {
-  @apply text-4xl sm:text-5xl font-semibold leading-tight text-gray-900;
+  @apply text-4xl sm:text-5xl font-extrabold sm:font-semibold leading-tight text-gray-900;
 }
 
 h2 {
-  @apply text-2xl sm:text-3xl font-semibold leading-snug text-gray-900;
+  @apply text-2xl sm:text-3xl font-extrabold sm:font-semibold leading-snug text-gray-900;
 }
 
+
 h3 {
-  @apply text-xl font-semibold text-gray-900;
+  @apply text-xl font-bold md:font-semibold text-gray-900;
 }
 
 p {
+  @apply text-lg leading-relaxed text-gray-600;
+}
+
+a {
   @apply text-lg leading-relaxed text-gray-600;
 }
 

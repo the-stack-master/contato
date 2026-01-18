@@ -39,11 +39,11 @@ export default function TestimonialsSectionClient({ testimonialData }: Props) {
   if (!testimonialData) return null;
 
   return (
-    <section className="py-20 bg-white relative">
+    <section className="py-16 bg-white relative">
       <div className="container mx-auto px-6">
-        <div className="text-center mb-16 max-w-3xl mx-auto">
+        <div className="text-center mb-4 max-w-3xl mx-auto">
           <motion.h2
-            className="text-3xl md:text-4xl font-bold text-gray-900 mb-4"
+            className="text-3xl md:text-4xl font-bold text-gray-900 mb-2"
             initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.4 }}
@@ -112,27 +112,15 @@ export default function TestimonialsSectionClient({ testimonialData }: Props) {
             </div>
           </div>
 
-          {/* Navigation buttons */}
-          <button
-            onClick={scrollPrev}
-            className="absolute top-1/2 -left-8 transform -translate-y-1/2 bg-white/80 hover:bg-[#f15A24] hover:text-white text-[#f15A24] p-2 rounded-full shadow-md transition-colors"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          <button
-            onClick={scrollNext}
-            className="absolute top-1/2 -right-8 transform -translate-y-1/2 bg-white/80 hover:bg-[#f15A24] hover:text-white text-[#f15A24] p-2 rounded-full shadow-md transition-colors"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
+          
 
           {/* Dots Indicator */}
-          <div className="flex justify-center mt-8 space-x-3">
+          <div className="flex justify-center mt-5 space-x-3">
             {testimonialData?.testimonials?.map((_, i) => (
               <button
                 key={i}
                 onClick={() => emblaApi?.scrollTo(i)}
-                className={`w-3 h-3 rounded-full transition-all ${
+                className={`w-2 h-2 rounded-full transition-all ${
                   selectedIndex === i
                     ? "bg-[#f15A24]"
                     : "bg-gray-300 hover:bg-[#f15A24]/50"

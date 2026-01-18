@@ -90,12 +90,18 @@ export default function ContactForm() {
     });
 
   return (
-    <section className="py-20 bg-gray-50">
-      <div className="max-w-4xl mx-auto px-6">
+    <section className="bg-white">
+      <div >
         {/* Heading */}
-        <div className="text-center mb-12">
-          <h1 className="text-5xl md:text-6xl font-bold !text-[#f15A24] mb-3 leading-tight">
-            Get In Touch
+        <div className="text-center py-16 bg-gradient-to-b from-orange-50/60 to-white">
+          <h1 className="text-3xl md:text-4xl font-extrabold leading-tight mb-2">
+            <span className="!text-black !font-bold">
+              Get in
+            </span>
+            &nbsp;
+            <span className="!text-[#f15A24] !font-extrabold">
+              Touch
+            </span>
           </h1>
           <p className="text-lg !text-gray-600">
             Feel free to reach out and stay connected with us.
@@ -110,11 +116,11 @@ export default function ContactForm() {
           transition={{ duration: 0.6 }}
           className="
             bg-white
-            p-10
-            border border-gray-200
+            px-10
             grid grid-cols-1 md:grid-cols-2 gap-8
             relative
             rounded-none
+            mb-16
           "
         >
           {/* First Name */}
@@ -126,9 +132,8 @@ export default function ContactForm() {
               name="firstName"
               onChange={() => clearError("firstName")}
               placeholder="Enter first name"
-              className={`h-12 rounded-xl !text-sm ${
-                errors.firstName ? "border-red-500" : ""
-              }`}
+              className={`h-12 rounded-xl  ${errors.firstName ? "border-red-500" : ""
+                }`}
             />
             {errors.firstName && (
               <p className="mt-1 !text-[11px] !text-red-400 leading-snug">
@@ -146,9 +151,8 @@ export default function ContactForm() {
               name="lastName"
               onChange={() => clearError("lastName")}
               placeholder="Enter last name"
-              className={`h-12 rounded-xl !text-sm ${
-                errors.lastName ? "border-red-500" : ""
-              }`}
+              className={`h-12 rounded-xl  ${errors.lastName ? "border-red-500" : ""
+                }`}
             />
             {errors.lastName && (
               <p className="mt-1 !text-[11px] !text-red-400 leading-snug">
@@ -167,9 +171,8 @@ export default function ContactForm() {
               type="email"
               onChange={() => clearError("email")}
               placeholder="Enter email"
-              className={`h-12 rounded-xl !text-sm ${
-                errors.email ? "border-red-500" : ""
-              }`}
+              className={`h-12 rounded-xl  ${errors.email ? "border-red-500" : ""
+                }`}
             />
             {errors.email && (
               <p className="mt-1 !text-[11px] !text-red-400 leading-snug">
@@ -187,9 +190,8 @@ export default function ContactForm() {
               name="phone"
               onChange={() => clearError("phone")}
               placeholder="Enter phone number"
-              className={`h-12 rounded-xl !text-sm ${
-                errors.phone ? "border-red-500" : ""
-              }`}
+              className={`h-12 rounded-xl  ${errors.phone ? "border-red-500" : ""
+                }`}
             />
             {errors.phone && (
               <p className="mt-1 !text-[11px] !text-red-400 leading-snug">
@@ -207,9 +209,8 @@ export default function ContactForm() {
               name="business"
               onChange={() => clearError("business")}
               placeholder="Enter business name"
-              className={`h-12 rounded-xl !text-sm ${
-                errors.business ? "border-red-500" : ""
-              }`}
+              className={`h-12 rounded-xl  ${errors.business ? "border-red-500" : ""
+                }`}
             />
             {errors.business && (
               <p className="mt-1 !text-[11px] !text-red-400 leading-snug">
@@ -235,7 +236,7 @@ export default function ContactForm() {
                 rounded-lg
                 border ${errors.comment ? "border-red-500" : "border-gray-300"}
                 bg-white
-                !text-sm text-gray-900
+                 text-gray-900
                 placeholder:text-gray-400
                 resize-none
                 focus:ring-2 focus:ring-[#f15A24]
@@ -252,7 +253,7 @@ export default function ContactForm() {
           </div>
 
           {/* Submit */}
-          <div className="md:col-span-2 flex justify-end">
+          <div className="md:col-span-2 flex justify-center">
             <Button
               variant={"primary"}
               type="submit"
@@ -268,9 +269,8 @@ export default function ContactForm() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`absolute bottom-6 left-1/2 -translate-x-1/2 px-8 py-4 rounded-full font-semibold text-white shadow-lg ${
-                status === "success" ? "bg-green-600" : "bg-red-600"
-              }`}
+              className={`absolute bottom-6 left-1/2 -translate-x-1/2 px-8 py-4 rounded-full font-semibold text-white shadow-lg ${status === "success" ? "bg-green-600" : "bg-red-600"
+                }`}
             >
               {status === "success"
                 ? "✅ Your message has been sent successfully!"

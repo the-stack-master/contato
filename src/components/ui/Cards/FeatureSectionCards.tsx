@@ -134,11 +134,12 @@ const ExpandingCardsSection: React.FC = () => {
               : 0.74;
 
   // ✅ Scroll animations
-  const overlayOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
   const headingOpacity = useTransform(scrollYProgress, [0.25, 0.45], [0, 1]);
   const buttonOpacity = useTransform(scrollYProgress, [0.4, 0.6], [0, 1]);
   const headingY = useTransform(scrollYProgress, [0.25, 0.45], [50, 0]);
   const buttonY = useTransform(scrollYProgress, [0.4, 0.6], [50, 0]);
+
+  const isMobile = width < 768;
 
   return (
     <div
@@ -153,23 +154,12 @@ const ExpandingCardsSection: React.FC = () => {
       {/* 🎨 Very subtle radial vignette for soft contrast */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.25)_0%,rgba(255,195,150,0.15)_45%,rgba(255,170,100,0.08)_80%,rgba(255,160,80,0.05)_100%)] pointer-events-none"></div>
 
-      {/* 🪶 Overlay Intro */}
-      <motion.div
-        className="absolute left-1/2 top-[35%] -translate-x-1/2 text-center z-10 pointer-events-none"
-        style={{ opacity: overlayOpacity }}
-      >
-        <h2 className="text-5xl font-bold text-[#1a1a1a] mb-2 drop-shadow-sm">
-          Latest Features
-        </h2>
-        <p className="text-[#4b4b4b] text-lg">
-          Scroll to explore what&apos;s new
-        </p>
-      </motion.div>
+      
 
       {/* 🧭 Section Heading */}
       <motion.div
-        className="text-center z-10 mb-12"
-        style={{ opacity: headingOpacity, y: headingY }}
+        className="text-center z-10 mb-4 px-6"
+        style={{ opacity: isMobile ? 1 : headingOpacity, y: isMobile ? 0 : headingY }}
       >
         <h2 className="text-4xl md:text-5xl font-bold text-[#1a1a1a] mb-3 leading-tight">
           Discover Our Smart Digital Tools
@@ -572,7 +562,7 @@ const ExpandingCardsSection: React.FC = () => {
 
       {/* 🚀 CTA Button */}
       <motion.div
-        className="mt-28 z-20 flex justify-center"
+        className="mt-8 z-20 flex justify-center"
         style={{ opacity: buttonOpacity, y: buttonY }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >

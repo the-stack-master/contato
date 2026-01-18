@@ -1,5 +1,6 @@
 "use client";
 
+import { Separator } from "@radix-ui/react-separator";
 import { motion } from "framer-motion";
 import {
   Brain,
@@ -76,9 +77,8 @@ const FeatureCard = ({
       className="group"
     >
       <div
-        className={`flex flex-col ${
-          isEven ? "md:flex-row" : "md:flex-row-reverse"
-        } gap-6 md:gap-8 items-center`}
+        className={`flex flex-col ${isEven ? "md:flex-row" : "md:flex-row-reverse"
+          } gap-6 md:gap-8 items-center`}
       >
         {/* Icon */}
         <motion.div
@@ -119,9 +119,8 @@ const FeatureCard = ({
 
         {/* Content */}
         <div
-          className={`flex-1 ${
-            isEven ? "md:text-left" : "md:text-right"
-          } text-center`}
+          className={`flex-1 ${isEven ? "md:text-left" : "md:text-right"
+            } text-center`}
         >
           <div className="relative inline-block mb-3">
             <motion.div className="absolute -inset-2 bg-gradient-to-r from-[#f15A24]/20 to-[#d04f23]/20 rounded-lg blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -141,12 +140,12 @@ const FeatureCard = ({
             {feature.description}
           </p>
 
+          {/* Tags */}
           <div
-            className={`flex items-center gap-2 ${
-              isEven
-                ? "justify-center md:justify-start"
-                : "justify-center md:justify-end"
-            } flex-wrap`}
+            className={`flex items-center gap-2 flex-wrap ${isEven
+              ? "justify-center md:justify-start"
+              : "justify-center md:justify-end"
+              }`}
           >
             {tags.map((tag, tagIndex) => (
               <motion.div
@@ -159,17 +158,42 @@ const FeatureCard = ({
                 {tag}
               </motion.div>
             ))}
+          </div>
 
-            <motion.div whileHover={{ scale: 1.1 }} className="ml-2">
+          {/* Details CTA (separate line) */}
+          <div
+            className={`mt-4 ${isEven ? "text-center md:text-left" : "text-center md:text-right"
+              }`}
+          >
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.97 }}
+              className="inline-block"
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+            >
               <Link
                 href="/features/ai-matching"
-                className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#f15A24] hover:text-[#d04f23] transition-colors group/link"
+                className="
+        inline-flex items-center gap-2
+        px-4 py-2
+        rounded-lg
+        bg-[#f15A24]/10
+        text-[#f15A24]
+        text-sm font-semibold
+        border border-[#f15A24]/30
+        hover:bg-[#f15A24]
+        hover:text-white
+        transition-all
+        group/link
+      "
               >
-                <span>Details</span>
+                <span>View details</span>
                 <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
               </Link>
             </motion.div>
           </div>
+
         </div>
       </div>
 
@@ -190,26 +214,30 @@ export default function FeaturesListingSection({
   features,
 }: FeaturesListingSectionProps) {
   return (
-    <section className="py-5 px-8 overflow-hidden">
+    <section className="py-16 px-8 overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(241,90,36,0.05),transparent_50%),radial-gradient(circle_at_80%_70%,rgba(208,79,35,0.05),transparent_50%)]" />
 
-      <div className="max-w-[1200px] mx-auto px-8 relative">
-        <div className="text-center mb-16 md:mb-20">
-          <span className="inline-block mb-4 px-4 py-2 bg-orange-100 border border-[#f15A24]/30 rounded-full text-sm font-semibold text-[#f15A24]">
-            Complete Feature Set
-          </span>
+      <div className="max-w-[1200px] mx-auto px-4 relative">
+        <div className="text-center">
 
-          <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-            <span className="bg-gradient-to-r from-slate-900 via-[#f15A24] to-[#d04f23] bg-clip-text text-transparent">
-              Everything You Need
-            </span>
+
+          <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-2 leading-tight !text-[#f15A24]">
+            Our Features
           </h2>
 
-          <p className="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto">
-            A complete toolkit designed to transform the way you connect, grow,
-            and succeed
+          <p className="text-lg md:text-xl text-slate-600 ">
+            Everything you need to build, manage, and share meaningful digital connections in one place
           </p>
+
+          <div className="mt-8 flex justify-center mb-12">
+            <div className="relative h-px w-40">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
+              <div className="absolute inset-0 blur-sm bg-[#f15A24]/40" />
+            </div>
+          </div>
         </div>
+
+
 
         <div className="space-y-0">
           {features.map((feature, index) => (

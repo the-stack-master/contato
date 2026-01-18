@@ -17,6 +17,7 @@ import { IconName } from "lucide-react/dynamic";
 import { AppStoreButton } from "@/components/ui/AppleStoreButton";
 import { GooglePlayButton } from "@/components/ui/GooglePlayButton";
 import FeaturesListingSection from "../Components/FeaturesListingSection";
+import { splitSentence } from "@/utils/stringFunctions";
 
 const getFeaturesIcons = (iconVal?: string) => {
   switch (iconVal) {
@@ -42,7 +43,7 @@ const getDownloadUrl = (platform: "appstore" | "googleplay") => {
 };
 
 const AppDownloadButtons = ({ featuresData }: FeaturesDataProps) => (
-  <div className="flex flex-col sm:flex-row gap-4">
+  <div className="flex flex-row gap-4 justify-center">
     <AppStoreButton href={getDownloadUrl("appstore")} />
     <GooglePlayButton href={getDownloadUrl("googleplay")} />
   </div>
@@ -261,7 +262,7 @@ const FeaturesPage = ({ featuresData }: FeaturesDataProps) => {
       {/* Hero Section */}
       <motion.section
         aria-label="Hero"
-        className="flex flex-col md:flex-row items-center max-w-7xl mx-auto pt-26 px-6 bg-white mb-24 "
+        className="flex flex-col md:flex-row items-center max-w-7xl mx-auto pt-26 px-6 bg-gradient-to-b from-orange-50/60 to-white mb-24 "
         initial="hidden"
         animate="visible"
         variants={fadeInUp}
@@ -269,8 +270,14 @@ const FeaturesPage = ({ featuresData }: FeaturesDataProps) => {
       >
         {/* Left text side */}
         <div className="w-full min-[900px]:w-2/5 max-w-xl text-left mb-8 min-[900px]:mb-0 min-[900px]:pr-8">
-          <h1 className="text-3xl md:text-4xl font-extrabold leading-tight !text-[#f15A24] mb-4">
-            {featuresData?.heroSection?.highlightedText}
+          <h1 className="text-3xl md:text-4xl font-extrabold leading-tight  mb-4">
+            <span className="!text-black">
+              {splitSentence(featuresData?.heroSection?.highlightedText)?.firstPart}
+            </span>
+            &nbsp;
+            <span className="!text-[#f15A24] font-extrabold">
+              {splitSentence(featuresData?.heroSection?.highlightedText)?.secondPart}
+            </span>
           </h1>
           <p className="text-sm md:text-base text-gray-700 px-1 md:px-0">
             {featuresData?.heroSection?.description}
@@ -320,16 +327,15 @@ const FeaturesPage = ({ featuresData }: FeaturesDataProps) => {
       </motion.section>
 
       {/* New Features  */}
-      <section className="w-full mx-auto py-20 my-5 bg-gray-50 shadow-sm space-y-12">
+      <section className="w-full mx-auto py-16 bg-gray-100 shadow-sm space-y-12">
         <FeaturesScreenshotsSection featuresData={featuresData} />
       </section>
 
       {/* Full Feature List Section */}
       <section
         aria-label="Full Features List"
-        className="w-full mx-auto px-0 py-16 !bg-gradient-to-b from-white via-slate-50 to-white relative"
+        className="w-full mx-auto px-0 !bg-gradient-to-b from-white via-slate-50 to-white relative"
       >
-        <h2 className="text-center mb-4 !text-[#f15A24]">Our Features</h2>
         <FeaturesListingSection features={featuresDataFull?.complete} />
       </section>
     </main>
