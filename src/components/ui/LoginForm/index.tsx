@@ -135,10 +135,10 @@ export function LoginForm({ loginContent, logoData }: LoginFormProps) {
       {/* Login Page Layout */}
       <div
         id="login"
-        className="min-h-screen flex flex-col lg:flex-row relative"
+        className="min-h-[100dvh] flex flex-col lg:flex-row relative"
       >
         {/* Left Section - Login Form */}
-        <div className="w-full lg:w-2/5 flex items-center justify-center p-6 lg:p-12 bg-white lg:border-r border-gray-100 min-h-screen lg:min-h-0">
+        <div className="w-full lg:w-2/5 flex items-center justify-center p-6 lg:p-12 bg-white lg:border-r border-gray-100 min-h-[100dvh] lg:min-h-0">
           <div className="w-full max-w-sm space-y-6 lg:space-y-8 animate-in fade-in-50 slide-in-from-left-5 duration-700">
             {/* Logo/Brand */}
             <div className="text-center space-y-2">
