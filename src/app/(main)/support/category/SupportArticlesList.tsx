@@ -24,7 +24,6 @@ export default function SupportArticlesList({
 }: SupportArticlesListProps) {
   const navigate = useNavigate();
 
-  console.log(":aasas", articles);
 
   return (
     <section className="py-16 bg-white">

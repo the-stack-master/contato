@@ -177,7 +177,6 @@ export default async function FeaturesSectionServer() {
     { cache: "force-cache" }
   );
 
-  console.log("Mapped Features Data:", data);
 
   if (!data) {
     return <div>Features page data not found.</div>;

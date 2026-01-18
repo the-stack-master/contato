@@ -12,11 +12,7 @@ export function useAuthActions() {
   const router = useRouter();
 
   const login = async (credentials: LoginCredentials) => {
-    console.log("useAuthActions: Starting login process");
-    console.log(
-      "useAuthActions: Current URL before login:",
-      window.location.href
-    );
+    
     setIsLoading(true);
     setError("");
 
