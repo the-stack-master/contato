@@ -79,7 +79,7 @@ const FeaturesScreenshotsSection = ({ featuresData }: FeaturesDataProps) => {
                   <img
                     src={getImageUrl(screenshot.slideImage || "")}
                     alt={screenshot.slideTitle}
-                    className="w-full h-[480px] object-cover"
+                    className="w-full h-[480px] object-cover object-top"
                   />
 
                   <div className="absolute inset-0 flex flex-col justify-end">

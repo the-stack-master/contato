@@ -52,16 +52,7 @@ const NewHeroSection = ({
                 : "-translate-x-6 opacity-0"
             )}
           >
-            {/* Logo */}
-            <div className="flex items-center space-x-3">
-              <Image
-                src={getImageUrl(logoData?.mainLogo?.image?.asset?.url ?? "")}
-                alt={logoData?.smallLogo?.altText || "Company Logo"}
-                width={120}
-                height={120}
-                className="object-contain bg"
-              />
-            </div>
+
 
             {/* Headline */}
             <div className="space-y-5">
