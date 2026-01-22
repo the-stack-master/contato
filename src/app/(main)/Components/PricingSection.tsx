@@ -117,7 +117,7 @@ export default function PricingSectionClient({ pricingData }: Props) {
                       size="md"
                       className="w-full rounded-xl shadow-lg hover:shadow-xl transition-all"
                     >
-                      <Link href={plan.buttonUrl ?? "#"}>{plan.buttonText}</Link>
+                      <Link href={plan.buttonUrl ?? "#"} className="!text-white !font-bold">{plan.buttonText}</Link>
                     </Button>
                   ) : (
                     <Button
