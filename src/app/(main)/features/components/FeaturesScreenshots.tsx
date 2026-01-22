@@ -83,8 +83,6 @@ const FeaturesScreenshotsSection = ({ featuresData }: FeaturesDataProps) => {
                   />
 
                   <div className="absolute inset-0 flex flex-col justify-end">
-                    {/* Gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
 
                     {/* Text panel */}
                     <div className="relative p-5 bg-black/65 backdrop-blur-xl rounded-b-3xl">
