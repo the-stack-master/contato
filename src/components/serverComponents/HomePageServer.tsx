@@ -69,6 +69,8 @@ const HomePageServer = async () => {
       (section) => section?._type === "appShowcaseSection"
     ) || null;
 
+  const aboutData = homePage?.pageBuilder?.find((section) => section?._type === "aboutCommunicationSection") || null
+
   return (
     <>
       <NewHeroSection
@@ -76,7 +78,7 @@ const HomePageServer = async () => {
         appShowcaseData={appShowCaseData}
         logoData={logoData}
       />
-      <AboutSection />
+      <AboutSection aboutData={aboutData} />
       {/* <ContatoSection /> */}
       <StatsSection statsData={statsData} />
       {/* <FeaturesSectionClient featureData={featureData} /> */}

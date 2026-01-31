@@ -14,31 +14,31 @@ import {
   Layers,
 } from "lucide-react";
 import { cn } from "@/utils/classNames";
+import { AboutCommunicationSection } from "@/types/homeTypes";
+import { IconComponent } from "@/components/ui/IconComponent";
+import { PortableText } from "@portabletext/react";
 
-const highlights = [
+const highlightColors = [
   {
-    icon: Mail,
-    text: "Smart Communication",
     color: "from-blue-500 to-cyan-400",
   },
   {
-    icon: Users,
-    text: "Team Collaboration",
     color: "from-purple-500 to-pink-400",
   },
   {
-    icon: Zap,
-    text: "Lightning Fast",
     color: "from-yellow-500 to-orange-400",
   },
   {
-    icon: Shield,
-    text: "Enterprise Security",
     color: "from-green-500 to-emerald-400",
   },
 ];
 
-export function AboutSection() {
+interface AboutSectionProps {
+  aboutData: AboutCommunicationSection | null
+}
+
+
+export function AboutSection({ aboutData }: AboutSectionProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [activeHighlight, setActiveHighlight] = useState(0);
 
@@ -60,7 +60,7 @@ export function AboutSection() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveHighlight((prev) => (prev + 1) % highlights.length);
+      setActiveHighlight((prev) => (prev + 1) % highlightColors.length);
     }, 3000);
 
     return () => clearInterval(interval);
@@ -113,17 +113,17 @@ export function AboutSection() {
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#f15A24]/10 to-orange-500/10 rounded-full border border-[#f15A24]/20 backdrop-blur-sm">
               <Sparkles className="w-4 h-4 text-[#f15A24]" />
               <span className="text-sm font-medium text-[#f15A24]">
-                About Contato
+                {aboutData?.chipText}
               </span>
             </div>
 
             {/* Main Heading */}
             <div className="space-y-6">
               <h2 className="text-4xl lg:text-5xl font-extrabold sm:font-bold leading-tight tracking-tight">
-                <span className="text-gray-900">The Future of</span>
+                <span className="text-gray-900">{aboutData?.title}</span>
                 <br />
                 <span className="bg-gradient-to-r from-[#f15A24] to-orange-600 bg-clip-text text-transparent font-extrabold">
-                  Communication
+                  {aboutData?.titleHighlightText}
                 </span>
               </h2>
 
@@ -131,45 +131,44 @@ export function AboutSection() {
             </div>
 
             {/* Description */}
-            <div className="space-y-6 text-lg text-gray-600 leading-relaxed max-w-2xl">
-              <p>
-                Contato revolutionizes how teams communicate and collaborate.
-                Built for the modern workplace, it combines powerful messaging,
-                smart automation, and enterprise-grade security in one
-                beautifully designed platform.
-              </p>
-              <p>
-                From startups to Fortune 500 companies, thousands of teams trust
-                Contato to streamline their workflows and keep everyone
-                connected, no matter where they work.
-              </p>
-            </div>
+            {aboutData?.description && (
+              <div className="space-y-6 text-lg text-gray-600 leading-relaxed max-w-2xl">
+                <PortableText
+                  value={aboutData.description}
+                  components={{
+                    block: {
+                      normal: ({ children }) => <p>{children}</p>,
+                    },
+                  }}
+                />
+              </div>
+            )}
 
             {/* Key Benefits */}
-            <div className="grid grid-cols-2 gap-6 pt-2">
-              <div className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-gradient-to-r from-[#f15A24] to-orange-500 rounded-full"></div>
-                <span className="text-gray-700 font-medium">
-                  Enterprise Security
-                </span>
+            {aboutData?.highlightFeatures?.length ? (
+              <div className="grid grid-cols-2 gap-6 pt-2">
+                {aboutData.highlightFeatures.map((feature, index) => {
+                  const gradient =
+                    highlightColors[index % highlightColors.length].color;
+
+                  return (
+                    <div key={index} className="flex items-center gap-3">
+                      <div
+                        className={cn(
+                          "w-2 h-2 rounded-full bg-gradient-to-r",
+                          gradient
+                        )}
+                      />
+                      <span className="text-gray-700 font-medium">
+                        {feature.title}
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
-              <div className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full"></div>
-                <span className="text-gray-700 font-medium">
-                  Real-time Sync
-                </span>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-gradient-to-r from-purple-500 to-pink-400 rounded-full"></div>
-                <span className="text-gray-700 font-medium">
-                  Smart Automation
-                </span>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-gradient-to-r from-green-500 to-emerald-400 rounded-full"></div>
-                <span className="text-gray-700 font-medium">Global Scale</span>
-              </div>
-            </div>
+            ) : null}
+
+
           </div>
 
           {/* Right Side - Interactive Visual */}
@@ -192,8 +191,7 @@ export function AboutSection() {
                 </div>
 
                 {/* Orbiting Highlights */}
-                {highlights.map((highlight, index) => {
-                  const IconComponent = highlight.icon;
+                {aboutData?.highlightFeatures?.map((highlight, index) => {
                   const angle = index * 90 - 45; // Spread around circle
                   const radius = 140;
                   const x = Math.cos((angle * Math.PI) / 180) * radius;
@@ -217,7 +215,7 @@ export function AboutSection() {
                         className={cn(
                           "absolute w-px bg-gradient-to-r transition-all duration-500",
                           isActive
-                            ? `${highlight.color} opacity-40`
+                            ? `${highlightColors[index].color} opacity-40`
                             : "from-gray-200 to-transparent opacity-20"
                         )}
                         style={{
@@ -234,11 +232,12 @@ export function AboutSection() {
                         className={cn(
                           "relative w-full h-full rounded-full transition-all duration-500 flex items-center justify-center shadow-lg",
                           isActive
-                            ? `bg-gradient-to-br ${highlight.color} shadow-xl`
+                            ? `bg-gradient-to-br ${highlightColors[index].color} shadow-xl`
                             : "bg-white border-2 border-gray-200"
                         )}
                       >
                         <IconComponent
+                          name={highlight?.icon ?? ""}
                           className={cn(
                             "w-8 h-8 transition-colors duration-500",
                             isActive ? "text-white" : "text-gray-400"
@@ -257,7 +256,7 @@ export function AboutSection() {
                       >
                         <div className="px-3 py-1 bg-white rounded-full shadow-md border border-gray-100 whitespace-nowrap">
                           <span className="text-xs font-medium text-gray-700">
-                            {highlight.text}
+                            {highlight.title}
                           </span>
                         </div>
                       </div>
@@ -296,11 +295,21 @@ export function AboutSection() {
               >
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-400 rounded-2xl flex items-center justify-center shadow-lg">
-                    <Users className="w-5 h-5 text-white" />
+                    <IconComponent name={aboutData?.bubbles && aboutData.bubbles[2]?.iconName
+                      ? aboutData.bubbles[2].iconName
+                      : "Zap"} className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <div className="text-xl font-bold text-gray-900">50K+</div>
-                    <div className="text-sm text-gray-500">Active Teams</div>
+                    <div className="text-lg font-bold text-gray-900">
+                      {aboutData?.bubbles && aboutData.bubbles[2]?.title
+                        ? aboutData.bubbles[2].title
+                        : "Title"}
+                    </div>
+                    <div className="text-xs text-gray-500">
+                      {aboutData?.bubbles && aboutData.bubbles[2]?.description
+                        ? aboutData.bubbles[2].description
+                        : "Description"}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -311,11 +320,21 @@ export function AboutSection() {
               >
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-2xl flex items-center justify-center shadow-lg">
-                    <Layers className="w-5 h-5 text-white" />
+                    <IconComponent name={aboutData?.bubbles && aboutData.bubbles[1]?.iconName
+                      ? aboutData.bubbles[1].iconName
+                      : "Zap"} className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <div className="text-xl font-bold text-gray-900">99.9%</div>
-                    <div className="text-sm text-gray-500">Uptime</div>
+                    <div className="text-lg font-bold text-gray-900">
+                      {aboutData?.bubbles && aboutData.bubbles[1]?.title
+                        ? aboutData.bubbles[1].title
+                        : "Title"}
+                    </div>
+                    <div className="text-xs text-gray-500">
+                      {aboutData?.bubbles && aboutData.bubbles[1]?.description
+                        ? aboutData.bubbles[1].description
+                        : "Description"}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -327,11 +346,21 @@ export function AboutSection() {
               >
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-400 rounded-xl flex items-center justify-center shadow-lg">
-                    <Zap className="w-4 h-4 text-white" />
+                    <IconComponent name={aboutData?.bubbles && aboutData.bubbles[0]?.iconName
+                      ? aboutData.bubbles[0].iconName
+                      : "Zap"} className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <div className="text-lg font-bold text-gray-900">2.5s</div>
-                    <div className="text-xs text-gray-500">Avg Response</div>
+                    <div className="text-lg font-bold text-gray-900">
+                      {aboutData?.bubbles && aboutData.bubbles[0]?.title
+                        ? aboutData.bubbles[0].title
+                        : "Title"}
+                    </div>
+                    <div className="text-xs text-gray-500">
+                      {aboutData?.bubbles && aboutData.bubbles[0]?.description
+                        ? aboutData.bubbles[0].description
+                        : "Description"}
+                    </div>
                   </div>
                 </div>
               </div>

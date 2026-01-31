@@ -2,6 +2,7 @@
 // === Global Reusables ===
 // ========================
 
+import { PortableTextBlock } from "@portabletext/react";
 import { ImageWithAlt, SanitySeo } from "./commonTypes";
 
 export interface CTAButton {
@@ -131,6 +132,25 @@ export interface QrProfileCard {
   profileSubtitle?: string;
 }
 
+export interface AboutCommunicationSection {
+  _type: "aboutCommunicationSection";
+  chipText?: string;
+  title: string;
+  titleHighlightText?: string;
+  description?: PortableTextBlock[];
+  highlightFeatures?: {
+    title: string;
+    icon?: string;
+  }[];
+  bubbles?: {
+    iconName?: string;
+    title: string;
+    description?: string;
+  }[];
+  bottomTextHeading?: string;
+  bottomTextDescription?: string;
+}
+
 // ========================
 // === SEO Schema ===
 // ========================
@@ -146,7 +166,8 @@ export type PageBuilderSection =
   | PricingPlans
   | TrustStatistics
   | PlatformLearning
-  | UserTestimonials;
+  | UserTestimonials
+  | AboutCommunicationSection;
 
 export interface HomePage {
   _id: string;
