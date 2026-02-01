@@ -3,16 +3,18 @@
 import React, { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Zap, QrCode, Sparkles, Share2, Globe, TrendingUp } from "lucide-react";
+import { SmartDigitalToolsSection } from "@/types/homeTypes";
+import { IconComponent } from "../IconComponent";
 
 // ✅ Card Data
-const cardContent = [
+const cardContentColors = [
   {
     id: 1,
     title: "AI Contact Insights",
     subtitle: "Smart Recommendations",
     description:
       "Get AI-powered suggestions for follow-ups and relationship management.",
-    badge: "New",
+    chipText: "New",
     badgeColor: "bg-gradient-to-r from-[#f15a24] to-[#ffb47b]",
     icon: Sparkles,
     screenshot:
@@ -21,16 +23,17 @@ const cardContent = [
   },
   {
     id: 2,
-    title: "Instant QR Sharing",
-    subtitle: "Contactless Exchange",
+    title: "Smart Sync",
+    subtitle: "Auto-Update",
     description:
-      "Generate dynamic QR codes that update in real-time. Share your latest info instantly.",
-    badge: "Popular",
+      "Changes sync across all platforms instantly.",
+    chipText: "Beta",
     badgeColor: "bg-gradient-to-r from-[#f15a24] to-[#ffb47b]",
-    icon: QrCode,
-    image:
-      "https://images.unsplash.com/photo-1611078489935-0cb964de46d6?w=800&h=400&fit=crop",
-    gradient: "from-white to-[#fff6f1]",
+    icon: Zap,
+    screenshot:
+      "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=300&h=400&fit=crop",
+    features: ["Real-time sync", "Cloud backup", "Version history"],
+    gradient: "from-[#fff3ec] to-white",
   },
   {
     id: 3,
@@ -38,7 +41,7 @@ const cardContent = [
     subtitle: "Real-time Insights",
     description:
       "Track card views, engagement rates, and conversion metrics with beautiful visualizations.",
-    badge: "Pro",
+    chipText: "Pro",
     badgeColor: "bg-gradient-to-r from-[#f15a24] to-[#ffb47b]",
     icon: TrendingUp,
     metrics: [
@@ -50,42 +53,52 @@ const cardContent = [
   },
   {
     id: 4,
+    title: "Social Integration",
+    subtitle: "Connect Everything",
+    description:
+      "Link all your social profiles, portfolios, and content in one beautiful card.",
+    chipText: "Hot",
+    badgeColor: "bg-gradient-to-r from-[#f15a24] to-[#ffb47b]",
+    icon: Share2,
+    gradient: "from-white to-[#fff6f1]",
+    featureList: [
+      "Unified dashboard for social profiles",
+      "Auto-fetch bio and profile updates",
+      "Smart content linking & tracking",
+    ]
+  },
+  {
+    id: 5,
+    title: "Instant QR Sharing",
+    subtitle: "Contactless Exchange",
+    description:
+      "Generate dynamic QR codes that update in real-time. Share your latest info instantly.",
+    chipText: "Popular",
+    badgeColor: "bg-gradient-to-r from-[#f15a24] to-[#ffb47b]",
+    icon: QrCode,
+    image:
+      "https://images.unsplash.com/photo-1611078489935-0cb964de46d6?w=800&h=400&fit=crop",
+    gradient: "from-white to-[#fff6f1]",
+
+  },
+
+  {
+    id: 6,
     title: "Multi-Card Profiles",
     subtitle: "Context Switching",
     description:
       "Create separate cards for work, personal, and events. Switch instantly based on context.",
-    badge: "Featured",
+    chipText: "Featured",
     badgeColor: "bg-gradient-to-r from-[#f15a24] to-[#ffb47b]",
     icon: Globe,
     profiles: ["Work", "Personal", "Events"],
     gradient: "from-[#fff7f2] to-[#fff0e7]",
   },
-  {
-    id: 5,
-    title: "Social Integration",
-    subtitle: "Connect Everything",
-    description:
-      "Link all your social profiles, portfolios, and content in one beautiful card.",
-    badge: "Hot",
-    badgeColor: "bg-gradient-to-r from-[#f15a24] to-[#ffb47b]",
-    icon: Share2,
-    gradient: "from-white to-[#fff6f1]",
-  },
-  {
-    id: 6,
-    title: "Smart Sync",
-    subtitle: "Auto-Update",
-    description:
-      "Changes sync across all platforms instantly. Update once, reflect everywhere.",
-    badge: "Beta",
-    badgeColor: "bg-gradient-to-r from-[#f15a24] to-[#ffb47b]",
-    icon: Zap,
-    screenshot:
-      "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=300&h=400&fit=crop",
-    features: ["Real-time sync", "Cloud backup", "Version history"],
-    gradient: "from-[#fff3ec] to-white",
-  },
+
+
 ];
+
+
 
 // ✅ Hook to track screen width
 const useWindowWidth = () => {
@@ -101,10 +114,16 @@ const useWindowWidth = () => {
   return width;
 };
 
-const ExpandingCardsSection: React.FC = () => {
+interface ExpandingCardsSectionProps {
+  newFeaturesData: SmartDigitalToolsSection;
+}
+
+const ExpandingCardsSection: React.FC<ExpandingCardsSectionProps> = ({ newFeaturesData }: ExpandingCardsSectionProps) => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const width = useWindowWidth();
   const [mounted, setMounted] = useState(false);
+
+  console.log(newFeaturesData?.cards);
 
   useEffect(() => {
     setMounted(true);
@@ -117,44 +136,56 @@ const ExpandingCardsSection: React.FC = () => {
 
   // ✅ Balanced card positions for 1920×1080 & 1366×768
   const positions = [
-    { x: [-160, -540], y: [-80, -100] },
-    { x: [180, 520], y: [-90, -150] },
-    { x: [-180, -380], y: [100, 300] },
-    { x: [180, 520], y: [200, 250] },
-    { x: [0, 135], y: [180, 70] },
-    { x: [-10, -220], y: [-80, -100] },
+    { x: [-160, -540], y: [-80, -100] }, // AI Contact Insights
+    { x: [-10, -220], y: [-80, -100] }, // Smart Sync
+    { x: [-180, -380], y: [100, 300] }, // Advanced Analytics
+    { x: [0, 135], y: [180, 70] }, // Social Integration
+    { x: [180, 520], y: [-90, -150] }, // Instant QR Sharing
+    { x: [180, 520], y: [200, 250] }, // Multi-Card Profiles
   ];
 
   // ✅ ALL useTransform hooks must be called unconditionally
-  const card0X = useTransform(scrollYProgress, [0.15, 0.5], positions[0].x);
-  const card0Y = useTransform(scrollYProgress, [0.15, 0.5], positions[0].y);
-  const card0Scale = useTransform(scrollYProgress, [0.15, 0.5], [0.9, 1]);
-  const card0Opacity = useTransform(scrollYProgress, [0.1, 0.3], [0, 1]);
 
-  const card1X = useTransform(scrollYProgress, [0.15, 0.5], positions[1].x);
-  const card1Y = useTransform(scrollYProgress, [0.15, 0.5], positions[1].y);
+  // AI Contact Insights
+  const card1X = useTransform(scrollYProgress, [0.15, 0.5], positions[0].x);
+  const card1Y = useTransform(scrollYProgress, [0.15, 0.5], positions[0].y);
   const card1Scale = useTransform(scrollYProgress, [0.15, 0.5], [0.9, 1]);
   const card1Opacity = useTransform(scrollYProgress, [0.1, 0.3], [0, 1]);
 
-  const card2X = useTransform(scrollYProgress, [0.15, 0.5], positions[2].x);
-  const card2Y = useTransform(scrollYProgress, [0.15, 0.5], positions[2].y);
+  // Smart Sync
+  const card2X = useTransform(scrollYProgress, [0.15, 0.5], positions[1].x);
+  const card2Y = useTransform(scrollYProgress, [0.15, 0.5], positions[1].y);
   const card2Scale = useTransform(scrollYProgress, [0.15, 0.5], [0.9, 1]);
   const card2Opacity = useTransform(scrollYProgress, [0.1, 0.3], [0, 1]);
 
-  const card3X = useTransform(scrollYProgress, [0.15, 0.5], positions[3].x);
-  const card3Y = useTransform(scrollYProgress, [0.15, 0.5], positions[3].y);
+  // Advanced Analytics
+  const card3X = useTransform(scrollYProgress, [0.15, 0.5], positions[2].x);
+  const card3Y = useTransform(scrollYProgress, [0.15, 0.5], positions[2].y);
   const card3Scale = useTransform(scrollYProgress, [0.15, 0.5], [0.9, 1]);
   const card3Opacity = useTransform(scrollYProgress, [0.1, 0.3], [0, 1]);
 
-  const card4X = useTransform(scrollYProgress, [0.15, 0.5], positions[4].x);
-  const card4Y = useTransform(scrollYProgress, [0.15, 0.5], positions[4].y);
+
+  //Multi-Card Profiles
+  const card4X = useTransform(scrollYProgress, [0.15, 0.5], positions[3].x);
+  const card4Y = useTransform(scrollYProgress, [0.15, 0.5], positions[3].y);
   const card4Scale = useTransform(scrollYProgress, [0.15, 0.5], [0.9, 1]);
   const card4Opacity = useTransform(scrollYProgress, [0.1, 0.3], [0, 1]);
 
-  const card5X = useTransform(scrollYProgress, [0.15, 0.5], positions[5].x);
-  const card5Y = useTransform(scrollYProgress, [0.15, 0.5], positions[5].y);
+  // QR Sharing
+  const card5X = useTransform(scrollYProgress, [0.15, 0.5], positions[4].x);
+  const card5Y = useTransform(scrollYProgress, [0.15, 0.5], positions[4].y);
   const card5Scale = useTransform(scrollYProgress, [0.15, 0.5], [0.9, 1]);
   const card5Opacity = useTransform(scrollYProgress, [0.1, 0.3], [0, 1]);
+
+
+  // Social Integration
+  const card6X = useTransform(scrollYProgress, [0.15, 0.5], positions[5].x);
+  const card6Y = useTransform(scrollYProgress, [0.15, 0.5], positions[5].y);
+  const card6Scale = useTransform(scrollYProgress, [0.15, 0.5], [0.9, 1]);
+  const card6Opacity = useTransform(scrollYProgress, [0.1, 0.3], [0, 1]);
+
+
+
 
   // ✅ Responsive scaling for different screen sizes
   const layoutScale =
@@ -207,57 +238,55 @@ const ExpandingCardsSection: React.FC = () => {
           <motion.div
             className="absolute w-[290px] md:w-[300px] lg:w-[310px] h-[420px] md:h-[430px] lg:h-[440px]"
             style={{
-              x: card0X,
-              y: card0Y,
-              scale: card0Scale,
-              opacity: card0Opacity,
+              x: card1X,
+              y: card1Y,
+              scale: card1Scale,
+              opacity: card1Opacity,
             }}
           >
             <motion.div
               whileHover={{ scale: 1.05, y: -10 }}
-              className={`h-full bg-gradient-to-br ${cardContent[0].gradient} rounded-3xl shadow-xl overflow-hidden text-black`}
+              className={`h-full bg-gradient-to-br ${cardContentColors[0].gradient} rounded-3xl shadow-xl overflow-hidden text-black`}
             >
               <div className="p-6 h-full flex flex-col">
                 <div className="flex items-center justify-between mb-3">
                   <div
-                    className={`${cardContent[0].badgeColor} text-white text-xs font-bold px-3 py-1.5 rounded-full`}
+                    className={`${cardContentColors[0].badgeColor} text-white text-xs font-bold px-3 py-1.5 rounded-full`}
                   >
-                    {cardContent[0].badge}
+                    {newFeaturesData?.cards[0]?.chipText}
                   </div>
                   <div className="w-10 h-10 bg-[#f15a24]/10 rounded-xl flex items-center justify-center">
-                    {React.createElement(cardContent[0].icon, {
-                      className: "w-5 h-5 text-[#f15a24]",
-                    })}
+                    <IconComponent name={newFeaturesData?.cards[0].icon ?? "Zap"} className="w-4 h-4 text-[#f15a24]" />
                   </div>
                 </div>
                 <h3 className="text-2xl font-bold mb-1">
-                  {cardContent[0].title}
+                  {newFeaturesData?.cards[0].heading}
                 </h3>
                 <p className="text-gray-600 text-sm mb-4">
-                  {cardContent[0].subtitle}
+                  {newFeaturesData?.cards[0].subheading}
                 </p>
                 <div className="flex-1 bg-white/50 backdrop-blur-md rounded-2xl overflow-hidden mb-4 border border-[#f15a24]/10">
-                  <img
-                    src={cardContent[0].screenshot}
-                    alt={cardContent[0].title}
+                  {newFeaturesData?.cards[0]?._type === "card1" ? <img
+                    src={newFeaturesData?.cards[0].image?.url || ""}
+                    alt={newFeaturesData?.cards[0].heading}
                     className="w-full h-full object-cover"
-                  />
+                  /> : null}
                 </div>
                 <p className="text-gray-700 text-sm mb-4">
-                  {cardContent[0].description}
+                  {newFeaturesData?.cards[0].description}
                 </p>
               </div>
             </motion.div>
           </motion.div>
 
-          {/* CARD 2 — Instant QR Sharing */}
+          {/* CARD 5 — Instant QR Sharing */}
           <motion.div
             className="absolute w-[350px] md:w-[360px] lg:w-[370px] h-[420px] md:h-[330px] lg:h-[340px]"
             style={{
-              x: card1X,
-              y: card1Y,
-              scale: card1Scale,
-              opacity: card1Opacity,
+              x: card5X,
+              y: card5Y,
+              scale: card5Scale,
+              opacity: card5Opacity,
             }}
           >
             <motion.div
@@ -267,32 +296,29 @@ const ExpandingCardsSection: React.FC = () => {
             >
               <div className="relative h-32 overflow-hidden">
                 <img
-                  src={cardContent[1].image}
-                  alt={cardContent[1].title}
+                  src={newFeaturesData?.cards[4]?._type === "card5" ? newFeaturesData?.cards[4]?.image?.url : ""}
+                  alt={newFeaturesData?.cards[4].heading}
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white/70" />
                 <div
-                  className={`absolute top-4 right-4 ${cardContent[1].badgeColor} text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg`}
+                  className={`absolute top-4 right-4 ${cardContentColors[4].badgeColor} text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg`}
                 >
-                  {cardContent[1].badge}
+                  {newFeaturesData?.cards[4].chipText}
                 </div>
                 <div className="absolute bottom-4 left-4">
                   <div className="w-10 h-10 bg-[#f15a24]/10 rounded-2xl shadow-md flex items-center justify-center">
-                    {React.createElement(cardContent[1].icon, {
-                      className: "w-5 h-5 text-[#f15a24]",
-                    })}
+                    <IconComponent name={newFeaturesData?.cards[4].icon ?? "Zap"} className="w-4 h-4 text-[#f15a24]" />
                   </div>
                 </div>
               </div>
               <div className="p-5 flex flex-col justify-start h-full">
-                <h3 className="text-lg font-bold mb-1">{cardContent[1].title}</h3>
+                <h3 className="text-lg font-bold mb-1">{newFeaturesData?.cards[4].heading}</h3>
                 <p className="text-gray-600 text-xs font-semibold mb-2">
-                  {cardContent[1].subtitle}
+                  {newFeaturesData?.cards[4].subheading}
                 </p>
                 <p className="text-gray-700 text-sm leading-relaxed">
-                  {cardContent[1].description} Perfect for instant digital contact
-                  sharing and professional networking.
+                  {newFeaturesData?.cards[4].description}
                 </p>
               </div>
             </motion.div>
@@ -302,70 +328,6 @@ const ExpandingCardsSection: React.FC = () => {
           <motion.div
             className="absolute w-[580px] md:w-[600px] lg:w-[635px] h-[300px] md:h-[310px] lg:h-[320px]"
             style={{
-              x: card2X,
-              y: card2Y,
-              scale: card2Scale,
-              opacity: card2Opacity,
-            }}
-          >
-            <motion.div
-              whileHover={{ scale: 1.05, y: -10 }}
-              className={`h-full bg-gradient-to-br ${cardContent[2].gradient} rounded-3xl shadow-2xl overflow-hidden border border-[#333] !text-white`}
-            >
-              <div className="p-6 h-full flex flex-col">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-[#f15a24]/20 rounded-2xl flex items-center justify-center">
-                      {React.createElement(cardContent[2].icon, {
-                        className: "w-6 h-6 text-[#ffb47b]",
-                      })}
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold !text-white">
-                        {cardContent[2].title}
-                      </h3>
-                      <p className="!text-gray-400 text-sm">
-                        {cardContent[2].subtitle}
-                      </p>
-                    </div>
-                  </div>
-                  <div
-                    className={`${cardContent[2].badgeColor} !text-white text-xs font-bold px-3 py-1.5 rounded-full`}
-                  >
-                    {cardContent[2].badge}
-                  </div>
-                </div>
-
-                <div className="flex-1 grid grid-cols-3 gap-3 mb-4">
-                  {cardContent[2]?.metrics?.map((metric, i) => (
-                    <div
-                      key={i}
-                      className="bg-[#2a2a2a] rounded-xl p-3 border border-[#444]"
-                    >
-                      <p className="text-2xl font-bold !text-[#ffb47b] mb-1">
-                        {metric.value}
-                      </p>
-                      <p className="text-xs !text-gray-400 mb-2">
-                        {metric.label}
-                      </p>
-                      <div className="text-green-400 text-xs font-semibold">
-                        {metric.change}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <p className="!text-gray-300 text-sm leading-relaxed">
-                  {cardContent[2].description}
-                </p>
-              </div>
-            </motion.div>
-          </motion.div>
-
-          {/* CARD 4 — Multi-Card Profiles */}
-          <motion.div
-            className="absolute w-[350px] md:w-[360px] lg:w-[370px] h-[420px] md:h-[430px] lg:h-[440px]"
-            style={{
               x: card3X,
               y: card3Y,
               scale: card3Scale,
@@ -374,30 +336,91 @@ const ExpandingCardsSection: React.FC = () => {
           >
             <motion.div
               whileHover={{ scale: 1.05, y: -10 }}
+              className={`h-full bg-gradient-to-br ${cardContentColors[2].gradient} rounded-3xl shadow-2xl overflow-hidden border border-[#333] !text-white`}
+            >
+              <div className="p-6 h-full flex flex-col">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-[#f15a24]/20 rounded-2xl flex items-center justify-center">
+                      <IconComponent name={newFeaturesData?.cards[2].icon ?? "Zap"} className="w-6 h-6 text-[#ffb47b]" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold !text-white">
+                        {newFeaturesData?.cards[2].heading}
+                      </h3>
+                      <p className="!text-gray-400 text-sm">
+                        {newFeaturesData?.cards[2].subheading}
+                      </p>
+                    </div>
+                  </div>
+                  <div
+                    className={`${cardContentColors[2].badgeColor} !text-white text-xs font-bold px-3 py-1.5 rounded-full`}
+                  >
+                    {newFeaturesData?.cards[2].chipText}
+                  </div>
+                </div>
+
+                <div className="flex-1 grid grid-cols-3 gap-3 mb-4">
+                  {newFeaturesData?.cards[2]?._type === "card3" ? newFeaturesData?.cards[2]?.metrics?.map((metric, i) => (
+                    <div
+                      key={i}
+                      className="bg-[#2a2a2a] rounded-xl p-3 border border-[#444]"
+                    >
+                      <p className="text-2xl font-bold !text-[#ffb47b] mb-1">
+                        {metric.topText}
+                      </p>
+                      <p className="text-xs !text-gray-400 mb-2">
+                        {metric.centerText}
+                      </p>
+                      <div className="text-green-400 text-xs font-semibold">
+                        {metric.bottomText}
+                      </div>
+                    </div>
+                  )) : null}
+                </div>
+
+                <p className="!text-gray-300 text-sm leading-relaxed">
+                  {newFeaturesData?.cards[2].description}
+                </p>
+              </div>
+            </motion.div>
+          </motion.div>
+
+          {/* CARD 6 — Multi-Card Profiles */}
+          <motion.div
+            className="absolute w-[350px] md:w-[360px] lg:w-[370px] h-[420px] md:h-[430px] lg:h-[440px]"
+            style={{
+              x: card6X,
+              y: card6Y,
+              scale: card6Scale,
+              opacity: card6Opacity,
+            }}
+          >
+            <motion.div
+              whileHover={{ scale: 1.05, y: -10 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              className={`h-full bg-gradient-to-br ${cardContent[3].gradient} rounded-3xl shadow-xl overflow-hidden text-black border border-[#f15a24]/10`}
+              className={`h-full bg-gradient-to-br ${cardContentColors[5].gradient} rounded-3xl shadow-xl overflow-hidden text-black border border-[#f15a24]/10`}
             >
               <div className="p-5 flex flex-col h-full relative">
                 <div className="absolute top-4 right-4">
                   <div
-                    className={`${cardContent[3].badgeColor} text-white text-[10px] font-semibold px-2.5 py-1 rounded-full shadow-md`}
+                    className={`${cardContentColors[5].badgeColor} text-white text-[10px] font-semibold px-2.5 py-1 rounded-full shadow-md`}
                   >
-                    {cardContent[3].badge}
+                    {newFeaturesData?.cards[5].chipText}
                   </div>
                 </div>
                 <div className="w-12 h-12 bg-gradient-to-br from-[#f15a24]/10 to-[#ffb47b]/10 rounded-xl flex items-center justify-center mb-3 border border-[#f15a24]/20">
-                  {React.createElement(cardContent[3].icon, {
-                    className: "w-6 h-6 text-[#f15a24]",
-                  })}
+                  <IconComponent name={newFeaturesData?.cards[5].icon ?? "Zap"} className="w-6 h-6 text-[#f15a24]" />
+
                 </div>
 
-                <h3 className="text-xl font-bold mb-1">{cardContent[3].title}</h3>
+                <h3 className="text-xl font-bold mb-1">{newFeaturesData?.cards[5].heading}</h3>
                 <p className="text-gray-600 text-xs mb-4">
-                  {cardContent[3].subtitle}
+                  {newFeaturesData?.cards[5].subheading}
                 </p>
 
                 <div className="space-y-2 mb-3">
-                  {cardContent[3]?.profiles?.map((profile, i) => (
+                  {newFeaturesData?.cards[5]?._type === "card6" ? newFeaturesData?.cards[5]?.tabs?.map((profile, i) => (
                     <div
                       key={i}
                       className="bg-white/70 border border-[#f15a24]/10 rounded-xl p-3 flex items-center justify-between shadow-sm"
@@ -405,26 +428,26 @@ const ExpandingCardsSection: React.FC = () => {
                       <div className="flex items-center gap-2">
                         <div className="w-8 h-8 bg-gradient-to-br from-[#f15a24]/10 to-[#ffb47b]/10 rounded-lg flex items-center justify-center">
                           <span className="text-[#f15a24] font-semibold text-xs">
-                            {profile.charAt(0)}
+                            {profile?.text?.charAt(0)}
                           </span>
                         </div>
                         <span className="text-gray-800 font-medium text-sm">
-                          {profile}
+                          {profile?.text}
                         </span>
                       </div>
                       <div className="w-2 h-2 bg-[#f15a24] rounded-full" />
                     </div>
-                  ))}
+                  )) : null}
                 </div>
 
                 <p className="text-gray-700 text-xs leading-relaxed">
-                  {cardContent[3].description}
+                  {newFeaturesData?.cards[5].description}
                 </p>
               </div>
             </motion.div>
           </motion.div>
 
-          {/* CARD 5 — Social Integration */}
+          {/* CARD 4 — Social Integration */}
           <motion.div
             className="absolute w-[330px] md:w-[340px] lg:w-[350px] h-auto min-h-[480px]"
             style={{
@@ -440,92 +463,89 @@ const ExpandingCardsSection: React.FC = () => {
               className="h-full bg-gradient-to-br from-white to-[#fff7f2] rounded-3xl shadow-2xl overflow-hidden text-black border border-[#f15a24]/10"
             >
               <div className="relative h-[320px] overflow-hidden">
-                <img
-                  src="https://contato.app/assets/images/screenshots/analytics-insights.png"
-                  alt={cardContent[4].title}
+                {(newFeaturesData?.cards[3]?._type === "card4") ? <img
+                  src={newFeaturesData?.cards[3]?.image?.url ?? ""}
+                  alt={newFeaturesData?.cards[3].heading}
                   className="w-full h-full object-cover object-top"
-                />
+                /> : null}
+
+
                 <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-white/60" />
                 <div
-                  className={`absolute top-4 right-4 ${cardContent[4].badgeColor} text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg`}
+                  className={`absolute top-4 right-4 ${cardContentColors[4].badgeColor} text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg`}
                 >
-                  {cardContent[4].badge}
+                  {newFeaturesData?.cards[3].chipText}
                 </div>
               </div>
 
               <div className="p-6">
                 <div className="w-14 h-14 bg-gradient-to-br from-[#f15a24] to-[#ffb47b] rounded-2xl shadow-lg flex items-center justify-center mb-4">
-                  {React.createElement(cardContent[4].icon, {
-                    className: "w-7 h-7 text-white",
-                  })}
+                  <IconComponent name={newFeaturesData?.cards[2].icon ?? "Zap"} className="w-7 h-7 text-white" />
+
                 </div>
 
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                  {cardContent[4].title}
+                  {newFeaturesData?.cards[3].heading}
                 </h3>
                 <p className="text-gray-600 text-sm font-semibold mb-3">
-                  {cardContent[4].subtitle}
+                  {newFeaturesData?.cards[3].subheading}
                 </p>
 
                 <p className="text-gray-700 text-sm leading-relaxed mb-5">
-                  {cardContent[4].description}
+                  {newFeaturesData?.cards[3].description}
                 </p>
 
                 <div className="space-y-3">
-                  {[
-                    "Unified dashboard for social profiles",
-                    "Auto-fetch bio and profile updates",
-                    "Smart content linking & tracking",
-                  ].map((text, i) => (
+                  {newFeaturesData?.cards[3]?._type === "card4" ? newFeaturesData?.cards[3]?.bulletPoints?.map((text, i) => (
                     <div key={i} className="flex items-center gap-3">
                       <div className="w-3 h-3 bg-[#f15a24] rounded-full" />
                       <p className="text-gray-700 text-sm">{text}</p>
                     </div>
-                  ))}
+                  )) : null}
                 </div>
               </div>
             </motion.div>
           </motion.div>
 
-          {/* CARD 6 — Smart Sync */}
+          {/* CARD 2 — Smart Sync */}
           <motion.div
             className="absolute w-[290px] md:w-[300px] lg:w-[310px] h-[420px] md:h-[430px] lg:h-[440px]"
             style={{
-              x: card5X,
-              y: card5Y,
-              scale: card5Scale,
-              opacity: card5Opacity,
+              x: card2X,
+              y: card2Y,
+              scale: card2Scale,
+              opacity: card2Opacity,
             }}
           >
             <motion.div
               whileHover={{ scale: 1.05, y: -10 }}
-              className={`h-full bg-gradient-to-br ${cardContent[5].gradient} rounded-3xl shadow-xl overflow-hidden relative text-black`}
+              className={`h-full bg-gradient-to-br ${cardContentColors[1].gradient} rounded-3xl shadow-xl overflow-hidden relative text-black`}
             >
               <div className="absolute inset-0 bg-white/10" />
               <div className="relative p-6 h-full flex flex-col">
                 <div className="flex items-center justify-between mb-3">
                   <div
-                    className={`${cardContent[5].badgeColor} text-white text-xs font-bold px-3 py-1.5 rounded-full`}
+                    className={`${cardContentColors[1].badgeColor} text-white text-xs font-bold px-3 py-1.5 rounded-full`}
                   >
-                    {cardContent[5].badge}
+                    {newFeaturesData?.cards[1].chipText}
                   </div>
                   <div className="w-10 h-10 bg-[#f15a24]/10 rounded-xl flex items-center justify-center">
-                    {React.createElement(cardContent[5].icon, {
-                      className: "w-5 h-5 text-[#f15a24]",
-                    })}
+
+                    <IconComponent name={newFeaturesData?.cards[2].icon ?? "Zap"} className="w-5 h-5 text-[#f15a24]" />
+
                   </div>
                 </div>
 
                 <h3 className="text-2xl font-bold mb-1">
-                  {cardContent[5].title}
+                  {newFeaturesData?.cards[1].heading}
                 </h3>
                 <p className="text-gray-600 text-sm mb-4">
-                  {cardContent[5].subtitle}
+                  {newFeaturesData?.cards[1].subheading}
                 </p>
 
                 <div className="flex-1 bg-white/50 rounded-2xl p-4 mb-4 border border-[#f15a24]/20">
                   <div className="space-y-3">
-                    {cardContent[5]?.features?.map((feature, i) => (
+                    {newFeaturesData?.cards[1]?._type === "card2" ? newFeaturesData?.cards[1]?.bulletPoints?.map((feature, i) => (
                       <div
                         key={i}
                         className="flex items-center gap-3 bg-[#f15a24]/10 rounded-lg p-3"
@@ -535,12 +555,12 @@ const ExpandingCardsSection: React.FC = () => {
                           {feature}
                         </span>
                       </div>
-                    ))}
+                    )) : null}
                   </div>
                 </div>
 
                 <p className="text-gray-700 text-sm leading-relaxed">
-                  {cardContent[5].description}
+                  {newFeaturesData?.cards[1].description}
                 </p>
               </div>
             </motion.div>
@@ -551,32 +571,32 @@ const ExpandingCardsSection: React.FC = () => {
       {/* 📱 Mobile Layout */}
       {mounted && !showDesktopCards && (
         <div className="flex flex-col gap-6 px-4 mt-8 w-full max-w-md mx-auto">
-          {cardContent.map((card) => (
+          {newFeaturesData?.cards.map((card, index) => (
             <div
-              key={card.id}
-              className={`bg-gradient-to-br ${card.id === 3 ? "from-[#fff7f2] to-[#fff0e7]" : card.gradient
+              key={card.heading}
+              className={`bg-gradient-to-br ${index === 2 ? "from-[#fff7f2] to-[#fff0e7]" : cardContentColors[index].gradient
                 } rounded-3xl shadow-lg overflow-hidden text-black border border-[#f15a24]/10`}
             >
               <div className="p-5">
                 <div className="flex items-center justify-between mb-3">
                   <div
-                    className={`${card.badgeColor} !text-white text-xs font-bold px-3 py-1.5 rounded-full`}
+                    className={`${cardContentColors[index].badgeColor} !text-white text-xs font-bold px-3 py-1.5 rounded-full`}
                   >
-                    {card.badge}
+                    {card.chipText}
                   </div>
                   <div className="w-8 h-8 bg-[#f15a24]/10 rounded-lg flex items-center justify-center">
-                    {React.createElement(card.icon, {
-                      className: "w-4 h-4 text-[#f15a24]",
-                    })}
+
+                    <IconComponent name={card.icon ?? "Zap"} className="w-4 h-4 text-[#f15a24]" />
+
                   </div>
                 </div>
-                <h3 className="text-xl font-bold !text-[#1a1a1a] mb-1">{card.title}</h3>
-                <p className="!text-[#4b4b4b] !text-sm mb-3">{card.subtitle}</p>
-                {(card.screenshot || card.image) && (
+                <h3 className="text-xl font-bold !text-[#1a1a1a] mb-1">{card.heading}</h3>
+                <p className="!text-[#4b4b4b] !text-sm mb-3">{card.subheading}</p>
+                {(card._type === "card1" || card?._type === "card5") && (
                   <div className="rounded-2xl overflow-hidden mb-3 border border-[#f15a24]/10">
                     <img
-                      src={card.screenshot || card.image}
-                      alt={card.title}
+                      src={card.image?.url}
+                      alt={card.heading}
                       className="w-full h-44 object-cover"
                     />
                   </div>

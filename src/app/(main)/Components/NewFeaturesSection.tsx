@@ -1,9 +1,15 @@
 import ExpandingCardsSection from "@/components/ui/Cards/FeatureSectionCards";
+import { SmartDigitalToolsSection } from "@/types/homeTypes";
 
-const NewFeaturesSection = () => {
+interface NewFeaturesSectionProps {
+  newFeaturesData: SmartDigitalToolsSection | null;
+}
+
+const NewFeaturesSection = ({ newFeaturesData }: NewFeaturesSectionProps) => {
+  if (!newFeaturesData) return null;
   return (
     <section>
-      <ExpandingCardsSection />
+      <ExpandingCardsSection newFeaturesData={newFeaturesData} />
     </section>
   );
 };

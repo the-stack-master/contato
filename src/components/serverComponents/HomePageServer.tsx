@@ -69,7 +69,12 @@ const HomePageServer = async () => {
       (section) => section?._type === "appShowcaseSection"
     ) || null;
 
+
+  console.log("===appShow", appShowCaseData)
+
   const aboutData = homePage?.pageBuilder?.find((section) => section?._type === "aboutCommunicationSection") || null
+
+  const newFeaturesData = homePage?.pageBuilder?.find((section) => section?._type === "smartDigitalToolsSection") || null
 
   return (
     <>
@@ -79,11 +84,8 @@ const HomePageServer = async () => {
         logoData={logoData}
       />
       <AboutSection aboutData={aboutData} />
-      {/* <ContatoSection /> */}
       <StatsSection statsData={statsData} />
-      {/* <FeaturesSectionClient featureData={featureData} /> */}
-      {/* <LatestFeaturesSection features={featuresData.latest} /> */}
-      <NewFeaturesSection />
+      <NewFeaturesSection newFeaturesData={newFeaturesData} />
       <VideoSection videoData={videoData} videoList={videos} />
       <TestimonialsSectionClient testimonialData={testimonialData} />
       <PricingSectionClient pricingData={pricingData} />

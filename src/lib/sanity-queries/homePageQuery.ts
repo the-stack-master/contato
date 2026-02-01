@@ -4,6 +4,7 @@ import { client } from "@/lib/sanity";
 export async function getHomePage(): Promise<HomePage | null> {
   const query = `*[_type == "homePage" && isActive == true][0]{
     title,
+
     seo{
       _type,
       metaTitle,
@@ -19,13 +20,17 @@ export async function getHomePage(): Promise<HomePage | null> {
         description,
         type,
         siteName,
-        image{ asset->{url}, alt }
+        image{
+          asset->{url},
+          alt
+        }
       },
       noIndex,
       noFollow,
       priority,
       changeFreq
     },
+
     pageBuilder[]{
       _type,
       ...,
@@ -49,8 +54,12 @@ export async function getHomePage(): Promise<HomePage | null> {
       },
 
       _type == "appShowcaseSection" => {
-        imageUrls[]{ asset->{url}, alt }
-      },
+  imageUrls[]{
+    imageUrl,
+    alt
+  }
+},
+
 
       _type == "contentFeaturesGrid" => {
         sectionHeading,
@@ -68,10 +77,23 @@ export async function getHomePage(): Promise<HomePage | null> {
         secondaryHeading,
         highlightedWord,
         description,
-        statistics[]{ value, label },
-        ctaButtons[]{ buttonText, buttonUrl, isPrimary },
-        demoVideo{ videoText, videoDuration },
-        brandIcon{ asset->{url}, alt }
+        statistics[]{
+          value,
+          label
+        },
+        ctaButtons[]{
+          buttonText,
+          buttonUrl,
+          isPrimary
+        },
+        demoVideo{
+          videoText,
+          videoDuration
+        },
+        brandIcon{
+          asset->{url},
+          alt
+        }
       },
 
       _type == "pricingPlans" => {
@@ -93,18 +115,75 @@ export async function getHomePage(): Promise<HomePage | null> {
       _type == "trustStatistics" => {
         sectionHeading,
         sectionDescription,
-        statistics[]{ value, label }
+        statistics[]{
+          value,
+          label
+        }
       },
 
       _type == "platformLearning" => {
         sectionHeading,
         description,
-        features[]{ icon, title },
-        ctaButton{ buttonText, buttonUrl },
+        features[]{
+          icon,
+          title
+        },
+        ctaButton{
+          buttonText,
+          buttonUrl
+        },
         videoEmbed{
           videoUrl,
-          thumbnailImage{ asset->{url}, alt }
+          thumbnailImage{
+            asset->{url},
+            alt
+          }
         }
+      },
+
+      _type == "smartDigitalToolsSection" => {
+        heading,
+        subheading,
+
+        cards[]{
+          _type,
+          chipText,
+          heading,
+          subheading,
+          description,
+
+          icon,
+          image{
+  type,
+  upload{
+    asset->{url},
+    alt
+  },
+  url
+},
+
+          bulletPoints,
+
+          metrics[]{
+            topText,
+            centerText,
+            bottomText
+          },
+
+          tabs[]{
+            text,
+            icon{
+              asset->{url},
+              alt
+            }
+          }
+        },
+
+       cta{
+  text,
+  url
+}
+
       },
 
       _type == "userTestimonials" => {
@@ -119,6 +198,7 @@ export async function getHomePage(): Promise<HomePage | null> {
         }
       }
     },
+
     isActive
   }`;
 

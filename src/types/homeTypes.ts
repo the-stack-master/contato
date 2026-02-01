@@ -151,6 +151,103 @@ export interface AboutCommunicationSection {
   bottomTextDescription?: string;
 }
 
+export interface SmartToolMetric {
+  topText?: string;
+  centerText?: string;
+  bottomText?: string;
+}
+
+export interface SmartToolTab {
+  text?: string;
+  icon?: ImageWithAlt;
+}
+
+export interface SmartToolImage {
+  type: "upload" | "url";
+  upload?: ImageWithAlt;
+  url?: string;
+}
+
+export interface SmartToolCard1 {
+  _type: "card1";
+  image?: SmartToolImage;
+  icon?: string;
+  chipText?: string;
+  heading: string;
+  subheading?: string;
+  description?: string;
+}
+
+export interface SmartToolCard2 {
+  _type: "card2";
+  icon?: string;
+  chipText?: string;
+  heading: string;
+  subheading?: string;
+  bulletPoints: string[];
+  description?: string;
+}
+
+export interface SmartToolCard3 {
+  _type: "card3";
+  icon?: string;
+  chipText?: string;
+  heading: string;
+  subheading?: string;
+  metrics: SmartToolMetric[];
+  description?: string;
+}
+
+export interface SmartToolCard4 {
+  _type: "card4";
+  icon?: string;
+  chipText?: string;
+  heading: string;
+  subheading?: string;
+  description?: string;
+  bulletPoints: string[];
+  image?: SmartToolImage;
+}
+
+export interface SmartToolCard5 {
+  _type: "card5";
+  image?: SmartToolImage;
+  icon?: string;
+  chipText?: string;
+  heading: string;
+  subheading?: string;
+  description?: string;
+}
+
+export interface SmartToolCard6 {
+  _type: "card6";
+  icon?: string;
+  chipText?: string;
+  heading: string;
+  subheading?: string;
+  tabs: SmartToolTab[];
+  description?: string;
+}
+
+export type SmartToolCard =
+  | SmartToolCard1
+  | SmartToolCard2
+  | SmartToolCard3
+  | SmartToolCard4
+  | SmartToolCard5
+  | SmartToolCard6;
+
+export interface SmartDigitalToolsSection {
+  _type: "smartDigitalToolsSection";
+  heading: string;
+  subheading?: string;
+  cards: SmartToolCard[];
+  cta?: {
+    text: string;
+    url?: string;
+  };
+}
+
 // ========================
 // === SEO Schema ===
 // ========================
@@ -167,7 +264,8 @@ export type PageBuilderSection =
   | TrustStatistics
   | PlatformLearning
   | UserTestimonials
-  | AboutCommunicationSection;
+  | AboutCommunicationSection
+  | SmartDigitalToolsSection;
 
 export interface HomePage {
   _id: string;
