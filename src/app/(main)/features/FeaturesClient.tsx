@@ -262,67 +262,70 @@ const FeaturesPage = ({ featuresData }: FeaturesDataProps) => {
       {/* Hero Section */}
       <motion.section
         aria-label="Hero"
-        className="flex flex-col md:flex-row items-center max-w-7xl mx-auto pt-26 px-6 bg-gradient-to-b from-orange-50/60 to-white mb-24 "
+        className="flex flex-col md:flex-row items-center justify-center bg-gradient-to-b from-orange-50/60 to-white "
         initial="hidden"
         animate="visible"
         variants={fadeInUp}
         style={{ overflow: "visible" }} // allow phones to overflow container
       >
-        {/* Left text side */}
-        <div className="w-full min-[900px]:w-2/5 max-w-xl text-left mb-8 min-[900px]:mb-0 min-[900px]:pr-8">
-          <h1 className="text-3xl md:text-4xl font-extrabold leading-tight  mb-4">
-            <span className="!text-black">
-              {splitSentence(featuresData?.heroSection?.highlightedText)?.firstPart}
-            </span>
-            &nbsp;
-            <span className="!text-[#f15A24] font-extrabold">
-              {splitSentence(featuresData?.heroSection?.highlightedText)?.secondPart}
-            </span>
-          </h1>
-          <p className="text-sm md:text-base text-gray-700 px-1 md:px-0">
-            {featuresData?.heroSection?.description}
-          </p>
+        <div className="flex flex-col md:flex-row items-center max-w-7xl mx-auto pt-26 px-6 mb-24 ">
+          {/* Left text side */}
+          <div className="w-full min-[900px]:w-2/5 max-w-xl text-left mb-8 min-[900px]:mb-0 min-[900px]:pr-8">
+            <h1 className="text-3xl md:text-4xl font-extrabold leading-tight  mb-4">
+              <span className="!text-black">
+                {splitSentence(featuresData?.heroSection?.highlightedText)?.firstPart}
+              </span>
+              &nbsp;
+              <span className="!text-[#f15A24] font-extrabold">
+                {splitSentence(featuresData?.heroSection?.highlightedText)?.secondPart}
+              </span>
+            </h1>
+            <p className="text-sm md:text-base text-gray-700 px-1 md:px-0">
+              {featuresData?.heroSection?.description}
+            </p>
 
-          <div className="mt-10">
-            <AppDownloadButtons featuresData={featuresData} />
+            <div className="mt-10">
+              <AppDownloadButtons featuresData={featuresData} />
+            </div>
           </div>
-        </div>
 
-        {/* Right phones side */}
-        <div
-          className="relative hidden min-[900px]:block"
-          style={{
-            width: 640,
-            height: 600,
-            marginLeft: "auto",
-            transform: `scale(${phoneScale})`,
-            transformOrigin: "right center",
-            willChange: "transform",
-          }}
-        >
-          {[...Array(3)].map((_, i) => {
-            const rotations = [-12, 0, 12];
-            const offsets = phoneScale < 0.9 ? [-110, 0, 110] : [-150, 0, 150];
+          {/* Right phones side */}
+          <div
+            className="relative hidden min-[900px]:block"
+            style={{
+              width: 640,
+              height: 600,
+              marginLeft: "auto",
+              transform: `scale(${phoneScale})`,
+              transformOrigin: "right center",
+              willChange: "transform",
+            }}
+          >
+            {[...Array(3)].map((_, i) => {
+              const rotations = [-12, 0, 12];
+              const offsets = phoneScale < 0.9 ? [-110, 0, 110] : [-150, 0, 150];
 
-            return (
-              <div
-                key={i}
-                style={{
-                  position: "absolute",
-                  left: "50%",
-                  transformOrigin: "bottom center",
-                  transform: `translateX(-50%) translateX(${offsets[i]}px) rotate(${rotations[i]}deg)`,
-                  zIndex: rotations[i] === 0 ? 3 : 1,
-                  boxShadow: `0 8px 20px rgba(0,0,0,${0.2 + i * 0.1})`,
-                  borderRadius: "3rem",
-                  transition: "transform 0.3s ease",
-                }}
-                className="hover:z-50 hover:scale-105"
-              >
-                <PhoneUi image={getHeroImage(i)} />
-              </div>
-            );
-          })}
+              return (
+                <div
+                  key={i}
+                  style={{
+                    position: "absolute",
+                    left: "50%",
+                    transformOrigin: "bottom center",
+                    transform: `translateX(-50%) translateX(${offsets[i]}px) rotate(${rotations[i]}deg)`,
+                    zIndex: rotations[i] === 0 ? 3 : 1,
+                    boxShadow: `0 8px 20px rgba(0,0,0,${0.2 + i * 0.1})`,
+                    borderRadius: "3rem",
+                    transition: "transform 0.3s ease",
+                  }}
+                  className="hover:z-50 hover:scale-105"
+                >
+                  <PhoneUi image={getHeroImage(i)} />
+                </div>
+              );
+            })}
+          </div>
+
         </div>
       </motion.section>
 

@@ -514,17 +514,18 @@ export default function FeatureDetailPage() {
         text-center lg:text-left
       "
           >
-            {/* <motion.div
-              className="
-          inline-flex items-center px-6 sm:px-8 py-3 sm:py-4
-          bg-gradient-to-r from-[#f15A24] to-[#d04f23]
-          !text-white shadow-2xl
-        "
-              style={{ borderRadius: "50px 20px 50px 20px" }}
-            >
-              <IconComponent className="w-5 h-5 mr-3" />
-              Feature Spotlight
-            </motion.div> */}
+
+            <div>
+              {/* Back Button */}
+              <Link
+                href="/features"
+                className="inline-flex items-center gap-2 px-3 py-1 bg-white border border-orange-500 rounded-lg text-orange-500 shadow-sm hover:bg-orange-100 hover:scale-105 transition-all font-medium w-max"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Features
+              </Link>
+
+            </div>
             <div
               className="
           inline-flex w-fit items-center gap-2
