@@ -220,11 +220,10 @@ const ExpandingCardsSection: React.FC<ExpandingCardsSectionProps> = ({ newFeatur
       {/* 🧭 Section Heading */}
       <div className="text-center z-10 mb-4 px-6">
         <h2 className="text-4xl md:text-5xl font-bold text-[#1a1a1a] mb-3 leading-tight">
-          Discover Our Smart Digital Tools
+          {newFeaturesData?.heading}
         </h2>
         <p className="text-[#4b4b4b] text-lg max-w-2xl mx-auto">
-          Explore intelligent features designed to simplify your workflow and
-          elevate your connections — all in one seamless experience.
+          {newFeaturesData?.subheading}
         </p>
       </div>
 
