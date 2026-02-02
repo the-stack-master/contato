@@ -15,6 +15,8 @@ const Header = () => {
   const pathname = usePathname();
   const navigate = useNavigate();
 
+  console.log("---", pathname);
+
   const headerRef = useRef<HTMLDivElement>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [supportMenuOpen, setSupportMenuOpen] = useState(false);
@@ -28,11 +30,9 @@ const Header = () => {
   ];
 
   /** Active checks */
-  const isActive = (href: string) =>
-    href === "/" ? pathname === "/" : pathname.startsWith(href);
+  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
 
-  const isSupportRoute =
-    pathname.startsWith("/support") || pathname.startsWith("/videos");
+  const isSupportRoute = pathname.startsWith("/support") || pathname.startsWith("/videos");
 
   /** Close menus on route change */
   useEffect(() => {
@@ -72,10 +72,7 @@ const Header = () => {
     >
       <div className="container mx-auto h-16 px-4 flex items-center justify-between">
         {/* Logo */}
-        <div
-          onClick={() => navigate("/")}
-          className="flex items-center cursor-pointer pl-2"
-        >
+        <div onClick={() => navigate("/")} className="flex items-center cursor-pointer pl-2">
           {logo ? (
             <Image
               src={getImageUrl(logo.mainLogo?.image?.asset?.url ?? "")}
@@ -96,10 +93,8 @@ const Header = () => {
               key={href}
               href={href}
               className={cn(
-                "font-semibold text-[16px] transition-colors",
-                isActive(href)
-                  ? "text-[#f15A24]"
-                  : "text-[#1f2937] hover:text-[#f15A24]"
+                "!font-semibold !text-[16px] transition-colors",
+                isActive(href) ? "!text-[#f15A24]" : "text-[#1f2937] hover:text-[#f15A24]",
               )}
             >
               {label}
@@ -111,17 +106,15 @@ const Header = () => {
             <button
               onClick={() => setSupportMenuOpen((p) => !p)}
               className={cn(
-                "flex items-center font-semibold text-[16px] transition-colors",
-                isSupportRoute
-                  ? "text-[#f15A24]"
-                  : "text-[#1f2937] hover:text-[#f15A24]"
+                "flex items-center !font-semibold !text-[16px] transition-colors",
+                isSupportRoute ? "!text-[#f15A24]" : "text-[#1f2937] hover:text-[#f15A24]",
               )}
             >
               Support
               <ChevronDown
                 className={cn(
                   "ml-1 w-4 h-4 transition-transform duration-200",
-                  supportMenuOpen ? "rotate-180" : "rotate-0"
+                  supportMenuOpen ? "rotate-180" : "rotate-0",
                 )}
               />
             </button>
@@ -132,10 +125,10 @@ const Header = () => {
                   href="/support"
                   onClick={() => setSupportMenuOpen(false)}
                   className={cn(
-                    "block px-4 py-2.5 text-[15px] transition-colors",
+                    "block px-4 py-2.5 !font-semibold !text-[16px] transition-colors",
                     pathname.startsWith("/support")
-                      ? "text-[#f15A24] bg-[#f15A24]/10"
-                      : "hover:bg-[#f15A24]/10 hover:text-[#f15A24]"
+                      ? "!text-[#f15A24] bg-[#f15A24]/10"
+                      : "text-[#1f2937] hover:bg-[#f15A24]/10 hover:text-[#f15A24]",
                   )}
                 >
                   Support Docs
@@ -144,10 +137,10 @@ const Header = () => {
                   href="/videos"
                   onClick={() => setSupportMenuOpen(false)}
                   className={cn(
-                    "block px-4 py-2.5 text-[15px] transition-colors",
+                    "block px-4 py-2.5 !font-semibold !text-[16px] transition-colors",
                     pathname.startsWith("/videos")
-                      ? "text-[#f15A24] bg-[#f15A24]/10"
-                      : "hover:bg-[#f15A24]/10 hover:text-[#f15A24]"
+                      ? "!text-[#f15A24] bg-[#f15A24]/10"
+                      : "text-[#1f2937] hover:bg-[#f15A24]/10 hover:text-[#f15A24]",
                   )}
                 >
                   Videos
@@ -159,23 +152,18 @@ const Header = () => {
 
         {/* Right side */}
         <div className="flex items-center space-x-4">
-          {!mobileMenuOpen ? <button
-            onClick={() => (window.location.href = "/")}
-            className="font-semibold text-[16px] text-[#1f2937] hover:text-[#f15A24] transition-colors"
-          >
-            Sign In
-          </button> : null}
+          {!mobileMenuOpen ? (
+            <button
+              onClick={() => (window.location.href = "/")}
+              className="font-semibold text-[16px] text-[#1f2937] hover:text-[#f15A24] transition-colors"
+            >
+              Sign In
+            </button>
+          ) : null}
 
           {/* Mobile toggle */}
-          <button
-            onClick={() => setMobileMenuOpen((p) => !p)}
-            className="lg:hidden text-[#1f2937]"
-          >
-            {mobileMenuOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
+          <button onClick={() => setMobileMenuOpen((p) => !p)} className="lg:hidden text-[#1f2937]">
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
       </div>
@@ -189,9 +177,7 @@ const Header = () => {
                 key={href}
                 href={href}
                 className={cn(
-                  isActive(href)
-                    ? "text-[#f15A24]"
-                    : "text-[#1f2937] hover:text-[#f15A24]"
+                  isActive(href) ? "!text-[#f15A24]" : "text-[#1f2937] hover:text-[#f15A24]",
                 )}
               >
                 {label}
@@ -203,28 +189,28 @@ const Header = () => {
               <button
                 onClick={() => setSupportMenuOpen((p) => !p)}
                 className={cn(
-                  "flex w-full items-center justify-between transition-colors",
-                  isSupportRoute ? "text-[#f15A24]" : "hover:text-[#f15A24]"
+                  "flex w-full items-center justify-between font-semibold text-[16px] transition-colors",
+                  isSupportRoute ? "!text-[#f15A24]" : "text-[#1f2937] hover:text-[#f15A24]",
                 )}
               >
                 Support
                 <ChevronDown
                   className={cn(
                     "w-4 h-4 transition-transform",
-                    supportMenuOpen ? "rotate-180" : "rotate-0"
+                    supportMenuOpen ? "rotate-180" : "rotate-0",
                   )}
                 />
               </button>
 
               {supportMenuOpen && (
-                <div className="mt-3 pl-4 flex flex-col space-y-3 text-[15px] font-normal">
+                <div className="mt-3 pl-4 flex flex-col space-y-3 font-semibold text-[16px]">
                   <Link
                     href="/support"
                     onClick={() => setSupportMenuOpen(false)}
                     className={
                       pathname.startsWith("/support")
-                        ? "text-[#f15A24]"
-                        : "hover:text-[#f15A24]"
+                        ? "!text-[#f15A24]"
+                        : "text-[#1f2937] hover:text-[#f15A24]"
                     }
                   >
                     Support Docs
@@ -234,8 +220,8 @@ const Header = () => {
                     onClick={() => setSupportMenuOpen(false)}
                     className={
                       pathname.startsWith("/videos")
-                        ? "text-[#f15A24]"
-                        : "hover:text-[#f15A24]"
+                        ? "!text-[#f15A24]"
+                        : "text-[#1f2937] hover:text-[#f15A24]"
                     }
                   >
                     Videos
