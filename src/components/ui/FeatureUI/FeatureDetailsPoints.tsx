@@ -1,12 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { LucideIcon } from "lucide-react";
+import { IconComponent } from "@/components/ui/IconComponent";
 
 interface DetailPoint {
   title: string;
   description: string;
-  icon: LucideIcon;
+  icon: string;
 }
 
 interface FeatureDetailsPointsProps {
@@ -19,8 +19,6 @@ export default function FeatureDetailsPoints({
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto px-4">
       {points.map((point, index) => {
-        const IconComponent = point.icon;
-
         return (
           <motion.div
             key={index}
@@ -39,6 +37,7 @@ export default function FeatureDetailsPoints({
                     <div className="absolute inset-0 bg-[#f15A24]/20 blur-lg" />
                     <div className="relative w-12 h-12 bg-slate-50 border border-slate-200 group-hover:border-[#f15A24] flex items-center justify-center transition-all duration-300">
                       <IconComponent
+                        name={point.icon || "Zap"}
                         className="w-6 h-6 !text-slate-700 group-hover:!text-[#f15A24] transition-colors duration-300"
                         strokeWidth={1.5}
                       />

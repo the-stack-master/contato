@@ -306,7 +306,7 @@ const FeaturesPage = ({ featuresData }: FeaturesDataProps) => {
       </motion.section>
 
       {/* New Features  */}
-      <section className="w-full mx-auto py-16 bg-gray-100 shadow-sm space-y-12">
+      <section className="w-full mx-auto py-16 bg-gradient-to-b from-slate-200 to-slate-100 shadow-sm space-y-12">
         <FeaturesScreenshotsSection featuresData={featuresData} />
       </section>
 
@@ -314,7 +314,7 @@ const FeaturesPage = ({ featuresData }: FeaturesDataProps) => {
       {featuresData?.featuresGrid ? (
         <section
           aria-label="Full Features List"
-          className="w-full mx-auto px-0 !bg-gradient-to-b from-white via-slate-50 to-white relative"
+          className="w-full mx-auto px-0 bg-gradient-to-b from-orange-100 via-orange-50 to-white relative"
         >
           <FeaturesListingSection featuresData={featuresData?.featuresGrid} />
         </section>

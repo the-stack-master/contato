@@ -70,7 +70,7 @@ export function AboutSection({ aboutData }: AboutSectionProps) {
     <section id="about-contato" className="relative py-24 overflow-hidden">
       {/* Flowing Background */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-blue-50/50"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-200 via-slate-100 to-slate-50"></div>
 
         {/* Organic Background Shapes */}
         <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-r from-[#f15A24]/8 to-purple-500/8 rounded-full blur-3xl animate-pulse"></div>

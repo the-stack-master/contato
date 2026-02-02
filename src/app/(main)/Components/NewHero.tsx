@@ -127,7 +127,7 @@ const NewHeroSection = ({
         >
           <path
             d="M0,60 C300,120 900,0 1200,60 L1200,120 L0,120 Z"
-            className="fill-gray-50"
+            className="fill-slate-200"
           />
         </svg>
       </div>
