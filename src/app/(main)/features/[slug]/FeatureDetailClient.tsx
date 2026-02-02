@@ -106,7 +106,7 @@ export default function FeatureDetailClient({ feature }: FeatureDetailClientProp
         <section className="relative z-10 py-40 bg-[#121212]">
           <div className="max-w-7xl mx-auto px-8">
             <h2 className="text-5xl md:text-7xl font-bold !text-white mb-20 leading-tight">
-              Why You'll Love
+              Why You&apos;ll Love
               <br />
               This Feature
             </h2>
