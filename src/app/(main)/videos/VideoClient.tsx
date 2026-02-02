@@ -388,7 +388,7 @@ const VideoClient = ({ videoHeaderData }: VideoClientProps) => {
 
                 {/* Dots */}
                 {featuredSnaps.length > 1 && (
-                  <div className="flex gap-2 mt-4">
+                  <div className="flex gap-2 mt-4 w-full justify-center">
                     {featuredSnaps.map((_, index) => (
                       <button
                         key={index}

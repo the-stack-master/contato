@@ -91,7 +91,7 @@ export default function ContactForm() {
 
   return (
     <section className="bg-white">
-      <div >
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Heading */}
         <div className="text-center py-16 bg-gradient-to-b from-orange-50/60 to-white">
           <h1 className="text-3xl md:text-4xl font-extrabold leading-tight mb-2">

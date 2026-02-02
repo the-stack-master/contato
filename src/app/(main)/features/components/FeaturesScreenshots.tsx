@@ -31,10 +31,7 @@ const FeaturesScreenshotsSection = ({ featuresData }: FeaturesDataProps) => {
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
-  const scrollTo = useCallback(
-    (index: number) => emblaApi?.scrollTo(index),
-    [emblaApi]
-  );
+  const scrollTo = useCallback((index: number) => emblaApi?.scrollTo(index), [emblaApi]);
 
   const onInit = useCallback((api: EmblaCarouselType) => {
     setScrollSnaps(api.scrollSnapList());
@@ -56,15 +53,12 @@ const FeaturesScreenshotsSection = ({ featuresData }: FeaturesDataProps) => {
   if (isMobile) {
     const screenshot = screenshots[selectedIndex];
     return (
-      <section className="py-12 px-6">
+      <section className="px-6">
         <motion.div className="text-center mb-14">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             {splitSentence(featuresData?.carousel?.sectionHeading)?.firstPart}{" "}
             <span className="bg-gradient-to-r from-[#f15A24] to-orange-500 bg-clip-text text-transparent">
-              {
-                splitSentence(featuresData?.carousel?.sectionHeading)
-                  ?.secondPart
-              }
+              {splitSentence(featuresData?.carousel?.sectionHeading)?.secondPart}
             </span>
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -83,7 +77,6 @@ const FeaturesScreenshotsSection = ({ featuresData }: FeaturesDataProps) => {
                   />
 
                   <div className="absolute inset-0 flex flex-col justify-end">
-
                     {/* Text panel */}
                     <div className="relative p-5 bg-black/65 backdrop-blur-xl rounded-b-3xl">
                       {/* Title */}
@@ -104,10 +97,6 @@ const FeaturesScreenshotsSection = ({ featuresData }: FeaturesDataProps) => {
                       </ul>
                     </div>
                   </div>
-
-
-
-
                 </div>
               </div>
             ))}
@@ -120,10 +109,9 @@ const FeaturesScreenshotsSection = ({ featuresData }: FeaturesDataProps) => {
             <button
               key={index}
               onClick={() => emblaApi?.scrollTo(index)}
-              className={`w-2.5 h-2.5 rounded-full transition-all ${index === selectedIndex
-                ? "bg-[#f15A24] scale-125"
-                : "bg-gray-300"
-                }`}
+              className={`w-2.5 h-2.5 rounded-full transition-all ${
+                index === selectedIndex ? "bg-[#f15A24] scale-125" : "bg-gray-300"
+              }`}
             />
           ))}
         </div>
@@ -133,17 +121,14 @@ const FeaturesScreenshotsSection = ({ featuresData }: FeaturesDataProps) => {
 
   /* ---------------- Desktop / Tablet ---------------- */
   return (
-    <section className="py-20">
+    <section>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Heading */}
         <motion.div className="text-center mb-14">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             {splitSentence(featuresData?.carousel?.sectionHeading)?.firstPart}{" "}
             <span className="bg-gradient-to-r from-[#f15A24] to-orange-500 bg-clip-text text-transparent">
-              {
-                splitSentence(featuresData?.carousel?.sectionHeading)
-                  ?.secondPart
-              }
+              {splitSentence(featuresData?.carousel?.sectionHeading)?.secondPart}
             </span>
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -185,9 +170,7 @@ const FeaturesScreenshotsSection = ({ featuresData }: FeaturesDataProps) => {
                       <h3 className="text-3xl md:text-4xl font-bold mb-4">
                         {screenshot.slideTitle}
                       </h3>
-                      <p className="text-lg text-gray-600 mb-6">
-                        {screenshot.slideDescription}
-                      </p>
+                      <p className="text-lg text-gray-600 mb-6">{screenshot.slideDescription}</p>
 
                       <div className="space-y-3 inline-flex flex-col items-start">
                         {screenshot?.features?.map((feature, idx) => (
@@ -232,10 +215,9 @@ const FeaturesScreenshotsSection = ({ featuresData }: FeaturesDataProps) => {
             <button
               key={index}
               onClick={() => scrollTo(index)}
-              className={`w-3 h-3 rounded-full ${index === selectedIndex
-                ? "bg-[#f15A24] scale-125"
-                : "bg-gray-300"
-                }`}
+              className={`w-3 h-3 rounded-full ${
+                index === selectedIndex ? "bg-[#f15A24] scale-125" : "bg-gray-300"
+              }`}
             />
           ))}
         </div>
