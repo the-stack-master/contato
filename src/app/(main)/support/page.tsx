@@ -4,6 +4,8 @@ import SupportCategoriesSection from "./SupportCategoriesSection";
 import SupportClient from "./SupportClient";
 import SupportListServer from "@/components/serverComponents/SupportListServer";
 
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "Contato Support - Help Center",
   description:

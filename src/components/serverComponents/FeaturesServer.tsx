@@ -164,7 +164,7 @@ export async function generateMetadata() {
   const data = await client.fetch<FeaturesData>(
     featuresPageQuery,
     {},
-    { cache: "force-cache" }
+    { next: { revalidate: 60 } }
   );
   return generateSeoMetadata(data?.seo);
 }
@@ -174,7 +174,7 @@ export default async function FeaturesSectionServer() {
   const data = await client.fetch<any>(
     featuresPageQuery,
     {},
-    { cache: "force-cache" }
+    { next: { revalidate: 60 } }
   );
 
 

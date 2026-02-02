@@ -9,6 +9,8 @@ import Link from "next/link";
 import { BlogPost } from "@/types/blogTypes";
 import { generateSeoMetadata } from "@/lib/generateMetadata";
 
+export const revalidate = 60;
+
 interface PageProps {
   params: { slug: string };
 }
