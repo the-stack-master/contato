@@ -19,21 +19,6 @@ import { GooglePlayButton } from "@/components/ui/GooglePlayButton";
 import FeaturesListingSection from "../Components/FeaturesListingSection";
 import { splitSentence } from "@/utils/stringFunctions";
 
-const getFeaturesIcons = (iconVal?: string) => {
-  switch (iconVal) {
-    case "folder":
-      return "📁";
-    case "lightning":
-      return "⚡";
-    case "shield":
-      return "🔒";
-    case "chart":
-      return "📊";
-    default:
-      return "🔒";
-  }
-};
-
 const getDownloadUrl = (platform: "appstore" | "googleplay") => {
   if (platform === "appstore") {
     return "https://apps.apple.com/us/app/contato-ai-powered-networking/id6452725559";
@@ -105,8 +90,7 @@ const FeaturesPage = ({ featuresData }: FeaturesDataProps) => {
       },
       {
         title: "Video Introduction Cards",
-        description:
-          "Make memorable first impressions with 30-second video introductions",
+        description: "Make memorable first impressions with 30-second video introductions",
         icon: "video",
         badge: "New",
       },
@@ -163,8 +147,7 @@ const FeaturesPage = ({ featuresData }: FeaturesDataProps) => {
       },
       {
         title: "Virtual Coffee Chats",
-        description:
-          "Schedule and join virtual networking sessions with professionals worldwide",
+        description: "Schedule and join virtual networking sessions with professionals worldwide",
         icon: "coffee",
       },
       {
@@ -177,20 +160,17 @@ const FeaturesPage = ({ featuresData }: FeaturesDataProps) => {
     benefits: [
       {
         title: "Expand Your Network Globally",
-        description:
-          "Connect with over 2M+ professionals across 150+ countries",
+        description: "Connect with over 2M+ professionals across 150+ countries",
         metric: "2M+ Professionals",
       },
       {
         title: "Save Time with AI Matching",
-        description:
-          "Our AI finds the right connections for you, saving hours of manual searching",
+        description: "Our AI finds the right connections for you, saving hours of manual searching",
         metric: "80% Time Saved",
       },
       {
         title: "Increase Career Opportunities",
-        description:
-          "Users report 3x more job opportunities through our networking platform",
+        description: "Users report 3x more job opportunities through our networking platform",
         metric: "3x More Opportunities",
       },
     ],
@@ -199,8 +179,7 @@ const FeaturesPage = ({ featuresData }: FeaturesDataProps) => {
         name: "Sarah Chen",
         role: "Marketing Director",
         company: "TechStart Inc.",
-        content:
-          "NetworkPro helped me find my dream job! The AI matching is incredibly accurate.",
+        content: "NetworkPro helped me find my dream job! The AI matching is incredibly accurate.",
         avatar:
           "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop",
       },
@@ -208,8 +187,7 @@ const FeaturesPage = ({ featuresData }: FeaturesDataProps) => {
         name: "Michael Rodriguez",
         role: "Startup Founder",
         company: "InnovateNow",
-        content:
-          "I've made invaluable business connections that led to our Series A funding.",
+        content: "I've made invaluable business connections that led to our Series A funding.",
         avatar:
           "https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop",
       },
@@ -217,8 +195,7 @@ const FeaturesPage = ({ featuresData }: FeaturesDataProps) => {
         name: "Emily Johnson",
         role: "Software Engineer",
         company: "Global Tech",
-        content:
-          "The video introductions feature makes networking feel personal and authentic.",
+        content: "The video introductions feature makes networking feel personal and authentic.",
         avatar:
           "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop",
       },
@@ -325,7 +302,6 @@ const FeaturesPage = ({ featuresData }: FeaturesDataProps) => {
               );
             })}
           </div>
-
         </div>
       </motion.section>
 
@@ -335,12 +311,14 @@ const FeaturesPage = ({ featuresData }: FeaturesDataProps) => {
       </section>
 
       {/* Full Feature List Section */}
-      <section
-        aria-label="Full Features List"
-        className="w-full mx-auto px-0 !bg-gradient-to-b from-white via-slate-50 to-white relative"
-      >
-        <FeaturesListingSection features={featuresDataFull?.complete} />
-      </section>
+      {featuresData?.featuresGrid ? (
+        <section
+          aria-label="Full Features List"
+          className="w-full mx-auto px-0 !bg-gradient-to-b from-white via-slate-50 to-white relative"
+        >
+          <FeaturesListingSection featuresData={featuresData?.featuresGrid} />
+        </section>
+      ) : null}
     </main>
   );
 };

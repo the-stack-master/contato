@@ -1,5 +1,7 @@
 "use client";
 
+import { FeatureItem, FeaturesGrid } from "@/components/serverComponents/FeaturesServer";
+import { IconComponent } from "@/components/ui/IconComponent";
 import { Separator } from "@radix-ui/react-separator";
 import { motion } from "framer-motion";
 import {
@@ -21,11 +23,13 @@ import Link from "next/link";
 interface Feature {
   title: string;
   description: string;
-  icon: string;
+  icon?: string;
+  badge?: string;
+  tags?: string[];
 }
 
 interface FeaturesListingSectionProps {
-  features: Feature[];
+  featuresData: FeaturesGrid;
 }
 
 const iconMap = {
@@ -57,11 +61,11 @@ const FeatureCard = ({
   index,
   isEven,
 }: {
-  feature: Feature;
+  feature: FeatureItem;
   index: number;
   isEven: boolean;
 }) => {
-  const IconComponent = iconMap[feature.icon as keyof typeof iconMap];
+  // const IconComponent = iconMap[feature.iconName as keyof typeof iconMap] || Zap;
   const tags = featureTags[index] || ["Feature", "Premium", "New"];
 
   return (
@@ -77,8 +81,9 @@ const FeatureCard = ({
       className="group"
     >
       <div
-        className={`flex flex-col ${isEven ? "md:flex-row" : "md:flex-row-reverse"
-          } gap-6 md:gap-8 items-center`}
+        className={`flex flex-col ${
+          isEven ? "md:flex-row" : "md:flex-row-reverse"
+        } gap-6 md:gap-8 items-center`}
       >
         {/* Icon */}
         <motion.div
@@ -102,6 +107,7 @@ const FeatureCard = ({
               transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
             />
             <IconComponent
+              name={feature?.iconName ?? "Zap"}
               className="w-10 h-10 md:w-12 md:h-12 text-white drop-shadow-lg"
               strokeWidth={1.5}
             />
@@ -118,22 +124,17 @@ const FeatureCard = ({
         </motion.div>
 
         {/* Content */}
-        <div
-          className={`flex-1 ${isEven ? "md:text-left" : "md:text-right"
-            } text-center`}
-        >
+        <div className={`flex-1 ${isEven ? "md:text-left" : "md:text-right"} text-center`}>
           <div className="relative inline-block mb-3">
             <motion.div className="absolute -inset-2 bg-gradient-to-r from-[#f15A24]/20 to-[#d04f23]/20 rounded-lg blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <div className="relative flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-orange-50 to-orange-100 rounded-lg border border-[#f15A24]/30">
               <Zap className="w-3.5 h-3.5 text-[#f15A24]" />
-              <span className="text-xs font-bold text-[#f15A24]">
-                Feature #{index + 1}
-              </span>
+              <span className="text-xs font-bold text-[#f15A24]">Feature #{index + 1}</span>
             </div>
           </div>
 
           <h3 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2 group-hover:text-[#f15A24] transition-colors">
-            {feature.title}
+            {feature?.featureName}
           </h3>
 
           <p className="text-sm md:text-base text-slate-600 leading-relaxed mb-4">
@@ -142,12 +143,11 @@ const FeatureCard = ({
 
           {/* Tags */}
           <div
-            className={`flex items-center gap-2 flex-wrap ${isEven
-              ? "justify-center md:justify-start"
-              : "justify-center md:justify-end"
-              }`}
+            className={`flex items-center gap-2 flex-wrap ${
+              isEven ? "justify-center md:justify-start" : "justify-center md:justify-end"
+            }`}
           >
-            {tags.map((tag, tagIndex) => (
+            {feature?.tags?.map((tag, tagIndex) => (
               <motion.div
                 key={tagIndex}
                 className="px-3 py-1 bg-orange-100 rounded-full text-xs font-medium text-[#d04f23]"
@@ -162,8 +162,7 @@ const FeatureCard = ({
 
           {/* Details CTA (separate line) */}
           <div
-            className={`mt-4 ${isEven ? "text-center md:text-left" : "text-center md:text-right"
-              }`}
+            className={`mt-4 ${isEven ? "text-center md:text-left" : "text-center md:text-right"}`}
           >
             <motion.div
               whileHover={{ scale: 1.05 }}
@@ -173,7 +172,7 @@ const FeatureCard = ({
               whileInView={{ opacity: 1, scale: 1 }}
             >
               <Link
-                href="/features/ai-matching"
+                href={`/features/${feature?.titleSection?.current}`}
                 className="
         inline-flex items-center gap-2
         px-4 py-2
@@ -193,7 +192,6 @@ const FeatureCard = ({
               </Link>
             </motion.div>
           </div>
-
         </div>
       </div>
 
@@ -210,23 +208,23 @@ const FeatureCard = ({
   );
 };
 
-export default function FeaturesListingSection({
-  features,
-}: FeaturesListingSectionProps) {
+export default function FeaturesListingSection({ featuresData }: FeaturesListingSectionProps) {
+  const mappedFeatures = featuresData?.features?.map((item) => ({
+    ...item,
+  }));
   return (
     <section className="py-16 px-8 overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(241,90,36,0.05),transparent_50%),radial-gradient(circle_at_80%_70%,rgba(208,79,35,0.05),transparent_50%)]" />
 
       <div className="max-w-[1200px] mx-auto px-4 relative">
         <div className="text-center">
-
-
           <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-2 leading-tight !text-[#f15A24]">
             Our Features
           </h2>
 
           <p className="text-lg md:text-xl text-slate-600 ">
-            Everything you need to build, manage, and share meaningful digital connections in one place
+            Everything you need to build, manage, and share meaningful digital connections in one
+            place
           </p>
 
           <div className="mt-8 flex justify-center mb-12">
@@ -237,16 +235,9 @@ export default function FeaturesListingSection({
           </div>
         </div>
 
-
-
         <div className="space-y-0">
-          {features.map((feature, index) => (
-            <FeatureCard
-              key={index}
-              feature={feature}
-              index={index}
-              isEven={index % 2 === 0}
-            />
+          {featuresData?.features?.map((feature, index) => (
+            <FeatureCard key={index} feature={feature} index={index} isEven={index % 2 === 0} />
           ))}
         </div>
       </div>

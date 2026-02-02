@@ -56,14 +56,12 @@ const featuresData = {
       },
       {
         title: "Behavioral Learning",
-        description:
-          "The system learns from your interactions to provide better matches over time",
+        description: "The system learns from your interactions to provide better matches over time",
         icon: Zap,
       },
       {
         title: "Industry Insights",
-        description:
-          "Get matched with professionals based on industry trends and opportunities",
+        description: "Get matched with professionals based on industry trends and opportunities",
         icon: BarChart3,
       },
     ],
@@ -167,283 +165,6 @@ const featuresData = {
       ],
     },
   },
-  "video-introductions": {
-    title: "Video Introduction Cards",
-    subtitle: "Make memorable first impressions with personal video messages",
-    description:
-      "Stand out from the crowd with 30-second video introductions that showcase your personality and professional brand in a way that text profiles simply cannot.",
-    icon: Video,
-    gradient: "from-[#f15A24] via-orange-500 to-red-500",
-    bgGradient: "from-orange-50 via-orange-100 to-red-50",
-    detailedDescription:
-      "Video Introduction Cards revolutionize the way professionals present themselves in the digital space. In a world where first impressions are increasingly made online, a static profile photo and text bio can only convey so much. Our video introduction feature allows you to showcase your personality, communication skills, and professional presence in just 30 seconds. The platform provides intelligent recording tools that help you create polished, professional videos without expensive equipment or technical expertise. Built-in templates guide you through the process, suggesting talking points based on your industry and goals. The system also includes subtle editing features like background enhancement and audio optimization to ensure you always look and sound your best. Privacy is paramount—you maintain complete control over who can view your video and when it plays. Research shows that profiles with video introductions receive 400% more views and significantly higher engagement rates, as they create an immediate sense of connection and trust that text alone cannot achieve.",
-    heroImage:
-      "https://images.pexels.com/photos/4050315/pexels-photo-4050315.jpeg?auto=compress&cs=tinysrgb&w=1200&h=800&fit=crop",
-    benefits: [
-      "Increase profile views by 400%",
-      "Higher response rates to connection requests",
-      "Showcase personality beyond text",
-      "Build trust before the first meeting",
-    ],
-    features: [
-      {
-        title: "Easy Recording",
-        description:
-          "Record professional videos directly in the app with built-in editing tools",
-        icon: Video,
-      },
-      {
-        title: "Smart Templates",
-        description:
-          "Choose from industry-specific templates to create compelling introductions",
-        icon: Star,
-      },
-      {
-        title: "Privacy Controls",
-        description:
-          "Control who can see your video and when it plays automatically",
-        icon: Shield,
-      },
-    ],
-    stats: [
-      { number: "400%", label: "More Profile Views" },
-      { number: "85%", label: "Response Rate" },
-      { number: "2M+", label: "Videos Created" },
-    ],
-    howItWorksSteps: [
-      {
-        title: "Record Your Introduction",
-        content:
-          "Use our intuitive in-app camera interface to record a 30-second video introduction. Built-in guides help you frame the perfect shot, and smart templates suggest talking points based on your industry and profile.",
-        image:
-          "https://images.pexels.com/photos/4050315/pexels-photo-4050315.jpeg?auto=compress&cs=tinysrgb&w=800&h=500&fit=crop",
-      },
-      {
-        title: "AI Enhancement",
-        content:
-          "Our AI automatically enhances your video with background optimization, audio clarity improvements, and subtle lighting adjustments to ensure you always look and sound professional without manual editing.",
-        image:
-          "https://images.pexels.com/photos/7688336/pexels-photo-7688336.jpeg?auto=compress&cs=tinysrgb&w=800&h=500&fit=crop",
-      },
-      {
-        title: "Smart Distribution",
-        content:
-          "Control when and how your video appears on your profile. Set privacy preferences, choose automatic or manual playback, and decide which connections can view your introduction.",
-        image:
-          "https://images.pexels.com/photos/3184434/pexels-photo-3184434.jpeg?auto=compress&cs=tinysrgb&w=800&h=500&fit=crop",
-      },
-      {
-        title: "Track Engagement",
-        content:
-          "Monitor how your video introduction performs with detailed analytics showing views, completion rates, and conversion to connection requests, helping you refine your message over time.",
-        image:
-          "https://images.pexels.com/photos/590022/pexels-photo-590022.jpeg?auto=compress&cs=tinysrgb&w=800&h=500&fit=crop",
-      },
-    ],
-    detailPoints: [
-      {
-        title: "Professional Quality",
-        description:
-          "Built-in tools ensure broadcast-quality videos without expensive equipment, making professional presentation accessible to everyone.",
-        icon: Video,
-      },
-      {
-        title: "Authentic Connection",
-        description:
-          "Video creates immediate personal connection and trust that text profiles cannot achieve, leading to higher quality professional relationships.",
-        icon: Users,
-      },
-      {
-        title: "Privacy Controls",
-        description:
-          "Granular privacy settings let you control exactly who can view your video and when it plays, maintaining professional boundaries.",
-        icon: Lock,
-      },
-      {
-        title: "Mobile Optimized",
-        description:
-          "Record and view videos seamlessly across all devices, ensuring your introduction looks great whether viewed on desktop or mobile.",
-        icon: Rocket,
-      },
-      {
-        title: "Template Library",
-        description:
-          "Access industry-specific templates and examples to help you create compelling introductions that resonate with your target audience.",
-        icon: Star,
-      },
-      {
-        title: "Performance Analytics",
-        description:
-          "Detailed metrics show how your video performs, helping you optimize your message for maximum impact and engagement.",
-        icon: BarChart3,
-      },
-    ],
-    moreInfo: {
-      title: "Why Video Introductions Matter",
-      subtitle: "The psychology and impact of visual professional presence",
-      paragraphs: [
-        {
-          text: "In the digital age, first impressions happen in seconds, often before any direct communication takes place. A static profile photo and text bio can only convey limited information about who you really are as a professional. Video introductions bridge this gap by showcasing your personality, communication style, and professional presence in ways that text simply cannot match.",
-          emphasis: true,
-        },
-        {
-          text: "Research in communication psychology shows that humans process visual and auditory information far more quickly and deeply than text. When someone watches your video introduction, they form a more complete and accurate impression of you as a professional, leading to higher quality connections and more meaningful networking outcomes.",
-        },
-        {
-          text: "Video introductions also address the trust deficit inherent in online professional networking. Seeing and hearing you speak creates an immediate sense of authenticity and credibility that profile text struggles to achieve. This trust factor significantly increases the likelihood that others will engage with your connection requests and respond to your messages.",
-        },
-        {
-          text: "The technology behind our video introductions is designed to make professional quality accessible to everyone. You do not need expensive equipment, professional lighting, or editing skills. Our AI-powered enhancements automatically optimize your video for clarity, lighting, and audio quality, ensuring you always present your best professional self.",
-          emphasis: true,
-        },
-        {
-          text: "Privacy remains paramount in our video introduction system. You have complete control over who can view your video, when it plays, and how it appears on your profile. This granular control lets you maintain professional boundaries while still leveraging the power of video to enhance your networking presence.",
-        },
-        {
-          text: "Analytics provide valuable insights into how your video introduction performs. You can see completion rates, which audiences engage most, and how often your video leads to connection requests. These metrics help you refine your message over time, creating an introduction that truly resonates with your professional goals and target audience.",
-        },
-      ],
-    },
-  },
-  "secure-messaging": {
-    title: "Secure Messaging",
-    subtitle: "Connect safely with end-to-end encrypted conversations",
-    description:
-      "Professional networking requires trust. Our secure messaging platform ensures your conversations remain private while providing powerful tools for meaningful professional communication.",
-    icon: MessageCircle,
-    gradient: "from-[#f15A24] via-orange-500 to-red-500",
-    bgGradient: "from-orange-50 via-orange-100 to-red-50",
-    detailedDescription:
-      "Secure Messaging is built on the principle that professional networking requires absolute trust and privacy. Our end-to-end encryption ensures that your conversations remain completely confidential, using military-grade security protocols that protect your communications from any unauthorized access. But security is just the foundation. The messaging platform includes intelligent features designed specifically for professional communication. AI-powered conversation starters help you break the ice naturally, while smart suggestions offer context-appropriate responses based on the conversation flow. The system can detect the tone and subject matter of your discussions, offering relevant resources or suggesting optimal times for follow-ups. Rich media support allows you to share documents, presentations, and portfolios securely within the conversation, with automatic virus scanning and file verification. Message scheduling lets you compose communications when it&apos;s convenient for you while sending them at optimal times for your recipient. The platform also includes read receipts, typing indicators, and conversation threading to make your professional communications as efficient and effective as possible.",
-    heroImage:
-      "https://images.pexels.com/photos/5926382/pexels-photo-5926382.jpeg?auto=compress&cs=tinysrgb&w=1200&h=800&fit=crop",
-    benefits: [
-      "End-to-end encryption for all messages",
-      "Professional conversation templates",
-      "File sharing with security scanning",
-      "Message scheduling and reminders",
-    ],
-    features: [
-      {
-        title: "End-to-End Encryption",
-        description:
-          "Military-grade encryption ensures your conversations stay completely private",
-        icon: Shield,
-      },
-      {
-        title: "Smart Suggestions",
-        description:
-          "AI-powered conversation starters and professional response suggestions",
-        icon: Brain,
-      },
-      {
-        title: "Rich Media Support",
-        description:
-          "Share documents, images, and videos securely within conversations",
-        icon: MessageCircle,
-      },
-    ],
-    stats: [
-      { number: "100%", label: "Encrypted Messages" },
-      { number: "99.9%", label: "Uptime" },
-      { number: "10M+", label: "Messages Daily" },
-    ],
-    howItWorksSteps: [
-      {
-        title: "End-to-End Encryption",
-        content:
-          "Every message is encrypted using military-grade AES-256 encryption before leaving your device. Only you and your intended recipient can read the messages, ensuring complete privacy and confidentiality in all your professional communications.",
-        image:
-          "https://images.pexels.com/photos/60504/security-protection-anti-virus-software-60504.jpeg?auto=compress&cs=tinysrgb&w=800&h=500&fit=crop",
-      },
-      {
-        title: "Smart Conversation Tools",
-        content:
-          "AI-powered features suggest conversation starters, provide context-appropriate responses, and help you maintain professional tone throughout your communications, making networking conversations more natural and effective.",
-        image:
-          "https://images.pexels.com/photos/5926382/pexels-photo-5926382.jpeg?auto=compress&cs=tinysrgb&w=800&h=500&fit=crop",
-      },
-      {
-        title: "Secure File Sharing",
-        content:
-          "Share documents, portfolios, and media securely within conversations with automatic virus scanning and file verification. All shared content maintains the same level of encryption as your messages.",
-        image:
-          "https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=800&h=500&fit=crop",
-      },
-      {
-        title: "Advanced Features",
-        content:
-          "Schedule messages for optimal delivery times, set reminders for follow-ups, organize conversations with threading, and track read receipts to ensure your professional communications are timely and effective.",
-        image:
-          "https://images.pexels.com/photos/7688336/pexels-photo-7688336.jpeg?auto=compress&cs=tinysrgb&w=800&h=500&fit=crop",
-      },
-    ],
-    detailPoints: [
-      {
-        title: "Military-Grade Security",
-        description:
-          "AES-256 encryption and end-to-end security protocols ensure your professional conversations remain completely private and secure.",
-        icon: Shield,
-      },
-      {
-        title: "AI-Powered Assistance",
-        description:
-          "Smart suggestions help you craft professional messages, break the ice naturally, and maintain appropriate tone throughout conversations.",
-        icon: Brain,
-      },
-      {
-        title: "Document Security",
-        description:
-          "Share files, portfolios, and presentations safely with automatic virus scanning, encryption, and access controls.",
-        icon: Lock,
-      },
-      {
-        title: "Message Scheduling",
-        description:
-          "Compose messages when convenient and schedule them to send at optimal times for your recipients across different time zones.",
-        icon: Calendar,
-      },
-      {
-        title: "Conversation Threading",
-        description:
-          "Keep discussions organized with intelligent threading that groups related messages and makes it easy to track multiple conversations.",
-        icon: MessageCircle,
-      },
-      {
-        title: "Reliability Guarantee",
-        description:
-          "99.9% uptime ensures your professional communications are always available when you need them, with redundant systems preventing message loss.",
-        icon: Award,
-      },
-    ],
-    moreInfo: {
-      title: "Building Trust Through Security",
-      subtitle:
-        "How encrypted messaging protects your professional relationships",
-      paragraphs: [
-        {
-          text: "Professional networking requires trust, and trust begins with security. When you share sensitive information, discuss career opportunities, or exchange confidential business details, you need absolute certainty that your conversations remain private. Our secure messaging platform provides this certainty through military-grade encryption and robust security protocols.",
-          emphasis: true,
-        },
-        {
-          text: "End-to-end encryption means that messages are encrypted on your device before transmission and can only be decrypted by your intended recipient. This ensures that even if network traffic were intercepted, the content would remain completely unreadable. This level of security is essential for professional communications where confidentiality is paramount.",
-        },
-        {
-          text: "Beyond basic security, our platform integrates intelligent features designed specifically for professional communication. AI-powered conversation starters help break the ice naturally, while smart suggestions offer context-appropriate responses that maintain professional tone. These features make networking conversations more natural and effective without compromising security.",
-        },
-        {
-          text: "File sharing receives the same rigorous security treatment as text messages. Documents, presentations, and portfolios are encrypted during transmission and storage, with automatic virus scanning providing an additional layer of protection. Access controls let you manage who can view shared content and for how long, giving you complete control over your professional materials.",
-          emphasis: true,
-        },
-        {
-          text: "The platform reliability is backed by 99.9% uptime guarantee and redundant systems that prevent message loss. This reliability is crucial for professional communications where timing matters and missed messages could mean missed opportunities. You can trust that your messages will be delivered and available when needed.",
-        },
-        {
-          text: "Advanced features like message scheduling, read receipts, and conversation threading enhance the professional communication experience. Schedule messages to send at optimal times across time zones, track when messages are read to time follow-ups appropriately, and keep multiple conversations organized with intelligent threading that groups related discussions.",
-        },
-      ],
-    },
-  },
 };
 
 export default function FeatureDetailPage() {
@@ -454,9 +175,7 @@ export default function FeatureDetailPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-white via-orange-50 to-red-50 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-3xl font-bold !text-gray-900 mb-4">
-            Feature Not Found
-          </h1>
+          <h1 className="text-3xl font-bold !text-gray-900 mb-4">Feature Not Found</h1>
           <Link href="/" className="!text-[#f15A24] hover:!text-[#d04f23]">
             Return to Home
           </Link>
@@ -514,7 +233,6 @@ export default function FeatureDetailPage() {
         text-center lg:text-left
       "
           >
-
             <div>
               {/* Back Button */}
               <Link
@@ -524,7 +242,6 @@ export default function FeatureDetailPage() {
                 <ArrowLeft className="w-4 h-4" />
                 Features
               </Link>
-
             </div>
             <div
               className="
@@ -537,9 +254,7 @@ export default function FeatureDetailPage() {
         "
             >
               <IconComponent className="w-5 h-5 mr-3 !text-[#f15A24]" />
-              <span className="text-sm font-semibold !text-[#f15A24]">
-                Feature Spotlight
-              </span>
+              <span className="text-sm font-semibold !text-[#f15A24]">Feature Spotlight</span>
             </div>
 
             <h1
@@ -611,9 +326,7 @@ export default function FeatureDetailPage() {
                 {/* subtle orange accent */}
                 <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-[#f15A24] to-[#d04f23]" />
 
-                <p className="text-xl !text-gray-200 leading-relaxed pl-4">
-                  {benefit}
-                </p>
+                <p className="text-xl !text-gray-200 leading-relaxed pl-4">{benefit}</p>
               </div>
             ))}
           </div>

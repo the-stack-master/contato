@@ -40,18 +40,22 @@ export interface HeroCallToAction {
 }
 
 export interface FeatureItem {
-  title?: string | null;
+  _key: string;
+  featureName: string;
   description: string;
-  iconName?: string;
-  _key?: string;
+  iconName: string;
+  titleSection?: {
+    _type: "slug";
+    current: string;
+  };
+  tags?: string[];
 }
 
 export interface FeaturesGrid {
   _key: string;
   _type: "featuresGrid";
-  sectionHeading?: string;
-  title?: string | null;
-  subtitle?: string | null;
+  sectionHeading: string;
+  sectionDescription?: string;
   features: FeatureItem[];
 }
 
@@ -164,40 +168,25 @@ export async function generateMetadata() {
   const data = await client.fetch<FeaturesData>(
     featuresPageQuery,
     {},
-    { next: { revalidate: 60 } }
+    { next: { revalidate: 60 } },
   );
   return generateSeoMetadata(data?.seo);
 }
 
 // === Server Component ===
 export default async function FeaturesSectionServer() {
-  const data = await client.fetch<any>(
-    featuresPageQuery,
-    {},
-    { next: { revalidate: 60 } }
-  );
-
+  const data = await client.fetch<any>(featuresPageQuery, {}, { next: { revalidate: 60 } });
 
   if (!data) {
     return <div>Features page data not found.</div>;
   }
 
   // Extract pageBuilder sections
-  const heroSectionRaw = data.pageBuilder?.find(
-    (s: any) => s._type === "heroCallToAction"
-  );
-  const featuresGridRaw = data.pageBuilder?.find(
-    (s: any) => s._type === "featuresGrid"
-  );
-  const whatsNewRaw = data.pageBuilder?.find(
-    (s: any) => s._type === "whatsNewSection"
-  );
-  const galleryRaw = data.pageBuilder?.find(
-    (s: any) => s._type === "appScreensGallery"
-  );
-  const carouselRaw = data.pageBuilder?.find(
-    (s: any) => s._type === "experienceConnectoCarousel"
-  );
+  const heroSectionRaw = data.pageBuilder?.find((s: any) => s._type === "heroCallToAction");
+  const featuresGridRaw = data.pageBuilder?.find((s: any) => s._type === "featuresGrid");
+  const whatsNewRaw = data.pageBuilder?.find((s: any) => s._type === "whatsNewSection");
+  const galleryRaw = data.pageBuilder?.find((s: any) => s._type === "appScreensGallery");
+  const carouselRaw = data.pageBuilder?.find((s: any) => s._type === "experienceConnectoCarousel");
 
   // Map data into strongly typed object
   const featuresData: FeaturesData = {
