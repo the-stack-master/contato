@@ -20,7 +20,7 @@ export default function MoreInfoSection({
 }: MoreInfoSectionProps) {
   return (
     <section className="py-14 sm:py-16 relative overflow-hidden bg-gray-50">
-      <div className="max-w-7xl mx-auto px-8 relative">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 relative">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}

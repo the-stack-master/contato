@@ -41,16 +41,14 @@ export default function FeatureDetailClient({ feature }: FeatureDetailClientProp
       </div>
 
       {/* Hero Section */}
-      <section className="relative z-10 py-14 sm:py-16 px-6 sm:px-8 bg-white/70 backdrop-blur-sm">
-        <div
-          className={`max-w-7xl mx-auto grid grid-cols-1 gap-12 lg:gap-16 items-center ${feature.heroImage ? "lg:grid-cols-2" : ""}`}
-        >
+      <section className="relative z-10 py-14 sm:py-16 bg-white/70 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className={`space-y-6 sm:space-y-8 max-w-3xl mx-auto text-center ${feature.heroImage ? "lg:mx-0 lg:text-left" : ""}`}
+            className="space-y-6 sm:space-y-8 max-w-3xl text-left"
           >
             <div>
               {/* Back Button */}
@@ -62,7 +60,7 @@ export default function FeatureDetailClient({ feature }: FeatureDetailClientProp
                 Features
               </Link>
             </div>
-            <div className="inline-flex w-fit items-center gap-2 bg-[#f15A24]/10 px-4 py-2 rounded-full mb-5 mx-auto lg:mx-0">
+            <div className="inline-flex w-fit items-center gap-2 bg-[#f15A24]/10 px-4 py-2 rounded-full mb-5">
               <IconComponent
                 name={feature.icon || "Zap"}
                 className="w-5 h-5 mr-3 !text-[#f15A24]"
@@ -102,31 +100,48 @@ export default function FeatureDetailClient({ feature }: FeatureDetailClientProp
             )}
           </motion.div>
 
-          {/* Right Image — hidden below lg */}
-          {feature.heroImage && (
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="hidden lg:block"
-            >
-              <img
-                src={feature.heroImage}
-                alt={feature.title}
-                className="w-full h-[360px] xl:h-[400px] object-cover shadow-2xl"
+          {/* Right: Image or icon placeholder — hidden below lg */}
+          <div className="hidden lg:flex min-h-[360px] xl:min-h-[400px] items-center justify-center">
+            {feature.heroImage ? (
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="w-full h-full"
+              >
+                <img
+                  src={feature.heroImage}
+                  alt={feature.title}
+                  className="w-full h-[360px] xl:h-[400px] object-cover shadow-2xl"
+                  style={{
+                    borderRadius: "40% 60% 70% 30% / 40% 70% 30% 60%",
+                  }}
+                />
+              </motion.div>
+            ) : (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="w-full h-[360px] xl:h-[400px] flex items-center justify-center bg-gradient-to-br from-[#f15A24]/15 via-[#f15A24]/10 to-[#d04f23]/5 shadow-xl"
                 style={{
                   borderRadius: "40% 60% 70% 30% / 40% 70% 30% 60%",
                 }}
-              />
-            </motion.div>
-          )}
+              >
+                <IconComponent
+                  name={feature.icon || "Zap"}
+                  className="w-32 h-32 xl:w-40 xl:h-40 !text-[#f15A24]/80"
+                />
+              </motion.div>
+            )}
+          </div>
         </div>
       </section>
 
       {/* Benefits Section */}
       {feature.benefits && feature.benefits.length > 0 && (
         <section className="relative z-10 py-14 sm:py-16 bg-[#121212]">
-          <div className="max-w-7xl mx-auto px-8">
+          <div className="max-w-7xl mx-auto px-6 sm:px-8">
             <h2 className="text-5xl md:text-7xl font-bold !text-white mb-10 leading-tight">
               Why You&apos;ll Love
               <br />
@@ -152,7 +167,7 @@ export default function FeatureDetailClient({ feature }: FeatureDetailClientProp
       {/* How It Works */}
       {feature.howItWorksSteps && feature.howItWorksSteps.length > 0 && (
         <section className="relative z-10 py-14 sm:py-16 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-8">
+          <div className="max-w-7xl mx-auto px-6 sm:px-8">
             <h2 className="text-5xl md:text-6xl font-bold !text-gray-900 mb-8 text-center">
               {feature.howItWorksHeading || "How It Works"}
             </h2>
@@ -164,7 +179,7 @@ export default function FeatureDetailClient({ feature }: FeatureDetailClientProp
       {/* Feature Details */}
       {feature.detailPoints && feature.detailPoints.length > 0 && (
         <section className="relative z-10 py-14 sm:py-16 bg-white">
-          <div className="max-w-7xl mx-auto px-8">
+          <div className="max-w-7xl mx-auto px-6 sm:px-8">
             <h2 className="text-5xl md:text-6xl font-bold !text-gray-900 mb-8 text-center">
               Key Features
             </h2>
