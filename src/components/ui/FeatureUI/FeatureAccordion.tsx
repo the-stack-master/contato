@@ -3,10 +3,12 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
+import { PortableText } from "@portabletext/react";
+import type { PortableTextBlock } from "@portabletext/react";
 
 interface AccordionItem {
   title: string;
-  content: string;
+  content: PortableTextBlock[];
   image?: string;
 }
 
@@ -91,9 +93,26 @@ export default function FeatureAccordion({ items }: FeatureAccordionProps) {
                     >
                       <div className="relative">
                         <div className="absolute -left-4 top-0 bottom-0 w-1 bg-gradient-to-b from-[#f15A24] to-[#d04f23] rounded-full" />
-                        <p className="text-lg !text-gray-700 leading-relaxed pl-6">
-                          {item.content}
-                        </p>
+                        <div className="text-lg !text-gray-700 leading-relaxed pl-6 [&_p]:mb-3 [&_p:last-child]:mb-0 [&_h3]:font-bold [&_h3]:text-xl [&_h3]:mt-4 [&_h4]:font-semibold [&_h4]:text-lg [&_h4]:mt-3 [&_blockquote]:border-l-4 [&_blockquote]:border-[#f15A24] [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-gray-600">
+                          <PortableText
+                            value={item.content}
+                            components={{
+                              block: {
+                                normal: ({ children }) => <p>{children}</p>,
+                                h3: ({ children }) => <h3>{children}</h3>,
+                                h4: ({ children }) => <h4>{children}</h4>,
+                                blockquote: ({ children }) => <blockquote>{children}</blockquote>,
+                              },
+                              marks: {
+                                link: ({ value, children }) => (
+                                  <a href={value?.href} target="_blank" rel="noopener noreferrer" className="text-[#f15A24] underline hover:no-underline">
+                                    {children}
+                                  </a>
+                                ),
+                              },
+                            }}
+                          />
+                        </div>
                       </div>
 
                       {item.image && (

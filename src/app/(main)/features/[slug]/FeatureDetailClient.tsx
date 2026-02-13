@@ -7,6 +7,7 @@ import FeatureAccordion from "@/components/ui/FeatureUI/FeatureAccordion";
 import FeatureDetailsPoints from "@/components/ui/FeatureUI/FeatureDetailsPoints";
 import MoreInfoSection from "@/components/ui/FeatureUI/MoreInfoSection";
 import { IconComponent } from "@/components/ui/IconComponent";
+import { PortableText } from "@portabletext/react";
 import type { FeatureDetailData } from "./page";
 
 interface FeatureDetailClientProps {
@@ -75,9 +76,28 @@ export default function FeatureDetailClient({ feature }: FeatureDetailClientProp
               {feature.subtitle}
             </p>
 
-            <p className="text-base sm:text-lg !text-gray-700 leading-relaxed">
-              {feature.description}
-            </p>
+            {feature.description && feature.description.length > 0 && (
+              <div className="text-base sm:text-lg !text-gray-700 leading-relaxed [&_p]:mb-3 [&_p:last-child]:mb-0 [&_h3]:font-bold [&_h3]:text-xl [&_h3]:mt-4 [&_h4]:font-semibold [&_h4]:text-lg [&_h4]:mt-3 [&_blockquote]:border-l-4 [&_blockquote]:border-[#f15A24] [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-gray-600">
+                <PortableText
+                  value={feature.description}
+                  components={{
+                    block: {
+                      normal: ({ children }) => <p>{children}</p>,
+                      h3: ({ children }) => <h3>{children}</h3>,
+                      h4: ({ children }) => <h4>{children}</h4>,
+                      blockquote: ({ children }) => <blockquote>{children}</blockquote>,
+                    },
+                    marks: {
+                      link: ({ value, children }) => (
+                        <a href={value?.href} target="_blank" rel="noopener noreferrer" className="text-[#f15A24] underline hover:no-underline">
+                          {children}
+                        </a>
+                      ),
+                    },
+                  }}
+                />
+              </div>
+            )}
           </motion.div>
 
           {/* Right Image — hidden below lg */}
@@ -132,7 +152,7 @@ export default function FeatureDetailClient({ feature }: FeatureDetailClientProp
         <section className="relative z-10 py-32">
           <div className="max-w-7xl mx-auto px-8">
             <h2 className="text-5xl md:text-6xl font-bold !text-gray-900 mb-12 text-center">
-              How It Works
+              {feature.howItWorksHeading || "How It Works"}
             </h2>
             <FeatureAccordion items={feature.howItWorksSteps} />
           </div>

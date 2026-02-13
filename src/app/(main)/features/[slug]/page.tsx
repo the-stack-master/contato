@@ -2,6 +2,7 @@ import { client } from "@/lib/sanity";
 import { notFound } from "next/navigation";
 import { generateSeoMetadata } from "@/lib/generateMetadata";
 import { SanitySeo } from "@/types/commonTypes";
+import type { PortableTextBlock } from "@portabletext/react";
 import FeatureDetailClient from "./FeatureDetailClient";
 
 export const revalidate = 60;
@@ -23,7 +24,7 @@ export interface StatItem {
 export interface HowItWorksStep {
   _key?: string;
   title: string;
-  content: string;
+  content: PortableTextBlock[];
   image?: string;
 }
 
@@ -51,13 +52,14 @@ export interface FeatureDetailData {
   slug: { current: string };
   title: string;
   subtitle?: string;
-  description?: string;
+  description?: PortableTextBlock[];
   icon?: string;
   detailedDescription?: string;
   heroImage?: string;
   benefits?: string[];
   features?: FeatureItem[];
   stats?: StatItem[];
+  howItWorksHeading?: string;
   howItWorksSteps?: HowItWorksStep[];
   detailPoints?: DetailPoint[];
   moreInfo?: MoreInfo;
@@ -90,6 +92,7 @@ const featureDetailQuery = `*[_type == "featureDetailPage" && slug.current == $s
     number,
     label
   },
+  howItWorksHeading,
   howItWorksSteps[]{
     _key,
     title,
