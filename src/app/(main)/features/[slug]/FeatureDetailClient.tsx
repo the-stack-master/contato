@@ -41,14 +41,16 @@ export default function FeatureDetailClient({ feature }: FeatureDetailClientProp
       </div>
 
       {/* Hero Section */}
-      <section className="relative z-10 py-20 px-6 sm:px-8 pb-20">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <section className="relative z-10 py-14 sm:py-16 px-6 sm:px-8 bg-white/70 backdrop-blur-sm">
+        <div
+          className={`max-w-7xl mx-auto grid grid-cols-1 gap-12 lg:gap-16 items-center ${feature.heroImage ? "lg:grid-cols-2" : ""}`}
+        >
           {/* Left Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="space-y-6 sm:space-y-8 max-w-3xl mx-auto lg:mx-0 text-center lg:text-left"
+            className={`space-y-6 sm:space-y-8 max-w-3xl mx-auto text-center ${feature.heroImage ? "lg:mx-0 lg:text-left" : ""}`}
           >
             <div>
               {/* Back Button */}
@@ -123,9 +125,9 @@ export default function FeatureDetailClient({ feature }: FeatureDetailClientProp
 
       {/* Benefits Section */}
       {feature.benefits && feature.benefits.length > 0 && (
-        <section className="relative z-10 py-40 bg-[#121212]">
+        <section className="relative z-10 py-14 sm:py-16 bg-[#121212]">
           <div className="max-w-7xl mx-auto px-8">
-            <h2 className="text-5xl md:text-7xl font-bold !text-white mb-20 leading-tight">
+            <h2 className="text-5xl md:text-7xl font-bold !text-white mb-10 leading-tight">
               Why You&apos;ll Love
               <br />
               This Feature
@@ -149,9 +151,9 @@ export default function FeatureDetailClient({ feature }: FeatureDetailClientProp
 
       {/* How It Works */}
       {feature.howItWorksSteps && feature.howItWorksSteps.length > 0 && (
-        <section className="relative z-10 py-32">
+        <section className="relative z-10 py-14 sm:py-16 bg-gray-50">
           <div className="max-w-7xl mx-auto px-8">
-            <h2 className="text-5xl md:text-6xl font-bold !text-gray-900 mb-12 text-center">
+            <h2 className="text-5xl md:text-6xl font-bold !text-gray-900 mb-8 text-center">
               {feature.howItWorksHeading || "How It Works"}
             </h2>
             <FeatureAccordion items={feature.howItWorksSteps} />
@@ -161,9 +163,9 @@ export default function FeatureDetailClient({ feature }: FeatureDetailClientProp
 
       {/* Feature Details */}
       {feature.detailPoints && feature.detailPoints.length > 0 && (
-        <section className="relative z-10 py-32">
+        <section className="relative z-10 py-14 sm:py-16 bg-white">
           <div className="max-w-7xl mx-auto px-8">
-            <h2 className="text-5xl md:text-6xl font-bold !text-gray-900 mb-12 text-center">
+            <h2 className="text-5xl md:text-6xl font-bold !text-gray-900 mb-8 text-center">
               Key Features
             </h2>
             <FeatureDetailsPoints points={feature.detailPoints} />

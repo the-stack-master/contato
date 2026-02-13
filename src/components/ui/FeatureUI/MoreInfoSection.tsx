@@ -19,14 +19,14 @@ export default function MoreInfoSection({
   paragraphs,
 }: MoreInfoSectionProps) {
   return (
-    <section className="py-40 relative overflow-hidden bg-white">
+    <section className="py-14 sm:py-16 relative overflow-hidden bg-gray-50">
       <div className="max-w-7xl mx-auto px-8 relative">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="mb-24"
+          className="mb-12"
         >
           <div className="flex items-center gap-3 mb-6">
             <div className="h-px w-12 bg-[#f15A24]" />
@@ -63,7 +63,7 @@ export default function MoreInfoSection({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="grid md:grid-cols-2 gap-16"
+          className="grid md:grid-cols-2 gap-10"
         >
           {paragraphs.map((para, index) => (
             <motion.div
